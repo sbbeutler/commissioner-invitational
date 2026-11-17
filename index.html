@@ -549,7 +549,7 @@ function resultPanel(s){
     <tr><td>Popularity</td><td class="r num">${by('pop')}</td></tr>
     <tr><th>Session total</th><th class="r num gold">${mine.items.reduce((a,i)=>a+i.pts,0)}</th></tr></table>`;
   html+=`<div class="hint" style="margin-top:8px">Real tournament, same session: ${REAL.filter(i=>i.s===s).reduce((a,i)=>a+i.pts,0)}</div></div></div>`;
-  html+=`<div class="bar"><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="next">${({1:'CONTINUE TO SESSION 2',2:'CONTINUE TO DAY 2',3:'CONTINUE TO SINGLES',4:'CONTINUE TO THE CUT',5:'CONTINUE TO THE SEMIFINAL',6:'CONTINUE TO THE FINAL',7:'SEE FINAL SCORE'})[s]}</button></div>`;
+  html+=`<div class="bar"><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="next">${({1:'CONTINUE TO SESSION 2',2:'DAY 1 RECAP',3:'CONTINUE TO SINGLES',4:'DAY 2 RECAP',5:'CONTINUE TO THE SEMIFINAL',6:'CONTINUE TO THE FINAL',7:'SEE FINAL SCORE'})[s]}</button></div>`;
   return html;
 }
 </script>
