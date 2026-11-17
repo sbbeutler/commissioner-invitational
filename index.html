@@ -1082,7 +1082,7 @@ function recap2HTML(){
   <div class="panel"><h3>Eliminated: ${TEAM[loser].n}</h3><div class="hint">16 more players are out, leaving 16 of the original 64. Next up is the cut: four teams of four, and one team goes home.</div>
    <div class="hint" style="margin-top:8px">Out after Day 1: ${['blue','white','red','green'].filter(c=>c!==G.w1&&c!==G.w2).map(c=>TEAM[c].n).join(' and ')}.</div></div></div>
   <div class="tcols" style="margin-top:12px">${recapCol(x.win,'safe','ADVANCES')}${recapCol(loser,'out','ELIMINATED')}</div>
-  <div class="bar"><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO SESSION 5</button></div>`;
+  <div class="bar"><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO THE CUT</button></div>`;
 }
 /* ---------- final review ---------- */
 function reviewHTML(){
