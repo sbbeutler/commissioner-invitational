@@ -495,7 +495,7 @@ function boardPhase(s){
   const t=G.anim?G.anim.t:0;
   let html=bannerHTML(s,mode==='setup'?0:mode==='sim'?1:2);
   if(mode==='setup'){
-    if(s<=2){const st=G.stage||0,pr=prs[st];html+=`<div class="bar"><span class="chip-cream">Step ${st+1} of 2 · ${TEAM[pr.a].n} vs ${TEAM[pr.b].n}</span><div class="hint grow">${setupHint(s)}</div></div>`+trayHTML(s)}
+    if(s<=2){const st=G.stage||0,pr=prs[st];html+=`<div style="margin:16px 0"><span class="chip-cream">Step ${st+1} of 2 · ${TEAM[pr.a].n} vs ${TEAM[pr.b].n}</span><div class="hint" style="margin-top:8px">${setupHint(s)}</div></div>`+trayHTML(s)}
     else html+=`<div class="bar"><div class="hint grow">${setupHint(s)}</div></div>`+trayHTML(s);
   }
   prs.forEach((pr,pi)=>{
@@ -634,7 +634,7 @@ function finalPhase(){
   }
   let status='';
   if(mode==='sim'){
-    if(t>=r.played+(r.x?1:0)) status=`${r.w==='a'?teams[0].name:teams[1].name} win ${r.m}`;
+    if(t>=r.played+(r.x?1:0)) status=`${r.w==='a'?teams[0].name:teams[1].name} wins ${r.m}`;
     else{const lead=r.trace[Math.min(t,r.trace.length)-1]||0;status=t<1?'Teeing off…':`${lead===0?'All square':(lead>0?teams[0].name:teams[1].name)+' '+Math.abs(lead)+' UP'} thru ${Math.min(t,18)}`}
     html+=`<div class="panel" style="margin-top:12px;text-align:center"><div class="status" style="font-size:34px">${status}</div></div><div class="bar"><span class="grow"></span><button class="btn ghost" data-act="skip">Skip</button></div>`;
   } else {
@@ -752,7 +752,7 @@ function decide(){
     storyHits(all,[A,B]).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,7),txt:h.txt}));
     items.push({k:'pop',pts:tierSum(all)*1.5,txt:'6 finalists, x1.5'});
     const wn=G.fin.teams[r.w==='a'?0:1].name;
-    notes.push(`<b>${wn}</b> win the final ${r.m}.`);
+    notes.push(`<b>${wn}</b> wins the final ${r.m}.`);
     G.summary[7]={items,notes};return startAnim(r.played+(r.x?1:0),420);
   }
 }
