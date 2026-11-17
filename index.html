@@ -49,6 +49,7 @@ img{max-width:100%;display:block}
 .banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,30,20,.1) 0%,rgba(8,30,20,.88) 100%)}
 .bin{position:relative;z-index:1;padding:18px 20px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:flex-end;justify-content:space-between;width:100%}
+.bkick{font-size:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)}
 .bin h1{font-size:clamp(34px,6vw,60px);text-shadow:0 2px 12px rgba(0,0,0,.5)}
 .chip-cream{display:inline-block;background:var(--cream);color:var(--cream-ink);font-family:var(--display);font-size:22px;letter-spacing:.04em;padding:5px 14px;border-radius:8px}
 .bnote{max-width:46ch;color:#e5efe7;font-size:17px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
@@ -447,7 +448,7 @@ function titleHTML(){
 }
 function bannerHTML(s,photoIdx,extra){
   const S=SESS[s],C=COURSE[S.course];
-  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="chip-cream">Day ${S.day} · ${C.name}</div><h1 style="margin-top:8px">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${C.note}${extra?'<br>'+extra:''}</div></div></div>`;
+  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${C.note}${extra?'<br>'+extra:''}</div></div></div>`;
 }
 function holesHTML(s,cur){
   const S=SESS[s];
@@ -1059,7 +1060,7 @@ function recapHTML(){
     <p style="margin-top:8px"><span class="tag adv">ADVANCES</span> <b>${TEAM[x.win].n}</b>${x.po?' won the tiebreaker playoff':''}</p></div>`).join('');
   const names=out.flatMap(c=>teamIds(c)).map(id=>P[id]).sort((a,b)=>a.rank-b.rank).filter(p=>p.tier>=2).slice(0,6);
   const po=(G.summary[2]&&G.summary[2].notes||[]).filter(n=>/^Playoff hole/.test(n));
-  return `<div class="banner"><img src="${img('ozarks',2)}" alt="Ozarks National clubhouse at sunset"><div class="bin"><div><div class="chip-cream">Day 1 · Ozarks National</div><h1 style="margin-top:8px">DAY 1 RECAP</h1></div><div class="bnote">Sessions 1 and 2 are done. Two teams move on to Buffalo Ridge, and the other two are out.</div></div></div>
+  return `<div class="banner"><img src="${img('ozarks',2)}" alt="Ozarks National clubhouse at sunset"><div class="bin"><div><div class="bkick">Day 1 · Ozarks National</div><h1 style="margin-top:6px;color:var(--cream)">DAY 1 RECAP</h1></div><div class="bnote">Sessions 1 and 2 are done. Two teams move on to Buffalo Ridge, and the other two are out.</div></div></div>
   <div class="rcap">${sc}</div>
   ${po.length?`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Tiebreaker playoff</h3>${po.map(n=>`<div class="hint">${n}</div>`).join('')}</div>`:''}
   <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:6px">Eliminated: ${out.map(c=>TEAM[c].n).join(' and ')}</h3><div class="hint">32 players are out. ${names.length?'Biggest names heading home: '+names.map(p=>p.name).join(', ')+'.':''} Only 32 of the 64 players are still alive for Day 2.</div></div>
@@ -1072,7 +1073,7 @@ function recapHTML(){
 /* ---------- day 2 recap ---------- */
 function recap2HTML(){
   const x=G.day2,loser=x.win===x.a?x.b:x.a,gap=Math.abs(x.pa-x.pb);
-  return `<div class="banner"><img src="${img('buffalo',2)}" alt="Buffalo Ridge"><div class="bin"><div><div class="chip-cream">Day 2 · Buffalo Ridge</div><h1 style="margin-top:8px">DAY 2 RECAP</h1></div><div class="bnote">Sessions 3 and 4 are done. ${TEAM[x.win].n} moves on to the cut with 16 players left standing.</div></div></div>
+  return `<div class="banner"><img src="${img('buffalo',2)}" alt="Buffalo Ridge"><div class="bin"><div><div class="bkick">Day 2 · Buffalo Ridge</div><h1 style="margin-top:6px;color:var(--cream)">DAY 2 RECAP</h1></div><div class="bnote">Sessions 3 and 4 are done. ${TEAM[x.win].n} moves on to the cut with 16 players left standing.</div></div></div>
   <div class="rcap"><div class="panel"><h3>${TEAM[x.a].n} vs ${TEAM[x.b].n}</h3>
     <div class="vsline"><span style="color:${LT[x.a]}">${TEAM[x.a].n}</span><span class="sc2 num">${x.pa} – ${x.pb}</span><span style="color:${LT[x.b]}">${TEAM[x.b].n}</span></div>
     <table><tr><th>Session</th><th class="r">${TEAM[x.a].n}</th><th class="r">${TEAM[x.b].n}</th></tr><tr><td>Session 3 · scramble</td><td class="r num">${x.s3[0]}</td><td class="r num">${x.s3[1]}</td></tr><tr><td>Session 4 · singles</td><td class="r num">${x.s4[0]}</td><td class="r num">${x.s4[1]}</td></tr><tr><th>Total</th><th class="r num">${x.pa}</th><th class="r num">${x.pb}</th></tr></table>
