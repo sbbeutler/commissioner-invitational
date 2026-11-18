@@ -146,6 +146,7 @@ td.r,th.r{text-align:right}
 .hero{margin-top:10px}
 .hero .banner{min-height:min(62vh,520px)}
 .hero h1{font-size:clamp(46px,9vw,110px);line-height:.92}
+.hero .bin{padding-top:26px}
 .rules{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin-top:14px}
 .rules .panel h3{font-size:26px;color:var(--cream);margin-bottom:4px}
 .rules p{margin:0;font-size:17px;color:#dfe9e2}
@@ -168,7 +169,7 @@ td.r,th.r{text-align:right}
 .infob{align-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);background:transparent;color:var(--cream);font-family:var(--display);font-size:22px;line-height:1;padding:0}
 .infob:hover{background:var(--cream);color:var(--cream-ink)}
 .how h3{font-size:26px;color:var(--cream);margin:14px 0 4px}.how p,.how li{font-size:17px;line-height:1.4}.how ul{padding-left:20px;margin:4px 0}.how table{width:100%;border-collapse:collapse;margin-top:6px}.how td,.how th{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:16px}.how td.r,.how th.r{text-align:right}
-@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:12px 14px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;padding:8px 14px !important}.hero h1{font-size:30px}}
+@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:18px 14px 12px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;padding:8px 14px !important}.hero h1{font-size:30px}}
 .flow h3{font-size:26px;color:var(--cream);margin-bottom:8px}
 .steps4{list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
 .steps4 li{display:flex;gap:12px;align-items:center;background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -1003,7 +1004,7 @@ function draftCols(){
 function draftHTML(){
   const d=G.draft;
   if(d.mode==='recap'){
-    return `<div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="home">\u2190 Back</button></div><div class="banner"><img src="assets/draft_room.jpg" alt="Players and guests watching the draft board" style="object-position:50% 35%"><div class="bin"><div><div class="chip-cream">The Draft</div><h1 style="margin-top:8px">KEEP OR START OVER</h1></div><div class="bnote">Four captains, 64 players, 16 per team. Need a refresher? Here are the teams as they were drafted for the real 2026 Invitational. Decide if you want to keep the original draft and redraft your way.</div></div></div>
+    return `<div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="home">\u2190 Back</button></div><div class="banner"><img src="assets/draft_room.jpg" alt="Players and guests watching the draft board" style="object-position:50% 35%"><div class="bin"><div><div class="chip-cream">The Draft</div><h1 style="margin-top:8px">KEEP OR START OVER</h1></div><div class="bnote">Four captains, 64 players, 16 per team. Need a refresher? Here are the teams as they were drafted for the real 2026 Invitational. Decide if you want to keep the original draft or redraft your way.</div></div></div>
     <div class="choice"><div class="panel"><h3>Keep the real draft</h3><div class="hint">Run your tournament with the teams exactly as they were drafted. You can still load the real matchups in sessions 1 to 4.</div><button class="btn main" data-act="keep">KEEP THESE TEAMS</button></div>
     <div class="panel"><h3>Redraft</h3><div class="hint">Start from scratch and draft all 64 players onto the four teams, snake style. The real lineups can't be loaded for sessions 1 to 4, but the real score is still your benchmark.</div><button class="btn main" data-act="redraft">REDRAFT</button></div></div>
     <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:24px;margin-bottom:4px">\u2020 Adjusted handicap from men's tees</h3><div class="hint">In the real tournament, the women played from the same tees as the men, which is farther back than the tees they usually play. To keep the matchups fair, each woman's handicap is adjusted upward by about 5 strokes for singles (a little over a quarter stroke per hole). It counts for half as much in alternate shot, where her ball is only in play every other shot, and for about a quarter as much in a scramble, where the team picks the best shot. Adjusted handicaps are marked with a \u2020.</div></div>
