@@ -119,7 +119,11 @@ td.r,th.r{text-align:right}
 
 /* modal */
 .modal{position:fixed;inset:0;background:rgba(4,16,10,.8);z-index:50;display:grid;place-items:center;padding:16px}
-.mbox{background:var(--panel);border:2px solid var(--cream);border-radius:16px;max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:16px}
+.mbox{background:var(--panel);border:2px solid var(--cream);border-radius:16px;max-width:760px;width:100%;max-height:88vh;max-height:88dvh;overflow:auto;padding:16px;-webkit-overflow-scrolling:touch}
+.mtop{position:sticky;top:0;height:0;z-index:3;text-align:right;overflow:visible}
+.mclose{padding:0 !important;width:40px;height:40px;font-size:22px;line-height:1;border-radius:50%;background:var(--cream) !important;color:var(--cream-ink) !important;border:0 !important;transform:translate(6px,-6px)}
+.mbox h2{padding-right:44px}
+@media(max-width:560px){.mbox .pairhead>div{font-size:19px;padding:6px 8px;gap:4px}}
 .mbox h2{font-size:34px;color:var(--cream);margin-bottom:10px}
 .pgrid{display:flex;gap:10px;flex-wrap:wrap}
 .pbtn{background:none;border:0;padding:0;text-align:center}
@@ -151,6 +155,7 @@ td.r,th.r{text-align:right}
 
 .dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 6px;padding:10px}
 .dgrid .pc{width:100%}
+@media(max-width:560px){.dgrid{grid-template-columns:repeat(8,1fr);gap:4px 3px;padding:6px}.dgrid .pc{border-width:1px;border-radius:5px}.dgrid .hb{font-size:7px;line-height:9px;padding:0 1px;top:1px;left:1px;border-width:0}.dgrid .dc .pnm{display:none}}
 .dc{text-align:center;min-width:0}
 .dc .pnm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tcol h3 small{font-size:18px;float:right;opacity:.85;padding-top:6px}
@@ -163,7 +168,7 @@ td.r,th.r{text-align:right}
 .infob{align-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);background:transparent;color:var(--cream);font-family:var(--display);font-size:22px;line-height:1;padding:0}
 .infob:hover{background:var(--cream);color:var(--cream-ink)}
 .how h3{font-size:26px;color:var(--cream);margin:14px 0 4px}.how p,.how li{font-size:17px;line-height:1.4}.how ul{padding-left:20px;margin:4px 0}.how table{width:100%;border-collapse:collapse;margin-top:6px}.how td,.how th{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:16px}.how td.r,.how th.r{text-align:right}
-@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}}
+@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:12px 14px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;padding:8px 14px !important}.hero h1{font-size:30px}}
 .flow h3{font-size:26px;color:var(--cream);margin-bottom:8px}
 .steps4{list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
 .steps4 li{display:flex;gap:12px;align-items:center;background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -175,6 +180,7 @@ td.r,th.r{text-align:right}
 .trayg .lab{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;color:#fff;padding:2px 12px;border-radius:6px;margin-bottom:5px}
 .trayrow{display:flex;flex-wrap:wrap;gap:6px}
 .tcard{cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+@media (pointer:coarse){.tray{display:none}}
 .tcard .pc{width:52px;border-width:2px;pointer-events:none}
 .tcard.used{opacity:.3}
 .tcard .pc img,.slot .pc img{-webkit-user-drag:none;pointer-events:none}
@@ -368,7 +374,8 @@ function chipHTML(res,ca,cb){
   if(res.w==='tie') return `<div class="chip T">${res.m==='Halved'?'A/S':res.m}</div>`;
   return `<div class="chip ${res.w==='a'?'L':'R'}">${res.m}</div>`;
 }
-function modal(html){document.getElementById('modal').innerHTML=html?`<div class="modal" data-act="closem"><div class="mbox">${html}</div></div>`:''}
+function modal(html){document.getElementById('modal').innerHTML=html?`<div class="modal" data-act="closem"><div class="mbox"><div class="mtop"><button class="btn mclose" data-act="closem" aria-label="Close">\u2715</button></div>${html}</div></div>`:''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('modal').innerHTML)modal('')});
 const winnerName=(c)=>TEAM[c].n;
 
 /* ---------- autosave (this browser only) ---------- */
@@ -420,24 +427,27 @@ function startConfetti(){
 function render(){
   saveGame();
   const app=document.getElementById('app');
+  if(window.__page){app.innerHTML=pageHTML(window.__page);return}
   if(!G||G.phase==='title'){app.innerHTML=titleHTML();return}
+  if(G.phase==='teams'){app.innerHTML=topHTML(true)+teamsHTML();return}
   if(G.phase==='recap'){app.innerHTML=topHTML()+recapHTML();return}
   if(G.phase==='recap2'){app.innerHTML=topHTML()+recap2HTML();return}
-  if(G.phase==='draft'){app.innerHTML=topHTML()+draftHTML();return}
+  if(G.phase==='draft'){app.innerHTML=topHTML(true)+draftHTML();return}
   app.innerHTML=topHTML()+bodyHTML();
   if(G.phase==='end')startConfetti();
   const fn=document.querySelector('[data-focus]');
 }
-function topHTML(){
+function topHTML(bare){
+  if(bare)return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>`;
   const steps=[1,2,3,4,5,6,7].map(i=>`<div class="step ${G.s===i&&G.phase!=='end'?'on':(G.phase==='end'||i<G.s)?'done':''}" title="${SESS[i].name}">${i}</div>`).join('');
   const mine=sumLog(G.log);
   return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div>
   <div class="steps" aria-label="Sessions">${steps}</div>
-  <div class="scorebox"><div class="sc"><b class="num">${mine}</b><span>Your score</span></div><div class="sc real"><b class="num">${sumLog(REAL)}</b><span>Real tournament</span></div><button class="infob" data-act="info" aria-label="How scoring works" title="How scoring works">?</button><button class="btn savb" data-act="save" title="Save your progress in this browser">SAVE PROGRESS</button></div></div>`;
+  <div class="scorebox"><div class="sc"><b class="num">${mine}</b><span>Your EVS</span></div><div class="sc real"><b class="num">${sumLog(REAL)}</b><span>Real EVS</span></div><button class="infob" data-act="info" aria-label="How scoring works" title="How scoring works">?</button><button class="btn savb" data-act="save" title="Save your progress in this browser">SAVE PROGRESS</button></div></div>`;
 }
 function titleHTML(){
   return `<div class="hero"><div class="banner"><img src="${img('ozarks',0)}" alt="Ozarks National clubhouse at sunrise"><div class="bin"><div><h1>THE COMMISSIONER<br>INVITATIONAL</h1></div>
-  <div style="max-width:420px"><div class="bnote" style="margin-bottom:12px">Think you can orchestrate a better tournament than Portnoy, Bob Does Sports, and the Fore Play guys? Now it's time to prove it. Build the teams, set the matchups, and simulate your way to an overall entertainment score.</div><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><button class="btn main" data-act="start">START</button>${(()=>{const o=readSave();return o?`<button class="btn" data-act="resume" style="font-size:26px;padding:10px 20px">CONTINUE · ${saveLabel(o)}</button>`:''})()}</div></div></div></div>
+  <div style="max-width:420px"><div class="bnote" style="margin-bottom:12px">Think you can orchestrate a better tournament than Portnoy, Bob Does Sports, and the Fore Play guys? Now it's time to prove it. Build the teams, set the matchups, and simulate your way to an overall entertainment score.</div><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><button class="btn main" data-act="start">START</button><button class="btn" data-act="page" data-v="rules">RULES</button><button class="btn" data-act="page" data-v="evs">ENTERTAINMENT VALUE SCORE</button>${(()=>{const o=readSave();return o?`<button class="btn" data-act="resume" style="font-size:26px;padding:10px 20px">CONTINUE · ${saveLabel(o)}</button>`:''})()}</div></div></div></div>
   <div class="panel flow" style="margin-top:14px"><h3>How it works:</h3><ol class="steps4"><li><b>1</b><span>Draft or redraft the field and set the 4 teams</span></li><li><b>2</b><span>Assign pairings and matchups</span></li><li><b>3</b><span>Simulate the results and see how it all shakes out</span></li><li><b>4</b><span>Crown a champion and earn an entertainment score</span></li></ol></div>
   <div class="rules">
    <div class="panel"><h3>Day 1 · Ozarks National</h3><p>Four teams of 16. Blue vs White and Red vs Green. Front nine scramble, back nine alternate shot, with duos and matchups reset between them.</p></div>
@@ -448,7 +458,7 @@ function titleHTML(){
 }
 function bannerHTML(s,photoIdx,extra){
   const S=SESS[s],C=COURSE[S.course];
-  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${C.note}${extra?'<br>'+extra:''}</div></div></div>`;
+  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${s===5?'In the real thing, captains were selected and then they drafted. For the game, you get to assign all players to a team.':C.note}${extra?'<br>'+extra:''}</div></div></div>`;
 }
 function holesHTML(s,cur){
   const S=SESS[s];
@@ -474,7 +484,7 @@ function rowHTML(s,pi,mi,m,mode,res,t){
   let mid='';
   if(mode==='setup'){
     if(full){const o=dist(probsFor(s,m.a,m.b));mid=`<span class="vsb">VS</span>${oddsHTML(o,ca,cb)}`;
-      const sh=storyHits([...m.a,...m.b],[m.a,m.b]);if(sh.length)mid+=`<div class="tags">${sh.map(h=>`<span class="tag story" title="${h.txt}: ${h.why}">${h.txt} +${h.pts*hitMult(h,s)}</span>`).join('')}</div>`}
+      const sh=storyHits([...m.a,...m.b],[m.a,m.b]);if(sh.length)mid+=`<div class="tags">${sh.map(h=>`<span class="tag story">EVP +${h.pts*hitMult(h,s)}</span>`).join('')}</div>`}
     else mid=`<span class="vsb">VS</span><span class="hint">Pick all players</span>`;
   } else if(mode==='sim'){
     const r=res;
@@ -483,8 +493,8 @@ function rowHTML(s,pi,mi,m,mode,res,t){
       mid=t<1?`<span class="vsb">VS</span>`:`<div class="status">${lead===0?'A/S':Math.abs(lead)+' UP'} thru ${t}</div><div class="hint" style="margin:-4px 0 0">${lead===0?'':lead>0?'◀ '+TEAM[pr.a].n:TEAM[pr.b].n+' ▶'}</div>`}
   } else {
     mid=chipHTML(res);const items=matchPts(s,res,m.a,m.b);
-    const tg=[];if(isClose(res))tg.push(`<span class="tag close">Close +1</span>`);
-    items.filter(i=>i.k==='story').forEach(i=>tg.push(`<span class="tag story" title="${i.txt}">Story +${i.pts}</span>`));
+    const tg=[];if(isClose(res))tg.push(`<span class="tag close">EVP +1</span>`);
+    items.filter(i=>i.k==='story').forEach(i=>tg.push(`<span class="tag story">EVP +${i.pts}</span>`));
     if(tg.length)mid+=`<div class="tags">${tg.join('')}</div>`;
   }
   const close=mode!=='setup'&&res&&isClose(res)?'close':'';
@@ -523,7 +533,7 @@ function boardPhase(s){
 function setupHint(s){
   const S=SESS[s];
   const base=s<=2?`Every player plays once in each session. Set ${TEAM[pairingsFor(s)[0].a].n} vs ${TEAM[pairingsFor(s)[0].b].n} first, then ${TEAM[pairingsFor(s)[1].a].n} vs ${TEAM[pairingsFor(s)[1].b].n}. Fill all ${S.ms} matches on each board.`:s===3?'The two surviving teams meet. Fill all 8 matches.':'Singles: all 16 players on each side play one match.';
-  return base+' Drag a player from the list onto a slot, or tap a slot to choose one. The bar shows the chance each side wins, with the tie in the middle. Handicap is on each card (plus = better than scratch, * = estimated, \u2020 = adjusted handicap from men\u2019s tees; tap the ? for details).';
+  return base+' Tap a slot to choose a player (on a computer you can also drag from the list). The bar shows the chance each side wins, with the tie in the middle. Handicap is on each card (plus = better than scratch, * = estimated, \u2020 = adjusted handicap from men\u2019s tees; tap the ? for details).';
 }
 function boardFull(s){return G.lineup[s].every(ms=>ms.every(m=>m.a.every(Boolean)&&m.b.every(Boolean)))}
 function currentStory(s){
@@ -534,7 +544,7 @@ function storyBook(s){
   const rows=D.pairs.filter(p=>aliveSet.has(p.a)&&aliveSet.has(p.b));
   const used=new Set();
   G.lineup[s].forEach(ms=>ms.forEach(m=>{const ids=[...m.a,...m.b];D.pairs.forEach((p,i)=>{if(ids.includes(p.a)&&ids.includes(p.b))used.add(i)})}));
-  return `<details class="panel"><summary>Storyline book · ${currentStory(s)} points in your lineup so far</summary><ul class="ul">${D.pairs.map((p,i)=>(aliveSet.has(p.a)&&aliveSet.has(p.b))?`<li><span class="p">${used.has(i)?'✓':'+'+p.w*storyMult(s)}</span><span><b>${P[p.a].name}</b> & <b>${P[p.b].name}</b> <span class="mute">· ${p.t}</span></span></li>`:'').join('')}${D.groups.map(g=>`<li><span class="p">+${g.w*(g.trash?TRASHM[s]:storyMult(s))}</span><span><b>${g.name}</b> ${g.trash?'(trash talk, same duo or against each other)':'friends'}: <span class="mute">${g.m.map(x=>P[x].name).join(', ')} (per pair in a match)</span></span></li>`).join('')}</ul></details>`;
+  return `<details class="panel"><summary>Storyline book · ${currentStory(s)} EVPs in your lineup so far</summary><ul class="ul">${D.pairs.map((p,i)=>(aliveSet.has(p.a)&&aliveSet.has(p.b))?`<li><span class="p">${used.has(i)?'✓':'+'+p.w*storyMult(s)}</span><span><b>${P[p.a].name}</b> & <b>${P[p.b].name}</b> <span class="mute">· ${p.t}</span></span></li>`:'').join('')}${D.groups.map(g=>`<li><span class="p">+${g.w*(g.trash?TRASHM[s]:storyMult(s))}</span><span><b>${g.name}</b> ${g.trash?'(trash talk, same duo or against each other)':'friends'}: <span class="mute">${g.m.map(x=>P[x].name).join(', ')} (per pair in a match)</span></span></li>`).join('')}</ul></details>`;
 }
 function resultPanel(s){
   const S=SESS[s],prs=pairingsFor(s);
@@ -542,7 +552,7 @@ function resultPanel(s){
   const by=k=>mine.items.filter(i=>i.k===k).reduce((a,i)=>a+i.pts,0);
   let html=`<div class="cols" style="margin-top:16px"><div class="panel"><h2 style="color:var(--cream);font-size:34px;margin-bottom:6px">Session ${s} results</h2>`;
   mine.notes.forEach(n=>html+=`<p style="margin:6px 0;font-size:20px">${n}</p>`);
-  html+=`<table><tr><th>Scoring</th><th class="r">Points</th></tr>
+  html+=`<table><tr><th>EVPs</th><th class="r">Earned</th></tr>
     <tr><td>Close matches (${mine.items.filter(i=>i.k==='close').length})</td><td class="r num">${by('close')}</td></tr>
     <tr><td>Storylines</td><td class="r num">${by('story')}</td></tr>
     <tr><td>Close teams</td><td class="r num">${by('team')}</td></tr>
@@ -625,10 +635,11 @@ function finalPhase(){
   html+=`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:28px;margin-bottom:6px">The final: 3v3 alternate shot, 18-hole match play</h3><div class="hint" style="margin-bottom:8px">Set the tee order for both teams. Tee shots rotate #1, #2, #3. A tie after 18 goes to extra holes. Winners take <span class="gold">$1.3 million each</span>.</div></div>`;
   const colA=TEAM[teams[0].color]?TEAM[teams[0].color].c:'#6b9ad0';
   const t=mode==='sim'?G.anim.t:99,r=G.res[7];
-  const orderCol=(ti,ord)=>`<div class="tcol"><h3>${teams[ti].name}<small>avg hcp ${avgH(ord)}</small></h3><div class="tslots">${ord.map((id,k)=>`<div class="tslot"><div class="slot filled">${cardHTML(id,{rank:k+1})}</div>${mode==='setup'?`<div class="ord"><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="-1" aria-label="Move earlier">◀</button><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="1" aria-label="Move later">▶</button></div>`:''}<div class="hint">${stars(P[id].tier)}</div></div>`).join('')}</div></div>`;
+  const fo=mode==='setup'?finalOdds(A,B):null;
+  const orderCol=(ti,ord)=>`<div class="tcol"><h3>${teams[ti].name}<small>avg hcp ${avgH(ord)}${fo?' \u00b7 '+Math.round((ti?fo.b:fo.a)*100)+'% to win':''}</small></h3><div class="tslots">${ord.map((id,k)=>`<div class="tslot"><div class="slot filled">${cardHTML(id,{rank:k+1})}</div>${mode==='setup'?`<div class="ord"><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="-1" aria-label="Move earlier">◀</button><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="1" aria-label="Move later">▶</button></div>`:''}<div class="hint">${stars(P[id].tier)}</div></div>`).join('')}</div></div>`;
   html+=`<div class="tcols" style="margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">${orderCol(0,A)}${orderCol(1,B)}</div>`;
   if(mode==='setup'){
-    const o=finalOdds(A,B);
+    const o=fo;
     html+=`<div class="panel" style="margin-top:12px"><div class="hint" style="margin-bottom:6px">Chance to win the title (extra holes included)</div>${oddsHTML({a:o.a,t:0,b:o.b},'#6b9ad0','#c9a24a')}<div class="otxt" style="max-width:190px"><span>${teams[0].name}</span><span>${teams[1].name}</span></div></div>`;
     html+=`<div class="bar"><button class="btn" data-act="auto">Best order</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="decide">DECIDE MATCH</button></div>`;
     return html;
@@ -852,7 +863,12 @@ document.addEventListener('click',e=>{
   const a=el.dataset.act;
   if(a==='info'){infoModal()}
   else if(a==='start'){newGame();G.phase='draft';G.draft={mode:'recap',picks:[]};render();window.scrollTo(0,0)}
-  else if(a==='keep'||a==='dstart'){G.redraft=a==='dstart';G.phase='setup';ensureLineup(1);render();window.scrollTo(0,0)}
+  else if(a==='keep'||a==='dstart'){G.redraft=a==='dstart';if(!G.redraft)G.pairOpt=0;G.phase='teams';render();window.scrollTo(0,0)}
+  else if(a==='tstart'){G.phase='setup';ensureLineup(1);render();window.scrollTo(0,0)}
+  else if(a==='tback'){G.phase='draft';render();window.scrollTo(0,0)}
+  else if(a==='home'){newGame();G.phase='title';render();window.scrollTo(0,0)}
+  else if(a==='page'){modal('');window.__page=el.dataset.v;render();window.scrollTo(0,0)}
+  else if(a==='pageback'){window.__page=null;render();window.scrollTo(0,0)}
   else if(a==='redraft'){D.players.forEach(x=>x.team=null);G.draft={mode:'pick',picks:[]};render();window.scrollTo(0,0)}
   else if(a==='dback'){D.players.forEach(x=>x.team=x.rteam);G.draft={mode:'recap',picks:[]};render();window.scrollTo(0,0)}
   else if(a==='dpick'){draftPick(el.dataset.id);render()}
@@ -894,6 +910,87 @@ window.__G=()=>G;window.__dbg={decide,autoLineup,nextSession,REAL,D,dist,probsFo
 </script>
 
 <script>
+
+/* ---------- teams overview page ---------- */
+function teamsHTML(){
+  const r=G.redraft;
+  const choice=r?`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Day 1 matchups</h3><div class="hint" style="margin-bottom:8px">Choose which teams play each other in sessions 1 and 2.</div><div class="bar" style="margin:0">${PAIROPTS.map((o,i)=>`<button class="btn ${(G.pairOpt||0)===i?'main':''}" style="font-size:22px;padding:8px 14px" data-act="pairopt" data-v="${i}">${o.map(([a,b])=>TEAM[a].n+' vs '+TEAM[b].n).join(' · ')}</button>`).join('')}</div></div>`
+   :`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Day 1 matchups</h3><div class="hint">As in the real tournament: ${PAIROPTS[0].map(([a,b])=>TEAM[a].n+' vs '+TEAM[b].n).join(' and ')}.</div></div>`;
+  return `<div class="panel" style="margin-top:12px"><div class="chip-cream">${r?'Your draft':'The real draft'}</div><h1 style="margin-top:8px;font-size:clamp(34px,7vw,56px);color:var(--cream)">YOUR TEAMS</h1><div class="hint" style="margin-top:6px">${r?'Here is how your draft turned out. Handicaps are averaged for each team.':'You kept the teams from the real draft. Handicaps are averaged for each team.'}</div></div>
+  ${choice}
+  <div class="bar"><button class="btn ghost" data-act="tback">← Back</button><span class="grow"></span><button class="btn main" data-act="tstart">START SESSION 1</button></div>
+  <div style="margin-top:4px">${draftCols()}</div>`;
+}
+
+/* ---------- rules + EVS pages ---------- */
+const nameList=ids=>ids.map(i=>P[i].name).join(', ');
+const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function rulesBody(){
+  return `
+  <h3>The goal</h3>
+  <p>You are the commissioner. The real tournament has already been played. You rebuild it: set the teams, build the duos and matchups, and simulate every session. Your tournament earns an Entertainment Value Score (EVS) in entertainment value points (EVPs). Beat the real tournament's EVS of <b>${sumLog(REAL)}</b> and you built the better show. The <b>Entertainment Value Score</b> page explains every way to earn EVPs.</p>
+  <h3>The field and the teams</h3>
+  <ul><li>64 players on four teams of 16: Blue, White, Red and Green.</li>
+  <li>Keep the teams from the real draft, or redraft all 64 players snake style.</li>
+  <li>Each card shows a handicap. A plus handicap is better than scratch, * means estimated, and † means <b>adjusted handicap from men's tees</b>. The women played from the same tees as the men in the real tournament, so their handicaps are adjusted for the extra distance.</li></ul>
+  <h3>The three days</h3>
+  <ul><li><b>Day 1 · Ozarks National.</b> Blue vs White and Red vs Green (after a redraft, you choose the pairings). Session 1 is a 2v2 scramble over the front nine and session 2 is 2v2 alternate shot over the back nine. Every player plays once per session in match play: a win is 1 point and a tie is half a point. The team with more points over both sessions wins its pairing (a tie goes to a playoff), and the two winners advance.</li>
+  <li><b>Day 2 · Buffalo Ridge.</b> The two winning teams meet. Session 3 is a 2v2 scramble and session 4 is 1v1 singles. Points from both sessions are added together. The winner moves on with its 16 players.</li>
+  <li><b>Session 5 · the cut.</b> The 16 players form four teams of four, ranked 1 to 4. Every team sends its #1 to play hole 1. The best score and any ties are safe, and the rest send their #2 to hole 2, then their #3. If teams are still tied, the #1s go again. The last team standing is eliminated, so 12 players move on.</li>
+  <li><b>Session 6 · the semifinal at Payne's Valley.</b> The 12 players form four teams of three. They play nine holes of alternate shot, stroke play. Your tee order sets who hits first. The top two teams reach the final, and a tie for second goes to a playoff.</li>
+  <li><b>Session 7 · the final.</b> Two teams of three play 18 holes of alternate shot match play, with extra holes if it is tied. The winners take $1.3 million each.</li></ul>
+  <h3>Setting your lineups</h3>
+  <ul><li>Tap an empty slot to choose a player. On a computer you can also drag a card from the list onto a slot.</li>
+  <li>Every player plays once per session. Auto-balance fills the board for you, and Clear all starts over.</li>
+  <li>After a redraft, the real lineups can't be loaded for sessions 1 to 4. After you keep the real draft, "Load real lineup" can fill them for you.</li>
+  <li>In sessions 5 to 7, the order of your players matters, so think about who goes first.</li></ul>
+  <h3>How matches are decided</h3>
+  <ul><li>Every match is simulated hole by hole from the handicaps. The stronger side is a little more likely to win each hole, and ties are possible. The bar in each matchup shows each side's chance to win and the chance of a tie.</li>
+  <li>The favorite does not always win. That is part of the fun.</li>
+  <li>In a scramble, the better player counts most, so a high handicap on the weaker partner hurts less. In alternate shot, the two handicaps are averaged. Singles use each player's own handicap.</li></ul>
+  <h3>Saving and sharing</h3>
+  <ul><li>Save progress stores your tournament in this browser. Choose Continue on the home screen to pick up where you left off.</li>
+  <li>When the tournament ends, you can create a shareable image of your results.</li></ul>`;
+}
+function evsBody(){
+  const tiers=[[3,'Ranks 1 to 8'],[2,'Ranks 9 to 24'],[1,'Ranks 25 to 44']].map(([v,l])=>{const ids=D.players.filter(x=>x.tier===v).sort((a,b)=>a.rank-b.rank).map(x=>x.id);return `<li><b>${v} EVPs</b> · ${l}: ${nameList(ids)}</li>`}).join('');
+  const pairs=[3,2,1].map(w=>{const l=D.pairs.filter(x=>x.w===w);return l.length?`<li><b>${w} EVP${w>1?'s':''} per match</b><ul>${l.map(x=>`<li>${P[x.a].name} and ${P[x.b].name}: ${x.t}${x.same?' (only counts when they are on the same side)':''}</li>`).join('')}</ul></li>`:''}).join('');
+  const groups=D.groups.filter(g=>!g.trash).map(g=>`<li><b>${g.name}</b> (${nameList(g.m)}): ${g.w} EVP for each pair of them in the same match</li>`).join('');
+  const tg=D.groups.find(g=>g.trash);
+  return `
+  <h3>The goal of the game</h3>
+  <p>Your goal is to build a tournament that is more entertaining than the real one. You do that by earning a high Entertainment Value Score.</p>
+  <h3>Entertainment Value Score (EVS)</h3>
+  <p>The EVS is the total of every entertainment value point you earn across all seven sessions. The real tournament, scored with the same rules, earned an EVS of <b>${sumLog(REAL)}</b>. If your EVS is higher, you win.</p>
+  <h3>Entertainment value point (EVP)</h3>
+  <p>An EVP is one point of entertainment value: a moment that makes viewers lean in, like a tight finish, a rivalry or a star still in the field. Every matchup shows an <b>EVP +n</b> tag when it earns some.</p>
+  <h3>All the ways to earn EVPs</h3>
+  <h3 style="font-size:22px">1. Close matches</h3>
+  <ul><li>1 EVP for each match in sessions 1 to 4 that ends tied, goes to extra holes, or is decided on the last hole.</li></ul>
+  <h3 style="font-size:22px">2. Close team results (5 EVPs each)</h3>
+  <ul><li>Sessions 1 and 2: a team pairing is decided by 2 points or fewer.</li>
+  <li>Sessions 3 and 4 combined: the two teams finish within 2 points.</li>
+  <li>Semifinal: second place is decided by 2 strokes or fewer.</li>
+  <li>Semifinal: any three of the four teams finish within 2 strokes of each other.</li>
+  <li>The final goes to the last hole or into extra holes.</li></ul>
+  <h3 style="font-size:22px">3. Storylines</h3>
+  <p>Put storyline players together in the same match, on the same side or against each other, to earn EVPs. The amounts below are doubled in sessions 4 to 7. In sessions 5 and 6, only players on the same team count.</p>
+  <ul>${pairs}</ul>
+  <p><b>Friend groups</b></p><ul>${groups}</ul>
+  <h3 style="font-size:22px">4. Trash talkers</h3>
+  <p>${nameList(tg.m)} are known for talking trash. Every pair of them in the same duo or team, or playing against each other, earns 1 EVP times a multiplier that grows during the event: ×1 in sessions 1 and 2, ×2 in sessions 3 and 4, ×3 in sessions 5 and 6, and ×4 in session 7.</p>
+  <h3 style="font-size:22px">5. Popularity</h3>
+  <p>Each player is worth EVPs based on a 1 to 64 popularity ranking. You earn them for every player still alive in sessions 5 to 7, so keep the big names around. The amounts are multiplied by ×0.5 in session 5, ×1 in session 6 and ×1.5 in session 7.</p>
+  <ul>${tiers}<li><b>0 EVPs</b> · Ranks 45 to 64</li></ul>`;
+}
+function pageHTML(v){
+  const title=v==='rules'?'RULES':'ENTERTAINMENT VALUE SCORE';
+  return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>
+  <div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="pageback">← Back</button></div>
+  <div class="panel how"><h1 style="font-size:clamp(34px,7vw,56px);color:var(--cream);margin-bottom:8px">${title}</h1>${v==='rules'?rulesBody():evsBody()}
+  <div class="bar"><button class="btn" data-act="page" data-v="${v==='rules'?'evs':'rules'}">${v==='rules'?'Entertainment Value Score':'Rules'}</button><span class="grow"></span><button class="btn main" data-act="pageback">← BACK</button></div></div>`;
+}
+
 /* ---------- draft page ---------- */
 const DORDER=['blue','white','red','green'];
 const draftClock=n=>{const r=Math.floor(n/4),i=n%4;return (r%2?[...DORDER].reverse():DORDER)[i]};
@@ -901,12 +998,12 @@ function draftPick(id){const d=G.draft;if(d.picks.length>=64||P[id].team)return;
 function draftCols(){
   return `<div class="tcols">${DORDER.map(c=>{const ids=byHcp(teamIds(c));
     const cells=ids.map(id=>`<div class="dc">${cardHTML(id)}<div class="pnm">${P[id].name}</div></div>`).join('');
-    return `<div class="tcol" style="border-color:${TEAM[c].c}"><h3 style="background:${TEAM[c].c};color:#fff">${TEAM[c].n}<small>${ids.length}/16</small></h3><div class="dgrid">${cells||'<div class="hint" style="grid-column:1/-1">No picks yet</div>'}</div></div>`}).join('')}</div>`;
+    return `<div class="tcol" style="border-color:${TEAM[c].c}"><h3 style="background:${TEAM[c].c};color:#fff">${TEAM[c].n}<small>${ids.length?'avg hcp '+avgH(ids)+' \u00b7 ':''}${ids.length}/16</small></h3><div class="dgrid">${cells||'<div class="hint" style="grid-column:1/-1">No picks yet</div>'}</div></div>`}).join('')}</div>`;
 }
 function draftHTML(){
   const d=G.draft;
   if(d.mode==='recap'){
-    return `<div class="banner"><img src="assets/draft_room.jpg" alt="Players and guests watching the draft board" style="object-position:50% 35%"><div class="bin"><div><div class="chip-cream">The 2026 draft</div><h1 style="margin-top:8px">THE DRAFT</h1></div><div class="bnote">Four captains, 64 players, 16 per team. Need a refresher? Here are the teams as they were drafted for the real 2026 Invitational. Decide if you want to keep the original draft and redraft your way.</div></div></div>
+    return `<div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="home">\u2190 Back</button></div><div class="banner"><img src="assets/draft_room.jpg" alt="Players and guests watching the draft board" style="object-position:50% 35%"><div class="bin"><div><div class="chip-cream">The Draft</div><h1 style="margin-top:8px">KEEP OR START OVER</h1></div><div class="bnote">Four captains, 64 players, 16 per team. Need a refresher? Here are the teams as they were drafted for the real 2026 Invitational. Decide if you want to keep the original draft and redraft your way.</div></div></div>
     <div class="choice"><div class="panel"><h3>Keep the real draft</h3><div class="hint">Run your tournament with the teams exactly as they were drafted. You can still load the real matchups in sessions 1 to 4.</div><button class="btn main" data-act="keep">KEEP THESE TEAMS</button></div>
     <div class="panel"><h3>Redraft</h3><div class="hint">Start from scratch and draft all 64 players onto the four teams, snake style. The real lineups can't be loaded for sessions 1 to 4, but the real score is still your benchmark.</div><button class="btn main" data-act="redraft">REDRAFT</button></div></div>
     <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:24px;margin-bottom:4px">\u2020 Adjusted handicap from men's tees</h3><div class="hint">In the real tournament, the women played from the same tees as the men, which is farther back than the tees they usually play. To keep the matchups fair, each woman's handicap is adjusted upward by about 5 strokes for singles (a little over a quarter stroke per hole). It counts for half as much in alternate shot, where her ball is only in play every other shot, and for about a quarter as much in a scramble, where the team picks the best shot. Adjusted handicaps are marked with a \u2020.</div></div>
@@ -914,8 +1011,7 @@ function draftHTML(){
   }
   const n=d.picks.length,done=n>=64,c=done?null:draftClock(n);
   const pool=byHcp(D.players.filter(x=>!x.team).map(x=>x.id));
-  return `<div class="clock">${done?'<b>Draft complete</b><span class="hint">All 64 players are on a team.</span>':`<b style="color:${({white:'#d7d9db',red:'#ff7a72',blue:'#8fb6e6',green:'#5fcf94'})[c]}">${TEAM[c].n} is on the clock</b><span class="hint">Pick ${n+1} of 64 · snake order</span>`}<span class="grow"></span><button class="btn" data-act="dundo" ${n?'':'disabled'}>Undo</button><button class="btn" data-act="dauto" ${done?'disabled':''}>Auto-draft the rest</button><button class="btn ghost" data-act="dback">Back to real teams</button><button class="btn main" data-act="dstart" ${done?'':'disabled'}>START</button></div>
-  <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Day 1 matchups</h3><div class="hint" style="margin-bottom:8px">Choose which teams play each other in sessions 1 and 2.</div><div class="bar" style="margin:0">${PAIROPTS.map((o,i)=>`<button class="btn ${(G.pairOpt||0)===i?'main':''}" style="font-size:22px;padding:8px 14px" data-act="pairopt" data-v="${i}">${o.map(([a,b])=>TEAM[a].n+' vs '+TEAM[b].n).join(' · ')}</button>`).join('')}</div></div>
+  return `<div class="clock">${done?'<b>Draft complete</b><span class="hint">All 64 players are on a team.</span>':`<b style="color:${({white:'#d7d9db',red:'#ff7a72',blue:'#8fb6e6',green:'#5fcf94'})[c]}">${TEAM[c].n} is on the clock</b><span class="hint">Pick ${n+1} of 64 · snake order</span>`}<span class="grow"></span><button class="btn" data-act="dundo" ${n?'':'disabled'}>Undo</button><button class="btn" data-act="dauto" ${done?'disabled':''}>Auto-draft the rest</button><button class="btn ghost" data-act="dback">Back to real teams</button><button class="btn main" data-act="dstart" ${done?'':'disabled'}>CONTINUE</button></div>
   ${done?'':`<div class="panel" style="margin-top:12px"><div class="pgrid">${pool.map(id=>`<button class="pbtn" data-act="dpick" data-id="${id}">${cardHTML(id,{big:true})}<div class="pnm">${P[id].name} ${stars(P[id].tier)}</div></button>`).join('')}</div></div>`}
   <div style="margin-top:14px">${draftCols()}</div>`;
 }
@@ -927,8 +1023,9 @@ function infoModal(){
   const rows=kinds.map(([k,n])=>`<tr><td>${n}</td><td class="r num">${sumLog(you,k)}</td><td class="r num">${sumLog(REAL,k)}</td></tr>`).join('');
   modal(`<div class="how"><h2>How the scores work</h2>
   <p><b>You are the commissioner.</b> The real tournament has already been played. You rebuild it: pick the teams, set the duos and matchups, and press Decide Match to simulate each session. Better matchups mean closer golf, bigger storylines and more of the popular players still playing on the final day.</p>
+  <h3>EVS and EVPs</h3><p>Every point you earn is an <b>entertainment value point (EVP)</b>. Your total is your <b>Entertainment Value Score (EVS)</b>.</p><div class="bar" style="margin:6px 0"><button class="btn" data-act="page" data-v="rules">Rules</button><button class="btn" data-act="page" data-v="evs">Entertainment Value Score</button></div>
   <h3>How to win</h3><p>Beat the <b>real tournament score</b>. That number is what the real 2026 Invitational earned when scored with the same rules below. If your total is higher when the final session ends, your invitational was the better show.</p>
-  <h3>Where the points come from</h3>
+  <h3>Where EVPs come from</h3>
   <ul><li><b>Close matches:</b> 1 point for each match in sessions 1 to 4 that ends tied or is decided on the last hole.</li>
   <li><b>Close team results:</b> 5 points when one team beats another by 2 points or fewer (sessions 1 and 2, sessions 3 and 4 combined), when second place in the semifinal is decided by 2 strokes or fewer, when any three of the four semifinal teams finish within 2 strokes of each other, or when the final goes to the last hole or extra holes.</li>
   <li><b>Storylines:</b> when rivals, friends or other storyline players land in the same match, on the same side or against each other (Chaz and Gaethje only count as a duo), you earn that storyline's weight: small 1, medium 2, big 3. Sessions 1 to 3 count once, sessions 4 to 7 count double. In sessions 5 and 6 it counts when they share a team, and in session 7 when they share a team or face each other.</li>
@@ -1022,6 +1119,7 @@ function doDrop(d,id,fromDesc){
   }
   document.addEventListener('pointerdown',e=>{
     if(e.button>0||drag)return;
+    if(window.matchMedia&&matchMedia('(pointer:coarse)').matches)return;
     const s=srcFrom(e);if(!s)return;
     drag={...s,on:false};sx=e.clientX;sy=e.clientY;
     if(isTouch(e)){timer=setTimeout(()=>{if(drag&&!drag.on){begin(sx,sy);if(navigator.vibrate)try{navigator.vibrate(15)}catch(_){}}},260)}
