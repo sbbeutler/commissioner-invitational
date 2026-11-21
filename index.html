@@ -58,7 +58,7 @@ img{max-width:100%;display:block}
 .panel{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px 16px}
 .cols{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
 .pairhead{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:2px solid #f1efe6;margin:18px 0 10px}
-.pairhead>div{padding:8px 16px;font-family:var(--display);font-size:34px;flex:1;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pairhead>div{padding:calc(8px + .1em) 16px calc(8px - .1em);font-family:var(--display);font-size:34px;flex:1;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .pairhead .vs{flex:0 0 auto;background:var(--bg2);font-size:26px;color:var(--cream)}
 .pairhead .ta{background:var(--ca)}.pairhead .tb{background:var(--cb);flex-direction:row-reverse}
 .pairhead .pts{font-size:40px}
@@ -67,7 +67,7 @@ img{max-width:100%;display:block}
 .mrow.close{border-color:var(--gold)}
 .side{display:flex;gap:8px}
 .mid{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0}
-.vsb{font-family:var(--display);font-size:26px;background:var(--bg2);border:2px solid #f1efe6;border-radius:8px;padding:2px 12px;color:var(--ink)}
+.vsb{font-family:var(--display);font-size:26px;background:var(--bg2);border:2px solid #f1efe6;border-radius:8px;padding:calc(2px + .08em) 12px calc(2px - .08em);color:var(--ink)}
 .slot{position:relative;width:76px;aspect-ratio:733/1197;border-radius:10px;border:2px dashed var(--line);background:rgba(255,255,255,.04);display:grid;place-items:center;padding:0;color:var(--mute);font-family:var(--display);font-size:34px}
 .slot:hover{border-color:var(--cream)}
 .pc{position:relative;width:76px;aspect-ratio:733/1197;border-radius:10px;overflow:hidden;border:2px solid #f1efe6;box-shadow:0 3px 8px rgba(0,0,0,.35);background:#fff}
@@ -123,7 +123,7 @@ td.r,th.r{text-align:right}
 .mtop{position:sticky;top:0;height:0;z-index:3;text-align:right;overflow:visible}
 .mclose{padding:0 !important;width:40px;height:40px;font-size:22px;line-height:1;border-radius:50%;background:var(--cream) !important;color:var(--cream-ink) !important;border:0 !important;transform:translate(6px,-6px)}
 .mbox h2{padding-right:44px}
-@media(max-width:560px){.mbox .pairhead>div{font-size:19px;padding:6px 8px;gap:4px}}
+@media(max-width:560px){.mbox .pairhead>div{font-size:19px;padding:calc(6px + .1em) 8px calc(6px - .1em);gap:4px}}
 .mbox h2{font-size:34px;color:var(--cream);margin-bottom:10px}
 .pgrid{display:flex;gap:10px;flex-wrap:wrap}
 .pbtn{background:none;border:0;padding:0;text-align:center}
@@ -201,9 +201,9 @@ td.r,th.r{text-align:right}
 body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
 .rcap{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));margin-top:14px}
 .rcap .panel h3{font-size:26px;color:var(--cream);margin-bottom:6px}
-.tag{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;padding:1px 10px;border-radius:6px}
+.tag{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;line-height:1.1;padding:calc(3px + .08em) 10px calc(3px - .08em);border-radius:6px}
 .tag.adv{background:var(--good);color:#06301a}
-button.tag{cursor:pointer;padding-top:calc(1px + .05em);padding-bottom:calc(1px - .05em)}button.tag:hover{filter:brightness(1.25)}button.tag.story{color:#fff}button.tag.close{color:#ffe4a6}.tag.out{background:#c9ccd1;color:#2b3036}
+button.tag{cursor:pointer}button.tag:hover{filter:brightness(1.25)}button.tag.story{color:#fff}button.tag.close{color:#ffe4a6}.tag.out{background:#c9ccd1;color:#2b3036}
 .tcol.out .dc{opacity:.75}.tcol.out .pc{filter:grayscale(.7)}
 .vsline{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--display);font-size:34px;line-height:1.1}
 .vsline .sc2{font-size:48px}
@@ -412,7 +412,7 @@ function readSave(){
 }
 function loadSave(){
   const o=readSave();if(!o)return false;
-  try{D.players.forEach(p=>{if(o.teams&&o.teams[p.id]!==undefined)p.team=o.teams[p.id]});G={...o.G,anim:null,pickCtx:null};applyEdits(G.hcpEdits);return true}catch(e){return false}
+  try{D.players.forEach(p=>{if(o.teams&&o.teams[p.id]!==undefined)p.team=o.teams[p.id]});G={...o.G,anim:null,pickCtx:null};if(G.s<=4&&['sim','result','recap','recap2'].includes(G.phase)&&!(G.res&&G.res[G.s]))G.phase='setup';applyEdits(G.hcpEdits);return true}catch(e){return false}
 }
 function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
 function saveLabel(o){
@@ -548,7 +548,7 @@ function boardPhase(s){
   });
   if(mode==='sim'){
     html+=`<div class="bar"><span class="hint grow">On the course…</span><button class="btn ghost" data-act="skip">Skip</button></div>`;
-  } else {
+  } else if(mode==='result'){
     html+=resultPanel(s);
   }
   return html;
@@ -586,7 +586,6 @@ function resultPanel(s){
   return html;
 }
 </script>
-
 <script>
 /* ---------- sessions 5-7 renderers ---------- */
 const teamName=ids=>ids.length?`Team ${P[ids[0]].name}`:'New team';
@@ -935,6 +934,7 @@ document.addEventListener('change',e=>{
 });
 function nextSession(){
   const s=G.s;
+  if(s<=4&&!(G.res&&G.res[s]))return;
   if(s===7){G.phase='end';render();window.scrollTo(0,0);return}
   if(s===2&&G.phase!=='recap'){G.phase='recap';render();window.scrollTo(0,0);return}
   if(s===4&&G.phase!=='recap2'){G.phase='recap2';render();window.scrollTo(0,0);return}
