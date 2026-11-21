@@ -453,9 +453,14 @@ function render(){
   if(G.phase==='recap'){app.innerHTML=topHTML()+recapHTML();return}
   if(G.phase==='recap2'){app.innerHTML=topHTML()+recap2HTML();return}
   if(G.phase==='draft'){app.innerHTML=topHTML(true)+draftHTML();return}
-  app.innerHTML=topHTML()+bodyHTML();
+  app.innerHTML=topHTML()+hoistTop(bodyHTML());
   if(G.phase==='end')startConfetti();
   const fn=document.querySelector('[data-focus]');
+}
+function hoistTop(h){
+  const tops=[];h=h.replace(/<!--TOP-->([\s\S]*?)<!--\/TOP-->/g,(m,x)=>{tops.push(x);return ''});
+  if(!tops.length)return h.replace('<!--BEND-->','');
+  return h.includes('<!--BEND-->')?h.replace('<!--BEND-->',tops.join('')):tops.join('')+h;
 }
 function topHTML(bare){
   if(bare)return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>`;
@@ -478,7 +483,7 @@ function titleHTML(){
 }
 function bannerHTML(s,photoIdx,extra){
   const S=SESS[s],C=COURSE[S.course];
-  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${s===5?'In the real thing, captains were selected and then they drafted. For the game, you get to assign all players to a team.':C.note}${extra?'<br>'+extra:''}</div></div></div>`;
+  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${s===5?'In the real thing, captains were selected and then they drafted. For the game, you get to assign all players to a team.':C.note}${extra?'<br>'+extra:''}</div></div></div><!--BEND-->`;
 }
 function holesHTML(s,cur){
   const S=SESS[s];
@@ -526,7 +531,7 @@ function setupControls(s,prs){
     const cnt=pi=>G.lineup[s][pi].filter(m=>m.a.every(Boolean)&&m.b.every(Boolean)).length;
     const pf=two&&cnt(0)===G.lineup[s][0].length;
     const status=two?prs.map((pr,pi)=>`<span class="tag ${cnt(pi)===G.lineup[s][pi].length?'adv':'out'}" style="${cnt(pi)===G.lineup[s][pi].length?'':'background:#3b4a2e;color:#ecddb4'}">${TEAM[pr.a].n} vs ${TEAM[pr.b].n}: ${cnt(pi)}/${G.lineup[s][pi].length} matches ready</span>`).join(' '):'';
-    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button></div>`;
+    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}${two&&st===0?'':`<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button>`}</div>`;
     h+=storyBook(s);
   return h;
 }
@@ -547,7 +552,7 @@ function boardPhase(s){
     html+=pairTitle(pr,pts)+`<div class="board" style="--ca:${TEAM[pr.a].c};--cb:${TEAM[pr.b].c}">`+ms.map((m,mi)=>rowHTML(s,pi,mi,m,mode,G.res[s]?G.res[s][pi][mi]:null,t)).join('')+`</div>`;
   });
   if(mode==='sim'){
-    html+=`<div class="bar"><span class="hint grow">On the course…</span><button class="btn ghost" data-act="skip">Skip</button></div>`;
+    html+=`<!--TOP--><div class="bar"><span class="hint grow">On the course…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
   } else if(mode==='result'){
     html+=resultPanel(s);
   }
@@ -573,7 +578,8 @@ function resultPanel(s){
   const S=SESS[s],prs=pairingsFor(s);
   const mine=G.summary[s]||{items:[],notes:[]};
   const by=k=>mine.items.filter(i=>i.k===k).reduce((a,i)=>a+i.pts,0);
-  let html=`<div class="cols" style="margin-top:16px"><div class="panel"><h2 style="color:var(--cream);font-size:34px;margin-bottom:6px">Session ${s} results</h2>`;
+  const bar=`<div class="bar"><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="next">${({1:'CONTINUE TO SESSION 2',2:'DAY 1 RECAP',3:'CONTINUE TO SINGLES',4:'DAY 2 RECAP',5:'CONTINUE TO THE SEMIFINAL',6:'CONTINUE TO THE FINAL',7:'SEE FINAL SCORE'})[s]}</button></div>`;
+  let html=`<!--TOP-->${bar}<div class="cols" style="margin-top:16px"><div class="panel"><h2 style="color:var(--cream);font-size:34px;margin-bottom:6px">Session ${s} results</h2>`;
   mine.notes.forEach(n=>html+=`<p style="margin:6px 0;font-size:20px">${n}</p>`);
   html+=`<table><tr><th>EVPs</th><th class="r">Earned</th></tr>
     <tr><td>Close matches (${mine.items.filter(i=>i.k==='close').length})</td><td class="r num">${by('close')}</td></tr>
@@ -582,8 +588,8 @@ function resultPanel(s){
     <tr><td>Popularity</td><td class="r num">${by('pop')}</td></tr>
     <tr><th>Session total</th><th class="r num gold">${mine.items.reduce((a,i)=>a+i.pts,0)}</th></tr></table>`;
   html+=`<div class="hint" style="margin-top:8px">Real tournament, same session: ${REAL.filter(i=>i.s===s).reduce((a,i)=>a+i.pts,0)}</div></div></div>`;
-  html+=`<div class="bar"><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="next">${({1:'CONTINUE TO SESSION 2',2:'DAY 1 RECAP',3:'CONTINUE TO SINGLES',4:'DAY 2 RECAP',5:'CONTINUE TO THE SEMIFINAL',6:'CONTINUE TO THE FINAL',7:'SEE FINAL SCORE'})[s]}</button></div>`;
-  return html;
+
+  return html+'<!--/TOP-->';
 }
 </script>
 <script>
@@ -621,7 +627,7 @@ function cutPhase(){
     const cls=done&&G.cut.eliminated===ti?'out':safe.has(ti)?'safe':'';
     return tcolHTML(5,ti,tm.ids,{cls,extra:`<div style="padding:0 10px 10px">${lines}${done&&G.cut.eliminated===ti?'<div class="delta bo">ELIMINATED</div>':''}</div>`});
   }).join('')}</div>`;
-  if(mode==='sim') html+=`<div class="bar"><span class="hint grow">Hole ${Math.min(t+1,ev.length)} of the playoff…</span><button class="btn ghost" data-act="skip">Skip</button></div>`;
+  if(mode==='sim') html+=`<!--TOP--><div class="bar"><span class="hint grow">Hole ${Math.min(t+1,ev.length)} of the playoff…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
   else html+=resultPanel(5);
   return html;
 }
@@ -643,7 +649,7 @@ function semiPhase(){
     const adv=t>=9&&sm.advance.includes(i);
     return `<tr><td><b>${tm.name}</b> ${adv?'<span class="tag" style="background:var(--good);color:#06301a">ADVANCES</span>':''}</td>${cells}<td class="r num gold"><b>${fmtDelta(tot)}</b></td></tr>`}).join('');
   html+=`<div class="panel" style="margin-top:12px;overflow-x:auto"><table><tr><th>Team</th>${S.labels.map(l=>`<th class="r">${l}</th>`).join('')}<th class="r">Total</th></tr>${rows}</table></div>`;
-  if(mode==='sim') html+=`<div class="bar"><span class="hint grow">Hole ${Math.min(t+1,9)}…</span><button class="btn ghost" data-act="skip">Skip</button></div>`;
+  if(mode==='sim') html+=`<!--TOP--><div class="bar"><span class="hint grow">Hole ${Math.min(t+1,9)}…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
   else{
     html+=`<div class="tcols" style="margin-top:12px">${sm.teams.map((tm,i)=>tcolHTML(6,i,tm.ids,{cls:sm.advance.includes(i)?'safe':'out'})).join('')}</div>`+resultPanel(6);
   }
@@ -670,9 +676,9 @@ function finalPhase(){
   if(mode==='sim'){
     if(t>=r.played+(r.x?1:0)) status=`${r.w==='a'?teams[0].name:teams[1].name} wins ${r.m}`;
     else{const lead=r.trace[Math.min(t,r.trace.length)-1]||0;status=t<1?'Teeing off…':`${lead===0?'All square':(lead>0?teams[0].name:teams[1].name)+' '+Math.abs(lead)+' UP'} thru ${Math.min(t,18)}`}
-    html+=`<div class="panel" style="margin-top:12px;text-align:center"><div class="status" style="font-size:34px">${status}</div></div><div class="bar"><span class="grow"></span><button class="btn ghost" data-act="skip">Skip</button></div>`;
+    html+=`<!--TOP--><div class="panel" style="margin-top:12px;text-align:center"><div class="status" style="font-size:34px">${status}</div></div><div class="bar"><span class="grow"></span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
   } else {
-    html+=`<div class="panel" style="margin-top:12px;text-align:center"><div class="chip-cream">Champions</div><div class="prize" style="margin:10px 0">${r.w==='a'?teams[0].name:teams[1].name}</div><div class="status" style="font-size:30px">won ${r.m}</div><div class="hint" style="margin-top:6px">$1.3M each to ${(r.w==='a'?A:B).map(i=>P[i].name).join(', ')}</div></div>`+resultPanel(7);
+    html+=`<!--TOP--><div class="panel" style="margin-top:12px;text-align:center"><div class="chip-cream">Champions</div><div class="prize" style="margin:10px 0">${r.w==='a'?teams[0].name:teams[1].name}</div><div class="status" style="font-size:30px">won ${r.m}</div><div class="hint" style="margin-top:6px">$1.3M each to ${(r.w==='a'?A:B).map(i=>P[i].name).join(', ')}</div></div><!--/TOP-->`+resultPanel(7);
   }
   return html;
 }
