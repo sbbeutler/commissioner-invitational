@@ -35,12 +35,12 @@ img{max-width:100%;display:block}
 .brand{font-family:var(--display);font-size:30px;letter-spacing:.05em;color:var(--cream)}
 .brand small{display:block;font-family:var(--body);font-size:14px;letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
 .steps{display:flex;gap:6px;flex-wrap:wrap}
-.step{font-family:var(--display);font-size:20px;min-width:38px;height:36px;border-radius:8px;display:grid;place-items:center;background:var(--panel);border:2px solid var(--line);color:var(--mute)}
+.step{padding-top:.1em;box-sizing:border-box;font-family:var(--display);font-size:20px;min-width:38px;height:36px;border-radius:8px;display:grid;place-items:center;background:var(--panel);border:2px solid var(--line);color:var(--mute)}
 .step.on{background:var(--cream);color:var(--cream-ink);border-color:var(--cream)}
 .step.done{background:var(--panel2);color:var(--ink);border-color:var(--good)}
 .scorebox{display:flex;gap:8px;align-items:stretch}
 .sc{background:var(--cream);color:var(--cream-ink);border-radius:10px;padding:6px 12px;text-align:center;min-width:92px}
-.sc b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1}
+.sc b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1;position:relative;top:5px;margin-bottom:3px}
 .sc span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
 .sc.real{background:var(--panel2);color:var(--ink);border:2px solid var(--line)}
 
@@ -51,7 +51,7 @@ img{max-width:100%;display:block}
 .bin{position:relative;z-index:1;padding:18px 20px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:flex-end;justify-content:space-between;width:100%}
 .bkick{font-size:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)}
 .bin h1{font-size:clamp(34px,6vw,60px);text-shadow:0 2px 12px rgba(0,0,0,.5)}
-.chip-cream{display:inline-block;background:var(--cream);color:var(--cream-ink);font-family:var(--display);font-size:22px;letter-spacing:.04em;padding:5px 14px;border-radius:8px}
+.chip-cream{display:inline-block;padding-top:calc(5px + .05em) !important;padding-bottom:calc(5px - .05em) !important;background:var(--cream);color:var(--cream-ink);font-family:var(--display);font-size:22px;letter-spacing:.04em;padding:5px 14px;border-radius:8px}
 .bnote{max-width:46ch;color:#e5efe7;font-size:17px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
 
 /* panels */
@@ -96,9 +96,9 @@ img{max-width:100%;display:block}
 
 /* controls */
 .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
-.btn{background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:8px 16px;font-family:var(--display);font-size:22px;letter-spacing:.05em}
+.btn{--py:8px;--px:16px;background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:calc(var(--py) + .05em) var(--px) calc(var(--py) - .05em);font-family:var(--display);font-size:22px;letter-spacing:.05em;line-height:1.1;display:inline-flex;align-items:center;justify-content:center;text-align:center}
 .btn:hover{border-color:var(--cream)}
-.btn.main{background:var(--gold);color:#2b1a00;border-color:#ffd48a;font-size:28px;padding:10px 26px}
+.btn.main{background:var(--gold);color:#2b1a00;border-color:#ffd48a;font-size:28px;--py:10px;--px:26px}
 .btn.main:disabled{opacity:.4;cursor:not-allowed}
 .btn.ghost{background:transparent}
 .grow{flex:1}
@@ -174,10 +174,10 @@ td.r,th.r{text-align:right}
 .choice .panel{display:flex;flex-direction:column;gap:10px}
 .choice h3{font-size:30px;color:var(--cream)}
 @media(max-width:560px){.clock{position:static}}
-.infob{align-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);background:transparent;color:var(--cream);font-family:var(--display);font-size:22px;line-height:1;padding:0}
+.infob{padding-top:.1em !important;align-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);background:transparent;color:var(--cream);font-family:var(--display);font-size:22px;line-height:1;padding:0}
 .infob:hover{background:var(--cream);color:var(--cream-ink)}
 .how h3{font-size:26px;color:var(--cream);margin:14px 0 4px}.how p,.how li{font-size:17px;line-height:1.4}.how ul{padding-left:20px;margin:4px 0}.how table{width:100%;border-collapse:collapse;margin-top:6px}.how td,.how th{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:16px}.how td.r,.how th.r{text-align:right}
-@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:18px 14px 12px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;padding:8px 14px !important}.hero h1{font-size:30px}}
+@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:18px 14px 12px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;--py:8px !important;--px:14px !important}.hero h1{font-size:30px}}
 .flow h3{font-size:26px;color:var(--cream);margin-bottom:8px}
 .steps4{list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
 .steps4 li{display:flex;gap:12px;align-items:center;background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:12px;padding:10px 12px}
@@ -202,7 +202,8 @@ body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
 .rcap{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));margin-top:14px}
 .rcap .panel h3{font-size:26px;color:var(--cream);margin-bottom:6px}
 .tag{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;padding:1px 10px;border-radius:6px}
-.tag.adv{background:var(--good);color:#06301a}.tag.out{background:#c9ccd1;color:#2b3036}
+.tag.adv{background:var(--good);color:#06301a}
+button.tag{cursor:pointer;padding-top:calc(1px + .05em);padding-bottom:calc(1px - .05em)}button.tag:hover{filter:brightness(1.25)}button.tag.story{color:#fff}button.tag.close{color:#ffe4a6}.tag.out{background:#c9ccd1;color:#2b3036}
 .tcol.out .dc{opacity:.75}.tcol.out .pc{filter:grayscale(.7)}
 .vsline{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--display);font-size:34px;line-height:1.1}
 .vsline .sc2{font-size:48px}
@@ -323,7 +324,7 @@ const hitMult=(h,s)=>h.trash?TRASHM[s]:storyMult(s);
 function matchPts(s,res,aIds,bIds){
   const items=[];
   if(isClose(res)) items.push({k:'close',pts:1,txt:res.w==='tie'?'Match tied':res.x?'Went to extra holes':'Decided on the last hole'});
-  for(const h of storyHits([...aIds,...bIds],[aIds,bIds])) items.push({k:'story',pts:h.pts*hitMult(h,s),txt:h.txt+' ('+h.why+')'});
+  for(const h of storyHits([...aIds,...bIds],[aIds,bIds])) items.push({k:'story',pts:h.pts*hitMult(h,s),txt:h.txt+' ('+h.why+')',nm:h.txt,why:h.why,trash:!!h.trash,base:h.pts,s});
   return items;
 }
 const tierSum=ids=>ids.reduce((a,i)=>a+P[i].tier,0);
@@ -386,6 +387,7 @@ function oddsHTML(o,ca,cb){
   const pa=Math.round(o.a*100),pb=Math.round(o.b*100),pt=100-pa-pb;
   return `<div class="odds"><div class="obar"><i style="width:${o.a*100}%;background:${ca}"></i><i style="width:${o.t*100}%;background:#e9e3cc"></i><i style="width:${o.b*100}%;background:${cb}"></i></div><div class="otxt num"><span>${pa}%</span><span>tie ${pt}%</span><span>${pb}%</span></div></div>`;
 }
+function evpTag(info){window.__evp=window.__evp||[];const i=window.__evp.push(info)-1;return `<button class="tag ${info.kind==='close'?'close':'story'}" data-act="evp" data-e="${i}" aria-label="Why this earns EVPs">EVP +${info.pts}</button>`}
 function chipHTML(res,ca,cb){
   if(res.w==='tie') return `<div class="chip T">${res.m==='Halved'?'A/S':res.m}</div>`;
   return `<div class="chip ${res.w==='a'?'L':'R'}">${res.m}</div>`;
@@ -441,6 +443,7 @@ function startConfetti(){
 }
 /* ---------- render ---------- */
 function render(){
+  window.__evp=[];
   saveGame();
   const app=document.getElementById('app');
   if(window.__page){app.innerHTML=pageHTML(window.__page);return}
@@ -501,7 +504,7 @@ function rowHTML(s,pi,mi,m,mode,res,t){
   let mid='';
   if(mode==='setup'){
     if(full){const o=dist(probsFor(s,m.a,m.b));mid=`<span class="vsb">VS</span>${oddsHTML(o,ca,cb)}`;
-      const sh=storyHits([...m.a,...m.b],[m.a,m.b]);if(sh.length)mid+=`<div class="tags">${sh.map(h=>`<span class="tag story">EVP +${h.pts*hitMult(h,s)}</span>`).join('')}</div>`}
+      const sh=storyHits([...m.a,...m.b],[m.a,m.b]);if(sh.length)mid+=`<div class="tags">${sh.map(h=>`${evpTag({kind:'story',nm:h.txt,why:h.why,trash:!!h.trash,base:h.pts,pts:h.pts*hitMult(h,s),s})}`).join('')}</div>`}
     else mid=`<span class="vsb">VS</span><span class="hint">Pick all players</span>`;
   } else if(mode==='sim'){
     const r=res;
@@ -510,12 +513,22 @@ function rowHTML(s,pi,mi,m,mode,res,t){
       mid=t<1?`<span class="vsb">VS</span>`:`<div class="status">${lead===0?'A/S':Math.abs(lead)+' UP'} thru ${t}</div><div class="hint" style="margin:-4px 0 0">${lead===0?'':lead>0?'◀ '+TEAM[pr.a].n:TEAM[pr.b].n+' ▶'}</div>`}
   } else {
     mid=chipHTML(res);const items=matchPts(s,res,m.a,m.b);
-    const tg=[];if(isClose(res))tg.push(`<span class="tag close">EVP +1</span>`);
-    items.filter(i=>i.k==='story').forEach(i=>tg.push(`<span class="tag story">EVP +${i.pts}</span>`));
+    const tg=[];if(isClose(res)){const ci=items.find(i=>i.k==='close');tg.push(evpTag({kind:'close',pts:1,txt:ci?ci.txt:'Close match'}))}
+    items.filter(i=>i.k==='story').forEach(i=>tg.push(evpTag({kind:'story',nm:i.nm,why:i.why,trash:i.trash,base:i.base,pts:i.pts,s})));
     if(tg.length)mid+=`<div class="tags">${tg.join('')}</div>`;
   }
   const close=mode!=='setup'&&res&&isClose(res)?'close':'';
   return `<div class="mrow ${close}" style="--ca:${ca};--cb:${cb}"><div class="side">${slots('a',m.a)}</div><div class="mid">${mid}</div><div class="side">${slots('b',m.b)}</div></div>`;
+}
+function setupControls(s,prs){
+  let h='';
+    const full=boardFull(s),st=G.stage||0,two=s<=2;
+    const cnt=pi=>G.lineup[s][pi].filter(m=>m.a.every(Boolean)&&m.b.every(Boolean)).length;
+    const pf=two&&cnt(0)===G.lineup[s][0].length;
+    const status=two?prs.map((pr,pi)=>`<span class="tag ${cnt(pi)===G.lineup[s][pi].length?'adv':'out'}" style="${cnt(pi)===G.lineup[s][pi].length?'':'background:#3b4a2e;color:#ecddb4'}">${TEAM[pr.a].n} vs ${TEAM[pr.b].n}: ${cnt(pi)}/${G.lineup[s][pi].length} matches ready</span>`).join(' '):'';
+    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button></div>`;
+    h+=storyBook(s);
+  return h;
 }
 function boardPhase(s){
   const S=SESS[s],prs=pairingsFor(s);ensureLineup(s);
@@ -523,8 +536,8 @@ function boardPhase(s){
   const t=G.anim?G.anim.t:0;
   let html=bannerHTML(s,mode==='setup'?0:mode==='sim'?1:2);
   if(mode==='setup'){
-    if(s<=2){const st=G.stage||0,pr=prs[st];html+=`<div style="margin:16px 0"><span class="chip-cream">Step ${st+1} of 2 · ${TEAM[pr.a].n} vs ${TEAM[pr.b].n}</span><div class="hint" style="margin-top:8px">${setupHint(s)}</div></div>`+trayHTML(s)}
-    else html+=`<div class="bar"><div class="hint grow">${setupHint(s)}</div></div>`+trayHTML(s);
+    if(s<=2){const st=G.stage||0,pr=prs[st];html+=`<div style="margin:16px 0"><span class="chip-cream">Step ${st+1} of 2 · ${TEAM[pr.a].n} vs ${TEAM[pr.b].n}</span><div class="hint" style="margin-top:8px">${setupHint(s)}</div></div>`+setupControls(s,prs)+trayHTML(s)}
+    else html+=`<div class="bar"><div class="hint grow">${setupHint(s)}</div></div>`+setupControls(s,prs)+trayHTML(s);
   }
   prs.forEach((pr,pi)=>{
     if(mode==='setup'&&s<=2&&pi!==(G.stage||0))return;
@@ -533,14 +546,7 @@ function boardPhase(s){
     if(mode!=='setup'&&G.res[s]){let a=0,b=0;G.res[s][pi].forEach((r,mi)=>{if(mode==='sim'&&t<r.played)return;if(r.w==='a')a++;else if(r.w==='b')b++;else{a+=.5;b+=.5}});pts=[a,b]}
     html+=pairTitle(pr,pts)+`<div class="board" style="--ca:${TEAM[pr.a].c};--cb:${TEAM[pr.b].c}">`+ms.map((m,mi)=>rowHTML(s,pi,mi,m,mode,G.res[s]?G.res[s][pi][mi]:null,t)).join('')+`</div>`;
   });
-  if(mode==='setup'){
-    const full=boardFull(s),st=G.stage||0,two=s<=2;
-    const cnt=pi=>G.lineup[s][pi].filter(m=>m.a.every(Boolean)&&m.b.every(Boolean)).length;
-    const pf=two&&cnt(0)===G.lineup[s][0].length;
-    const status=two?prs.map((pr,pi)=>`<span class="tag ${cnt(pi)===G.lineup[s][pi].length?'adv':'out'}" style="${cnt(pi)===G.lineup[s][pi].length?'':'background:#3b4a2e;color:#ecddb4'}">${TEAM[pr.a].n} vs ${TEAM[pr.b].n}: ${cnt(pi)}/${G.lineup[s][pi].length} matches ready</span>`).join(' '):'';
-    html+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button></div>`;
-    html+=storyBook(s);
-  } else if(mode==='sim'){
+  if(mode==='sim'){
     html+=`<div class="bar"><span class="hint grow">On the course…</span><button class="btn ghost" data-act="skip">Skip</button></div>`;
   } else {
     html+=resultPanel(s);
@@ -885,6 +891,7 @@ document.addEventListener('click',e=>{
   else if(a==='hcpdone'){G.phase='draft';render();window.scrollTo(0,0)}
   else if(a==='hbetter'||a==='hworse'){const pl=P[el.dataset.id];setBase(pl.id,baseH(pl)+(a==='hbetter'?-.5:.5));const y=window.scrollY;render();window.scrollTo(0,y)}
   else if(a==='hreset'){resetHcps();G.hcpEdits={};const y=window.scrollY;render();window.scrollTo(0,y)}
+  else if(a==='evp'){evpModal((window.__evp||[])[+el.dataset.e])}
   else if(a==='tstart'){G.phase='setup';ensureLineup(1);render();window.scrollTo(0,0)}
   else if(a==='tback'){G.phase='draft';render();window.scrollTo(0,0)}
   else if(a==='home'){newGame();G.phase='title';render();window.scrollTo(0,0)}
@@ -939,6 +946,20 @@ window.__G=()=>G;window.__dbg={decide,autoLineup,nextSession,REAL,D,dist,probsFo
 </script>
 
 <script>
+
+/* ---------- EVP explanation pop-up ---------- */
+function evpModal(i){
+  if(!i)return;
+  let title,body;
+  if(i.kind==='close'){title='Close match';body=`<p>${i.txt}. Nail-biters keep viewers watching, so every match that ends tied or on the last hole earns <b>1 EVP</b>.</p>`}
+  else{
+    const mult=i.trash?TRASHM[i.s]:storyMult(i.s);
+    title=i.nm;
+    const why=i.why.charAt(0).toUpperCase()+i.why.slice(1);
+    body=`<p style="font-size:20px"><b>${why}.</b></p>`+(i.trash?`<p>Both are known for talking trash, and putting them in the same match, together or against each other, makes for good TV. Trash-talk EVPs grow as the tournament goes on.</p>`:`<p>Putting them in the same match, on the same side or against each other, plays up the storyline for viewers.</p>`)+`<p>Worth <b>${i.base} EVP${i.base>1?'s':''}</b>${mult>1?` \u00d7 ${mult} for session ${i.s}`:''}${mult>1?` = <b>${i.pts} EVPs</b>`:''}.</p>`;
+  }
+  modal(`<div class="how"><h2>EVP +${i.pts}</h2><h3 style="margin-top:0">${title}</h3>${body}<div class="bar"><span class="grow"></span><button class="btn main" data-act="closem">GOT IT</button></div></div>`);
+}
 
 /* ---------- adjust handicaps page ---------- */
 const HSRC='https://handicap-tracker.com/articles/internet-invitational-2026-handicaps';
