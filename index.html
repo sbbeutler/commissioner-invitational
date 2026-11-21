@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMFK1TZ7YV"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-RMFK1TZ7YV");</script>
 <title>The Commissioner Invitational</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -442,8 +444,10 @@ function startConfetti(){
   requestAnimationFrame(frame);
 }
 /* ---------- render ---------- */
+function track(n,p){try{if(window.gtag)window.gtag('event',n,p||{})}catch(e){}}
 function render(){
   window.__evp=[];
+  try{const k=window.__page?'page:'+window.__page:(G?G.phase+':'+G.s:'title');if(k!==window.__lk){window.__lk=k;const ph=window.__page?'page_'+window.__page:(G?G.phase:'title');track(ph==='end'?'tournament_complete':'screen_view_game',{phase:ph,session:G?G.s:0})}}catch(e){}
   saveGame();
   const app=document.getElementById('app');
   if(window.__page){app.innerHTML=pageHTML(window.__page);return}
@@ -479,7 +483,7 @@ function titleHTML(){
    <div class="panel"><h3>Day 2 · Buffalo Ridge</h3><p>The two winning teams meet in a scramble and singles. The winner stays. Then 16 players split into four teams of 4 and one team is cut.</p></div>
    <div class="panel"><h3>Day 3 · Payne's Valley</h3><p>12 players form four teams of 3. The top two teams play a 3v3 match-play final. <span class="gold">$1.3M each</span> for the winners.</p></div>
    <div class="panel"><h3>How you score</h3><p>Matches that end tied or on the last hole. Teams decided by 2 points or fewer. Rivalries and friends in the same match. Popular players who last into sessions 5 to 7.</p></div>
-  </div><div class="panel" style="margin:16px 0 8px;text-align:center"><p style="margin:0">Inquiries or feedback? Email <a href="mailto:tcigolfgame@gmail.com" style="color:var(--gold)">tcigolfgame@gmail.com</a></p></div></div>`;
+  </div><div class="panel" style="margin:16px 0 8px;text-align:center"><p style="margin:0">Inquiries or feedback? Email <a href="mailto:tcigolfgame@gmail.com" style="color:var(--gold)">tcigolfgame@gmail.com</a></p><p class="hint" style="margin:8px 0 0">This site uses Google Analytics to count visits. Your game is saved only in your own browser.</p></div></div>`;
 }
 function bannerHTML(s,photoIdx,extra){
   const S=SESS[s],C=COURSE[S.course];
