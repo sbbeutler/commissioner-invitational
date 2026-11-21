@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMFK1TZ7YV"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-RMFK1TZ7YV");</script>
+<title>The Commissioner Invitational</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@500;600;700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+/* Layout: a chalkboard broadcast graphic. Cream label chips, rounded player cards, team-color bars, arrow result chips. */
+:root{
+  --bg:#0e3324; --bg2:#0a2619; --panel:#14402e; --panel2:#195039; --line:#2c6a4b;
+  --cream:#ecddb4; --cream-ink:#14402b; --ink:#f3f0e4; --mute:#a9c4b3;
+  --blue:#6b9ad0; --white:#8b8e91; --red:#b81f1c; --green:#23704a;
+  --gold:#f2a52b; --good:#7fd6a0; --bad:#ff8b7e;
+  --display:"Bebas Neue","Arial Narrow",Impact,sans-serif; --body:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;font-weight:500;line-height:1.25;
+  padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-height:100vh;
+  background-image:radial-gradient(ellipse at 20% 0%,rgba(255,255,255,.05),transparent 55%),radial-gradient(ellipse at 90% 100%,rgba(0,0,0,.25),transparent 55%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .07 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,summary:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:.03em;margin:0;line-height:1}
+.wrap{max-width:1240px;margin:0 auto;padding-block:14px 60px}
+img{max-width:100%;display:block}
+.num{font-variant-numeric:tabular-nums}
+
+/* top bar */
+.top{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:10px 0 14px}
+.brand{font-family:var(--display);font-size:30px;letter-spacing:.05em;color:var(--cream)}
+.brand small{display:block;font-family:var(--body);font-size:14px;letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.step{padding-top:.1em;box-sizing:border-box;font-family:var(--display);font-size:20px;min-width:38px;height:36px;border-radius:8px;display:grid;place-items:center;background:var(--panel);border:2px solid var(--line);color:var(--mute)}
+.step.on{background:var(--cream);color:var(--cream-ink);border-color:var(--cream)}
+.step.done{background:var(--panel2);color:var(--ink);border-color:var(--good)}
+.scorebox{display:flex;gap:8px;align-items:stretch}
+.sc{background:var(--cream);color:var(--cream-ink);border-radius:10px;padding:6px 12px;text-align:center;min-width:92px}
+.sc b{display:block;font-family:var(--display);font-weight:400;font-size:34px;line-height:1;position:relative;top:5px;margin-bottom:3px}
+.sc span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+.sc.real{background:var(--panel2);color:var(--ink);border:2px solid var(--line)}
+
+/* banner */
+.banner{position:relative;border-radius:16px;overflow:hidden;min-height:190px;display:flex;align-items:flex-end;border:2px solid var(--line);background:var(--panel)}
+.banner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,30,20,.1) 0%,rgba(8,30,20,.88) 100%)}
+.bin{position:relative;z-index:1;padding:18px 20px;display:flex;flex-wrap:wrap;gap:8px 20px;align-items:flex-end;justify-content:space-between;width:100%}
+.bkick{font-size:20px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)}
+.bin h1{font-size:clamp(34px,6vw,60px);text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.chip-cream{display:inline-block;padding-top:calc(5px + .05em) !important;padding-bottom:calc(5px - .05em) !important;background:var(--cream);color:var(--cream-ink);font-family:var(--display);font-size:22px;letter-spacing:.04em;padding:5px 14px;border-radius:8px}
+.bnote{max-width:46ch;color:#e5efe7;font-size:17px;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+
+/* panels */
+.panel{background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px 16px}
+.cols{display:grid;gap:14px;grid-template-columns:minmax(0,1fr)}
+.pairhead{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;border:2px solid #f1efe6;margin:18px 0 10px}
+.pairhead>div{padding:calc(8px + .1em) 16px calc(8px - .1em);font-family:var(--display);font-size:34px;flex:1;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pairhead .vs{flex:0 0 auto;background:var(--bg2);font-size:26px;color:var(--cream)}
+.pairhead .ta{background:var(--ca)}.pairhead .tb{background:var(--cb);flex-direction:row-reverse}
+.pairhead .pts{font-size:40px}
+.board{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,470px),1fr));--ca:var(--blue);--cb:var(--white)}
+.mrow{background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:14px;padding:10px;display:grid;grid-template-columns:auto minmax(112px,1fr) auto;gap:8px;align-items:center;position:relative}
+.mrow.close{border-color:var(--gold)}
+.side{display:flex;gap:8px}
+.mid{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;min-width:0}
+.vsb{font-family:var(--display);font-size:26px;background:var(--bg2);border:2px solid #f1efe6;border-radius:8px;padding:calc(2px + .08em) 12px calc(2px - .08em);color:var(--ink)}
+.slot{position:relative;width:76px;aspect-ratio:733/1197;border-radius:10px;border:2px dashed var(--line);background:rgba(255,255,255,.04);display:grid;place-items:center;padding:0;color:var(--mute);font-family:var(--display);font-size:34px}
+.slot:hover{border-color:var(--cream)}
+.pc{position:relative;width:76px;aspect-ratio:733/1197;border-radius:10px;overflow:hidden;border:2px solid #f1efe6;box-shadow:0 3px 8px rgba(0,0,0,.35);background:#fff}
+.pc.big{width:92px}
+.pc img{width:100%;height:100%;object-fit:cover}
+.slot.filled{border:0;background:none;padding:0;display:block}
+.hb{position:absolute;top:3px;left:3px;background:rgba(10,38,25,.92);color:#fff;font-size:13px;font-weight:700;padding:0 5px;border-radius:5px;line-height:17px;border:1px solid rgba(255,255,255,.4)}
+.hb.plus{color:var(--good)}
+.rk{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);background:var(--gold);color:#2b1a00;font-family:var(--display);font-size:18px;padding:0 8px;border-radius:6px;line-height:20px}
+.odds{width:100%;max-width:190px}
+.obar{display:flex;height:9px;border-radius:5px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.25)}
+.obar i{display:block;height:100%}
+.otxt{display:flex;justify-content:space-between;font-size:14px;color:var(--mute);margin-top:2px}
+.tags{display:flex;gap:4px;flex-wrap:wrap;justify-content:center}
+.tag{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:6px;padding:1px 7px;background:var(--panel2);border:1px solid var(--line);color:var(--ink)}
+.tag.story{background:#4a2f6b;border-color:#8a63b8}
+.tag.close{background:#5b4510;border-color:var(--gold);color:#ffe4a6}
+.tag.warn{background:#5b2020;border-color:#c45a4a}
+.status{font-family:var(--display);font-size:24px;color:var(--cream)}
+/* arrow chips */
+.chip{font-family:var(--display);font-size:28px;line-height:1;color:#fff;padding:8px 22px;min-width:92px;text-align:center;position:relative}
+.chip.L{background:var(--ca);clip-path:polygon(22% 0,100% 0,100% 100%,22% 100%,0 50%);padding-left:30px}
+.chip.R{background:var(--cb);clip-path:polygon(0 0,78% 0,100% 50%,78% 100%,0 100%);padding-right:30px}
+.chip.T{background:var(--bg2);border:2px solid #f1efe6;border-radius:8px;padding:6px 16px}
+.chip.gray{color:#fff}
+
+/* controls */
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.btn{--py:8px;--px:16px;background:var(--panel2);border:2px solid var(--line);border-radius:10px;padding:calc(var(--py) + .05em) var(--px) calc(var(--py) - .05em);font-family:var(--display);font-size:22px;letter-spacing:.05em;line-height:1.1;display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.btn:hover{border-color:var(--cream)}
+.btn.main{background:var(--gold);color:#2b1a00;border-color:#ffd48a;font-size:28px;--py:10px;--px:26px}
+.btn.main:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent}
+.grow{flex:1}
+.hint{color:var(--mute);font-size:16px}
+.holes{display:flex;gap:6px;flex-wrap:wrap}
+.hole{background:var(--bg2);border:2px solid var(--line);border-radius:8px;min-width:46px;padding:3px 6px;text-align:center;font-size:14px;color:var(--mute)}
+.hole b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink);line-height:1}
+.hole.on{border-color:var(--gold)}.hole.on b{color:var(--gold)}.hole.past{opacity:.55}
+details{margin-top:8px}summary{cursor:pointer;font-family:var(--display);font-size:22px;color:var(--cream)}
+.ul{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:4px;font-size:17px}
+.ul li{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.ul .p{font-family:var(--display);color:var(--gold);font-size:20px;min-width:34px}
+table{border-collapse:collapse;width:100%;font-size:17px}
+th,td{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left}
+th{font-family:var(--display);font-weight:400;letter-spacing:.05em;font-size:19px;color:var(--cream)}
+td.r,th.r{text-align:right}
+.good{color:var(--good)}.bad{color:var(--bad)}.gold{color:var(--gold)}.mute{color:var(--mute)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(4,16,10,.8);z-index:50;display:grid;place-items:center;padding:16px}
+.mbox{background:var(--panel);border:2px solid var(--cream);border-radius:16px;max-width:760px;width:100%;max-height:88vh;max-height:88dvh;overflow:auto;padding:16px;-webkit-overflow-scrolling:touch}
+.mtop{position:sticky;top:0;height:0;z-index:3;text-align:right;overflow:visible}
+.mclose{padding:0 !important;width:40px;height:40px;font-size:22px;line-height:1;border-radius:50%;background:var(--cream) !important;color:var(--cream-ink) !important;border:0 !important;transform:translate(6px,-6px)}
+.mbox h2{padding-right:44px}
+@media(max-width:560px){.mbox .pairhead>div{font-size:19px;padding:calc(6px + .1em) 8px calc(6px - .1em);gap:4px}}
+.mbox h2{font-size:34px;color:var(--cream);margin-bottom:10px}
+.pgrid{display:flex;gap:10px;flex-wrap:wrap}
+.pbtn{background:none;border:0;padding:0;text-align:center}
+.pbtn:hover .pc{border-color:var(--gold)}
+.pnm{font-size:14px;color:var(--mute);margin-top:2px}
+
+/* team cols (sessions 5-7) */
+.tcols{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.tcol{background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:14px;overflow:hidden}
+.tcol h3{padding:8px 12px;font-size:28px;background:var(--cream);color:var(--cream-ink)}
+.tcol.out h3{background:#c9ccd1;color:#2b3036}.tcol.safe h3{background:var(--good);color:#06301a}
+.tslots{display:flex;gap:8px;padding:10px;flex-wrap:wrap}
+.tslot{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ord{display:flex;gap:4px}
+.ord button{background:var(--panel2);border:2px solid var(--line);border-radius:6px;width:30px;height:26px;line-height:1;padding:0}
+.delta{font-family:var(--display);font-size:22px;text-align:center;margin-top:2px}
+.delta.bi{color:var(--good)}.delta.bo{color:var(--bad)}
+
+/* hero */
+.hero{margin-top:10px}
+.hero .banner{min-height:min(62vh,520px)}
+.hero h1{font-size:clamp(46px,9vw,110px);line-height:.92}
+.hero .bin{padding-top:26px}
+.rules{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));margin-top:14px}
+.rules .panel h3{font-size:26px;color:var(--cream);margin-bottom:4px}
+.rules p{margin:0;font-size:17px;color:#dfe9e2}
+.prize{font-family:var(--display);font-size:64px;color:var(--gold);line-height:1}
+@media (max-width:560px){.slot,.pc{width:56px}.pc.big{width:72px}.mrow{grid-template-columns:auto minmax(64px,1fr) auto}.odds{max-width:96px}.hb{font-size:11px;line-height:14px}.chip{font-size:22px;min-width:76px}.brand{font-size:24px}.mrow{padding:8px;gap:6px}.sc b{font-size:28px}.pairhead>div{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px 6px;padding:10px}
+.hrow{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:6px 10px;border-top:1px solid var(--line)}
+.hrow img{width:44px;aspect-ratio:733/1197;object-fit:cover;object-position:top;border-radius:6px;border:1px solid #f1efe6;display:block;height:44px}
+.hrow .hn{font-weight:700;font-size:18px}.hrow .hn small{display:block;font-weight:500;color:var(--mute);font-size:13px}
+.hctl{display:flex;gap:6px;align-items:center}
+.hctl button{padding:6px 10px;font-size:16px;min-width:0}
+.hctl input{width:64px;text-align:center;font-size:20px;font-weight:700;padding:6px 4px;border-radius:8px;border:2px solid var(--line);background:rgba(8,30,20,.7);color:var(--ink)}
+.hrow.ed .hctl input{border-color:var(--gold)}
+@media(max-width:560px){.hrow{grid-template-columns:36px 1fr;gap:6px 10px}.hrow img{width:36px;height:36px}.hctl{grid-column:1/-1;justify-content:flex-end}}
+.dgrid .pc{width:100%}
+@media(max-width:560px){.dgrid{grid-template-columns:repeat(8,1fr);gap:4px 3px;padding:6px}.dgrid .pc{border-width:1px;border-radius:5px}.dgrid .hb{font-size:7px;line-height:9px;padding:0 1px;top:1px;left:1px;border-width:0}.dgrid .dc .pnm{display:none}}
+.dc{text-align:center;min-width:0}
+.dc .pnm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tcol h3 small{font-size:18px;float:right;opacity:.85;padding-top:6px}
+.clock{display:flex;flex-wrap:wrap;gap:10px;align-items:center;background:var(--panel);border:2px solid var(--cream);border-radius:14px;padding:10px 14px;margin:12px 0;position:sticky;top:0;z-index:5}
+.clock b{font-family:var(--display);font-size:30px;letter-spacing:.04em}
+.choice{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));margin-top:14px}
+.choice .panel{display:flex;flex-direction:column;gap:10px}
+.choice h3{font-size:30px;color:var(--cream)}
+@media(max-width:560px){.clock{position:static}}
+.infob{padding-top:.1em !important;align-self:center;width:34px;height:34px;border-radius:50%;border:2px solid var(--cream);background:transparent;color:var(--cream);font-family:var(--display);font-size:22px;line-height:1;padding:0}
+.infob:hover{background:var(--cream);color:var(--cream-ink)}
+.how h3{font-size:26px;color:var(--cream);margin:14px 0 4px}.how p,.how li{font-size:17px;line-height:1.4}.how ul{padding-left:20px;margin:4px 0}.how table{width:100%;border-collapse:collapse;margin-top:6px}.how td,.how th{padding:5px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:16px}.how td.r,.how th.r{text-align:right}
+@media(max-width:560px){.hero h1{font-size:34px}.brand{font-size:20px}.hero .banner{min-height:0}.hero .bin{padding:18px 14px 12px;gap:8px}.hero .bnote{font-size:15px;line-height:1.25}.hero .btn{font-size:20px !important;--py:8px !important;--px:14px !important}.hero h1{font-size:30px}}
+.flow h3{font-size:26px;color:var(--cream);margin-bottom:8px}
+.steps4{list-style:none;padding:0;margin:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr))}
+.steps4 li{display:flex;gap:12px;align-items:center;background:rgba(8,30,20,.45);border:2px solid var(--line);border-radius:12px;padding:10px 12px}
+.steps4 b{flex:none;width:38px;height:38px;border-radius:50%;background:var(--gold);color:#2b1a00;font-family:var(--display);font-weight:400;font-size:24px;display:grid;place-items:center}
+.steps4 span{font-size:17px;line-height:1.3}
+.tray{margin-top:10px}
+.tray h3{font-size:24px;color:var(--cream);margin-bottom:6px}
+.trayg{margin-bottom:8px}
+.trayg .lab{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;color:#fff;padding:2px 12px;border-radius:6px;margin-bottom:5px}
+.trayrow{display:flex;flex-wrap:wrap;gap:6px}
+.tcard{cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+@media (pointer:coarse){.tray{display:none}}
+.tcard .pc{width:52px;border-width:2px;pointer-events:none}
+.tcard.used{opacity:.3}
+.tcard .pc img,.slot .pc img{-webkit-user-drag:none;pointer-events:none}
+.slot.filled{cursor:grab}
+.slot.dropt{outline:3px solid var(--gold);outline-offset:2px}
+.slot.dropx{outline:3px solid #d9534f;outline-offset:2px}
+.dghost{position:fixed;z-index:99;pointer-events:none;width:64px;opacity:.92;transform:translate(-50%,-60%) rotate(-4deg);filter:drop-shadow(0 8px 10px rgba(0,0,0,.5))}
+.dghost .pc{width:64px}
+body.dragging,body.dragging *{cursor:grabbing!important;user-select:none}
+.rcap{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));margin-top:14px}
+.rcap .panel h3{font-size:26px;color:var(--cream);margin-bottom:6px}
+.tag{display:inline-block;font-family:var(--display);font-size:20px;letter-spacing:.05em;line-height:1.1;padding:calc(3px + .08em) 10px calc(3px - .08em);border-radius:6px}
+.tag.adv{background:var(--good);color:#06301a}
+button.tag{cursor:pointer}button.tag:hover{filter:brightness(1.25)}button.tag.story{color:#fff}button.tag.close{color:#ffe4a6}.tag.out{background:#c9ccd1;color:#2b3036}
+.tcol.out .dc{opacity:.75}.tcol.out .pc{filter:grayscale(.7)}
+.vsline{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--display);font-size:34px;line-height:1.1}
+.vsline .sc2{font-size:48px}
+.savb{align-self:center;font-size:18px;padding:6px 12px;white-space:nowrap}
+.savb:disabled{opacity:.5}
+.scorebox{flex-wrap:wrap;max-width:100%}
+@media(max-width:560px){.scorebox{width:100%}.scorebox .sc{flex:1}.savb{flex:1 1 100%;order:5}}
+.rrow{padding:10px 0;border-top:1px solid var(--line)}.rrow:first-of-type{border-top:0}
+.rh{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline}.rh b{font-family:var(--display);font-size:24px;color:var(--cream);font-weight:400;letter-spacing:.03em}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.rchip{font-size:14px;padding:2px 9px;border-radius:999px;border:1.5px solid var(--c);color:var(--c);background:rgba(8,30,20,.5)}
+.tcol h3{display:flex;justify-content:space-between;align-items:baseline;gap:4px 10px;flex-wrap:wrap}
+.tcol h3 small{float:none;padding-top:0;white-space:nowrap}
+.champ{margin-top:10px;text-align:center;background:linear-gradient(180deg,rgba(242,165,43,.22),rgba(8,30,20,.5));border-color:var(--gold)}
+.champrow{display:flex;justify-content:center;gap:clamp(10px,3vw,28px);margin:12px 0 6px;flex-wrap:wrap}
+.champc .pc{width:clamp(96px,22vw,150px);border-color:var(--gold);box-shadow:0 6px 18px rgba(0,0,0,.45)}
+</style>
+
+<div class="wrap" id="app"></div>
+<div id="modal"></div>
+
+<script>
+const D = {"players":[{"id":"frankie","name":"Frankie","full":"Frankie Borrelli","team":"blue","h":5.3,"est":false,"followers":889000,"img":"assets/cards/blue_frankie.webp","rank":29,"tier":1,"w":false},{"id":"francis","name":"Francis","full":"Francis Ellis","team":"blue","h":6.7,"est":false,"followers":205289,"img":"assets/cards/blue_francis.webp","rank":28,"tier":1,"w":false},{"id":"bubbie","name":"Bubbie","full":"Bubbie","team":"white","h":3.6,"est":false,"followers":2464000,"img":"assets/cards/white_bubbie.webp","rank":53,"tier":0,"w":false},{"id":"marissa","name":"Marissa","full":"Marissa Wenzler","team":"white","h":-2.5,"est":true,"followers":179000,"img":"assets/cards/white_marissa.webp","rank":26,"tier":1,"w":false},{"id":"roger","name":"Roger","full":"Roger Steele","team":"blue","h":-2.8,"est":true,"followers":265700,"img":"assets/cards/blue_roger.webp","rank":17,"tier":2,"w":false},{"id":"short_game","name":"Short Game King","full":"Short Game King","team":"blue","h":-0.2,"est":false,"followers":375845,"img":"assets/cards/blue_short_game.webp","rank":40,"tier":1,"w":false},{"id":"paige","name":"Paige","full":"Paige Spiranac","team":"white","h":-3.2,"est":false,"followers":7233605,"img":"assets/cards/white_paige.webp","rank":1,"tier":3,"w":false},{"id":"bobby","name":"Bobby","full":"Bobby Ray","team":"white","h":2.0,"est":true,"followers":5790,"img":"assets/cards/white_bobby.webp","rank":61,"tier":0,"w":false},{"id":"jerry","name":"Jerry","full":"Jersey Jerry","team":"blue","h":18.0,"est":true,"followers":10900,"img":"assets/cards/blue_jerry.webp","rank":45,"tier":0,"w":false},{"id":"trent","name":"Trent","full":"Trent Ryan","team":"blue","h":14.6,"est":false,"followers":683000,"img":"assets/cards/blue_trent.webp","rank":48,"tier":0,"w":false},{"id":"micah","name":"Micah","full":"Micah Morris","team":"white","h":-4.9,"est":false,"followers":546000,"img":"assets/cards/white_micah.webp","rank":35,"tier":1,"w":false},{"id":"whit","name":"Whit","full":"Ryan Whitney","team":"white","h":2.1,"est":true,"followers":2088091,"img":"assets/cards/white_whit.webp","rank":24,"tier":2,"w":false},{"id":"martin","name":"Martin","full":"Martin Borgmeier","team":"blue","h":-2.1,"est":false,"followers":212000,"img":"assets/cards/blue_martin.webp","rank":39,"tier":1,"w":false},{"id":"josh_kelley","name":"Josh K.","full":"Josh Kelley","team":"blue","h":-2.1,"est":false,"followers":149000,"img":"assets/cards/blue_josh.webp","rank":42,"tier":1,"w":false},{"id":"ruffels","name":"Ruffels","full":"Ryan Ruffels","team":"white","h":-6.9,"est":false,"followers":365000,"img":"assets/cards/white_ruffels.webp","rank":10,"tier":2,"w":false},{"id":"gaethje","name":"Gaethje","full":"Justin Gaethje","team":"white","h":7.1,"est":true,"followers":157000,"img":"assets/cards/white_gaethje.webp","rank":33,"tier":1,"w":false},{"id":"kwon","name":"Kwon","full":"Luke Kwon","team":"blue","h":-3.0,"est":false,"followers":850795,"img":"assets/cards/blue_kwon.webp","rank":21,"tier":2,"w":false},{"id":"jwill","name":"JWill","full":"Jason Williams","team":"blue","h":10.7,"est":true,"followers":299000,"img":"assets/cards/blue_jwill.webp","rank":44,"tier":1,"w":false},{"id":"big_john","name":"Big John","full":"Big John","team":"white","h":-3.2,"est":false,"followers":97600,"img":"assets/cards/white_big_john.webp","rank":9,"tier":3,"w":false},{"id":"perez","name":"Perez","full":"Fat Perez","team":"white","h":0.3,"est":false,"followers":2900000,"img":"assets/cards/white_perez.webp","rank":15,"tier":2,"w":false},{"id":"cassandra","name":"Cassandra","full":"Cass Marie","team":"blue","h":6.0,"est":true,"followers":5790,"img":"assets/cards/blue_cassandra.webp","rank":64,"tier":0,"w":false},{"id":"malosi","name":"Malosi","full":"Malosi Togisala","team":"blue","h":-1.0,"est":false,"followers":2283300,"img":"assets/cards/blue_malosi.webp","rank":25,"tier":1,"w":false},{"id":"gruden","name":"Gruden","full":"Jon Gruden","team":"white","h":13.7,"est":true,"followers":934000,"img":"assets/cards/white_gruden.webp","rank":7,"tier":3,"w":false},{"id":"duke","name":"The Duke","full":"The Duke","team":"white","h":28.0,"est":true,"followers":6460,"img":"assets/cards/white_duke.webp","rank":54,"tier":0,"w":false},{"id":"peter","name":"Peter","full":"Peter Finch","team":"blue","h":-3.7,"est":false,"followers":1296311,"img":"assets/cards/blue_peter.webp","rank":18,"tier":2,"w":false},{"id":"the_jet","name":"The Jet","full":"The Jet","team":"blue","h":12.0,"est":true,"followers":2900000,"img":"assets/cards/blue_the_jet.webp","rank":47,"tier":0,"w":false},{"id":"grant","name":"Grant","full":"Grant Horvat","team":"white","h":-2.2,"est":false,"followers":3790388,"img":"assets/cards/white_grant.webp","rank":2,"tier":3,"w":false},{"id":"riggs","name":"Riggs","full":"Riggs","team":"white","h":4.1,"est":false,"followers":683000,"img":"assets/cards/white_riggs.webp","rank":20,"tier":2,"w":false},{"id":"rick","name":"Rick","full":"Rick Shiels","team":"blue","h":-2.6,"est":false,"followers":4497299,"img":"assets/cards/blue_rick.webp","rank":19,"tier":2,"w":false},{"id":"joey","name":"Joey","full":"Joey Cold Cuts","team":"blue","h":10.5,"est":false,"followers":2900000,"img":"assets/cards/blue_joey.webp","rank":34,"tier":1,"w":false},{"id":"jake","name":"Jake","full":"Jake Adams","team":"white","h":0.1,"est":false,"followers":1899633,"img":"assets/cards/white_jake.webp","rank":55,"tier":0,"w":false},{"id":"salim","name":"Salim","full":"Salim","team":"white","h":9.8,"est":true,"followers":850000,"img":"assets/cards/white_salim.webp","rank":36,"tier":1,"w":false},{"id":"brad","name":"Brad","full":"Brad Dalke","team":"red","h":-7.8,"est":false,"followers":3011100,"img":"assets/cards/red_brad.webp","rank":3,"tier":3,"w":false},{"id":"tyler","name":"Tyler","full":"Tyler Toney","team":"red","h":4.6,"est":true,"followers":76029371,"img":"assets/cards/red_tyler.webp","rank":11,"tier":2,"w":false},{"id":"george","name":"George","full":"George Bryan","team":"green","h":-4.8,"est":false,"followers":1434200,"img":"assets/cards/green_george.webp","rank":12,"tier":2,"w":false},{"id":"chaz","name":"Chaz","full":"Chaz","team":"green","h":4.1,"est":false,"followers":34000,"img":"assets/cards/green_chaz.webp","rank":13,"tier":2,"w":false},{"id":"taco","name":"Taco","full":"Taco","team":"red","h":-3.8,"est":false,"followers":662600,"img":"assets/cards/red_taco.webp","rank":22,"tier":2,"w":false},{"id":"daltoosh","name":"Daltoosh","full":"Daltoosh","team":"red","h":5.4,"est":true,"followers":203000,"img":"assets/cards/red_daltoosh.webp","rank":60,"tier":0,"w":false},{"id":"mac","name":"Mac","full":"Mac Boucher","team":"green","h":-3.0,"est":true,"followers":40000,"img":"assets/cards/green_mac.webp","rank":63,"tier":0,"w":false},{"id":"sabrina","name":"Sabrina","full":"Sabrina Andolpho","team":"green","h":0.4,"est":true,"followers":669619,"img":"assets/cards/green_sabrina.webp","rank":57,"tier":0,"w":false},{"id":"manziel","name":"Manziel","full":"Johnny Manziel","team":"red","h":1.7,"est":true,"followers":58500,"img":"assets/cards/red_manziel.webp","rank":16,"tier":2,"w":false},{"id":"karol","name":"Karol","full":"Karol Priscilla","team":"red","h":8.4,"est":true,"followers":95700,"img":"assets/cards/red_karol.webp","rank":62,"tier":0,"w":false},{"id":"tisha","name":"Tisha","full":"Tisha Alyn","team":"green","h":3.0,"est":true,"followers":1867286,"img":"assets/cards/green_tisha.webp","rank":56,"tier":0,"w":false},{"id":"evan","name":"Evan","full":"Evan Thompson","team":"green","h":-3.1,"est":false,"followers":122000,"img":"assets/cards/green_evan.webp","rank":43,"tier":1,"w":false},{"id":"mason","name":"Mason","full":"Mason Nutt","team":"red","h":-2.1,"est":false,"followers":345789,"img":"assets/cards/red_mason.webp","rank":41,"tier":1,"w":false},{"id":"hailey","name":"Hailey","full":"Hailey Ostrom","team":"red","h":0.8,"est":false,"followers":1053518,"img":"assets/cards/red_hailey.webp","rank":46,"tier":0,"w":false},{"id":"sam","name":"Sam","full":"Sam Heung Min","team":"green","h":-3.5,"est":false,"followers":178000,"img":"assets/cards/green_sam.webp","rank":23,"tier":2,"w":false},{"id":"claire","name":"Claire","full":"Claire Hogle","team":"green","h":-2.3,"est":false,"followers":1134702,"img":"assets/cards/green_claire.webp","rank":38,"tier":1,"w":false},{"id":"biz","name":"Biz","full":"Biz","team":"red","h":10.0,"est":true,"followers":2088091,"img":"assets/cards/red_biz.webp","rank":30,"tier":1,"w":false},{"id":"yandle","name":"Yandle","full":"Keith Yandle","team":"red","h":3.8,"est":true,"followers":2088091,"img":"assets/cards/red_yandle.webp","rank":31,"tier":1,"w":false},{"id":"cheddy","name":"Cheddy","full":"Cheddy","team":"green","h":8.0,"est":true,"followers":422000,"img":"assets/cards/green_cheddy.webp","rank":37,"tier":1,"w":false},{"id":"kyle","name":"Kyle","full":"Kyle Forgeard","team":"green","h":15.0,"est":true,"followers":3200557,"img":"assets/cards/green_kyle.webp","rank":50,"tier":0,"w":false},{"id":"garrett","name":"Garrett","full":"Garrett Clark","team":"red","h":-4.1,"est":false,"followers":4705037,"img":"assets/cards/red_garrett.webp","rank":14,"tier":2,"w":false},{"id":"sara","name":"Sara","full":"Sara Winter","team":"red","h":-0.8,"est":false,"followers":781221,"img":"assets/cards/red_sara.webp","rank":49,"tier":0,"w":false},{"id":"cole","name":"Cole","full":"Cole Lantz","team":"green","h":-2.4,"est":false,"followers":345789,"img":"assets/cards/green_cole.webp","rank":58,"tier":0,"w":false},{"id":"seb","name":"Seb","full":"Seb Carmichael-Brown","team":"green","h":-1.3,"est":false,"followers":1104000,"img":"assets/cards/green_seb.webp","rank":59,"tier":0,"w":false},{"id":"dod_king","name":"Dod King","full":"DOD King","team":"red","h":-0.1,"est":false,"followers":127000,"img":"assets/cards/red_dod_king.webp","rank":51,"tier":0,"w":false},{"id":"santino","name":"Santino","full":"Andrew Santino","team":"red","h":2.1,"est":true,"followers":1992705,"img":"assets/cards/red_santino.webp","rank":8,"tier":3,"w":false},{"id":"wesley","name":"Wesley","full":"Wesley Bryan","team":"green","h":-5.8,"est":false,"followers":1434200,"img":"assets/cards/green_wesley.webp","rank":5,"tier":3,"w":false},{"id":"robby","name":"Robby","full":"Bobby Fairways","team":"green","h":10.1,"est":false,"followers":2900000,"img":"assets/cards/green_robby.webp","rank":4,"tier":3,"w":false},{"id":"tooms","name":"Tooms","full":"Tooms","team":"red","h":-5.1,"est":false,"followers":119000,"img":"assets/cards/red_tooms.webp","rank":27,"tier":1,"w":false},{"id":"josh_richards","name":"Josh R.","full":"Josh Richards","team":"red","h":8.0,"est":true,"followers":32211600,"img":"assets/cards/red_josh.webp","rank":32,"tier":1,"w":false},{"id":"pft","name":"PFT","full":"PFT Commenter","team":"green","h":17.0,"est":true,"followers":1856337,"img":"assets/cards/green_pft.webp","rank":6,"tier":3,"w":false},{"id":"callux","name":"Callux","full":"Callux","team":"green","h":22.5,"est":false,"followers":4842000,"img":"assets/cards/green_callux.webp","rank":52,"tier":0,"w":false}],"groups":[{"name":"Bob Does Sports","w":1,"m":["robby","perez","joey","the_jet"],"trash":false},{"name":"Fore Play","w":1,"m":["trent","frankie","riggs","francis"],"trash":false},{"name":"Spittin' Chiclets","w":1,"m":["whit","biz","yandle"],"trash":false},{"name":"Good Good","w":1,"m":["garrett","bubbie","malosi"],"trash":false},{"name":"Bryan Bros","w":1,"m":["wesley","george"],"trash":false},{"name":"Kiwi Boys","w":1,"m":["kwon","sam","taco","tooms"],"trash":false},{"name":"Trash Talkers","w":1,"m":["dod_king","yandle","cheddy","jwill","wesley","short_game","riggs","santino"],"trash":true}],"pairs":[{"a":"peter","b":"paige","w":2,"t":"friends / rules dispute last year (awkward, funny)","note":"","same":false},{"a":"frankie","b":"wesley","w":3,"t":"rivalry (beef)","note":"","same":false},{"a":"whit","b":"kwon","w":2,"t":"tension: Kwon overslept his tee time last year","note":"","same":false},{"a":"francis","b":"brad","w":2,"t":"friends, won last year's tournament on the same team","note":"","same":false},{"a":"brad","b":"bubbie","w":1,"t":"awkward: Brad recently left Good Good","note":"","same":false},{"a":"brad","b":"malosi","w":1,"t":"awkward: Brad recently left Good Good","note":"","same":false},{"a":"brad","b":"garrett","w":1,"t":"awkward: Brad recently left Good Good","note":"","same":false},{"a":"riggs","b":"cheddy","w":2,"t":"new rivalry","note":"","same":false},{"a":"marissa","b":"sabrina","w":2,"t":"Complicated history","note":"","same":false},{"a":"bobby","b":"short_game","w":2,"t":"new rivalry","note":"assumed Bobby = Bobby Ray","same":false},{"a":"wesley","b":"jerry","w":2,"t":"rivalry with Barstool","note":"Frankie covered by his own big rivalry","same":false},{"a":"wesley","b":"pft","w":2,"t":"rivalry with Barstool","note":"Frankie covered by his own big rivalry","same":false},{"a":"wesley","b":"santino","w":2,"t":"New rivalry","note":"","same":false},{"a":"george","b":"santino","w":2,"t":"New rivalry","note":"","same":false},{"a":"sam","b":"whit","w":2,"t":"New \"Muppets with headphones\" rivalry","note":"","same":false},{"a":"sam","b":"biz","w":2,"t":"New \"Muppets with headphones\" rivalry","note":"","same":false},{"a":"sam","b":"yandle","w":2,"t":"New \"Muppets with headphones\" rivalry","note":"","same":false},{"a":"short_game","b":"dod_king","w":2,"t":"rivalry","note":"","same":false},{"a":"cassandra","b":"bobby","w":2,"t":"dating","note":"couple","same":false},{"a":"jwill","b":"peter","w":3,"t":"rivalry (don't like each other)","note":"","same":false},{"a":"chaz","b":"gaethje","w":2,"t":"good friends (duo only)","note":"","same":true},{"a":"grant","b":"garrett","w":1,"t":"awkward: Grant was once with Good Good","note":"","same":false},{"a":"marissa","b":"garrett","w":2,"t":"Dating","note":"couple","same":false}],"real":{"s1":{"blue-white":[{"a":["frankie","francis"],"b":["bubbie","marissa"],"w":"tie","m":"A/S","u":false},{"a":["roger","short_game"],"b":["paige","bobby"],"w":"a","m":"4&2","u":false},{"a":["peter","the_jet"],"b":["grant","riggs"],"w":"a","m":"4&3","u":false},{"a":["jerry","trent"],"b":["micah","whit"],"w":"b","m":"5&3","u":false},{"a":["martin","josh_kelley"],"b":["ruffels","gaethje"],"w":"b","m":"2&1","u":false},{"a":["kwon","jwill"],"b":["big_john","perez"],"w":"b","m":"1UP","u":false},{"a":["rick","joey"],"b":["jake","salim"],"w":"a","m":"2&1","u":false},{"a":["cassandra","malosi"],"b":["gruden","duke"],"w":"a","m":"4&3","u":false}],"red-green":[{"a":["brad","tyler"],"b":["george","chaz"],"w":"tie","m":"A/S","u":false},{"a":["taco","daltoosh"],"b":["mac","sabrina"],"w":"tie","m":"A/S","u":false},{"a":["manziel","karol"],"b":["tisha","evan"],"w":"b","m":"4&2","u":false},{"a":["mason","hailey"],"b":["sam","claire"],"w":"b","m":"3&2","u":false},{"a":["biz","yandle"],"b":["cheddy","kyle"],"w":"b","m":"3&2","u":false},{"a":["garrett","sara"],"b":["cole","seb"],"w":"b","m":"4&3","u":false},{"a":["dod_king","santino"],"b":["wesley","robby"],"w":"b","m":"2&1","u":false},{"a":["tooms","josh_richards"],"b":["pft","callux"],"w":"a","m":"3&2","u":false}]},"s2":{"blue-white":[{"a":["trent","jerry"],"b":["salim","duke"],"w":"a","m":"2UP","u":false},{"a":["peter","josh_kelley"],"b":["marissa","bubbie"],"w":"a","m":"1UP","u":false},{"a":["kwon","malosi"],"b":["big_john","perez"],"w":"a","m":"2&1","u":false},{"a":["roger","short_game"],"b":["grant","gaethje"],"w":"b","m":"1UP","u":false},{"a":["rick","martin"],"b":["ruffels","riggs"],"w":"b","m":"4&3","u":false},{"a":["frankie","francis"],"b":["bobby","gruden"],"w":"tie","m":"Halved","u":false},{"a":["cassandra","jwill"],"b":["micah","whit"],"w":"b","m":"3&2","u":false},{"a":["joey","the_jet"],"b":["paige","jake"],"w":"b","m":"5&4","u":false}],"red-green":[{"a":["mason","josh_richards"],"b":["cheddy","kyle"],"w":"a","m":"3&2","u":false},{"a":["manziel","tyler"],"b":["george","chaz"],"w":"b","m":"3&2","u":false},{"a":["daltoosh","yandle"],"b":["pft","callux"],"w":"a","m":"5&4","u":false},{"a":["brad","karol"],"b":["tisha","evan"],"w":"tie","m":"A/S","u":false},{"a":["hailey","tooms"],"b":["mac","sabrina"],"w":"tie","m":"A/S","u":false},{"a":["garrett","sara"],"b":["cole","seb"],"w":"b","m":"3&1","u":false},{"a":["dod_king","santino"],"b":["claire","sam"],"w":"tie","m":"A/S","u":false},{"a":["taco","biz"],"b":["wesley","robby"],"w":"b","m":"4&3","u":false}]},"s3":[{"a":["cheddy","kyle"],"b":["bobby","duke"],"w":"b","m":"3&2","u":false},{"a":["pft","callux"],"b":["salim","gruden"],"w":"b","m":"3UP","u":false},{"a":["claire","sam"],"b":["whit","micah"],"w":"tie","m":"Halved","u":false},{"a":["seb","cole"],"b":["grant","gaethje"],"w":"tie","m":"Halved","u":false},{"a":["sabrina","mac"],"b":["paige","jake"],"w":"b","m":"1UP","u":false},{"a":["tisha","evan"],"b":["bubbie","marissa"],"w":"b","m":"2UP","u":false},{"a":["george","chaz"],"b":["big_john","perez"],"w":"b","m":"2&1","u":false},{"a":["robby","wesley"],"b":["ruffels","riggs"],"w":"a","m":"1UP","u":false}],"s4":[{"a":["cheddy"],"b":["riggs"],"w":"tie","m":"Halved","u":false},{"a":["robby"],"b":["gaethje"],"w":"b","m":"4&3","u":false},{"a":["sam"],"b":["big_john"],"w":"b","m":"3&2","u":false},{"a":["wesley"],"b":["ruffels"],"w":"tie","m":"Halved","u":false},{"a":["claire"],"b":["paige"],"w":"a","m":"1UP","u":false},{"a":["mac"],"b":["bubbie"],"w":"a","m":"4&3","u":false},{"a":["evan"],"b":["grant"],"w":"a","m":"1UP","u":false},{"a":["george"],"b":["micah"],"w":"tie","m":"Halved","u":false},{"a":["pft"],"b":["gruden"],"w":"b","m":"3&2","u":false},{"a":["kyle"],"b":["salim"],"w":"b","m":"1UP","u":false},{"a":["sabrina"],"b":["whit"],"w":"b","m":"Whit 1UP thru 8 (not finished)","u":true},{"a":["seb"],"b":["perez"],"w":"b","m":"2&1","u":false},{"a":["chaz"],"b":["marissa"],"w":"tie","m":"AS thru 6 (not finished)","u":true},{"a":["cole"],"b":["jake"],"w":"tie","m":"AS thru 6 (not finished)","u":true},{"a":["tisha"],"b":["bobby"],"w":"tie","m":"AS thru 4 (not finished)","u":true},{"a":["callux"],"b":["duke"],"w":"a","m":"Callux 2UP thru 4 (not finished)","u":true}],"s5":{"teams":[["big_john","perez","riggs","bobby"],["grant","jake","paige","gruden"],["micah","whit","bubbie","salim"],["ruffels","marissa","gaethje","duke"]],"names":["Team Big John","Team Grant","Team Micah","Team Ruffels"],"eliminated":"Team Grant"},"s6":{"teams":[["ruffels","marissa","duke"],["big_john","whit","salim"],["micah","bubbie","gaethje"],["perez","riggs","bobby"]],"names":["Team Ruffels","Team Big John","Team Micah","Team Perez"],"scores":[6,3,4,1],"advanced":["Team Perez","Team Big John"]},"s7":{"a":["perez","riggs","bobby"],"b":["big_john","whit","salim"],"m":"3&2","w":"a"}}};
+const P = Object.fromEntries(D.players.map(p=>[p.id,p]));
+D.players.forEach(p=>{p.hO=p.h;p.h0O=p.h0});
+function resetHcps(){D.players.forEach(p=>{p.h=p.hO;if(p.w)p.h0=p.h0O})}
+function baseH(p){return p.w?p.h0:p.h}
+function setBase(id,v){const p=P[id];v=Math.max(-12,Math.min(45,Math.round(v*10)/10));if(p.w){p.h0=v;p.h=Math.round((v+5)*10)/10}else p.h=v;if(G){G.hcpEdits=G.hcpEdits||{};if(v===(p.w?p.h0O:p.hO))delete G.hcpEdits[id];else G.hcpEdits[id]=v}}
+function applyEdits(e){resetHcps();Object.keys(e||{}).forEach(id=>{if(P[id]){const p=P[id],v=e[id];if(p.w){p.h0=v;p.h=Math.round((v+5)*10)/10}else p.h=v}})}
+const fmtH=v=>v<0?'+'+(-v).toFixed(1):v.toFixed(1);
+const TEAM = {blue:{n:'BLUE',c:'#6b9ad0'},white:{n:'WHITE',c:'#8b8e91'},red:{n:'RED',c:'#b81f1c'},green:{n:'GREEN',c:'#23704a'}};
+const COURSE = {
+  ozarks:{name:'Ozarks National',imgs:['ozarks_aerial_morning_mist','ozarks_fairway_golden_hour','ozarks_clubhouse_storm_sunset'],factor:1,note:'Limestone ridges, creek crossings and a long bridge in the back nine.'},
+  buffalo:{name:'Buffalo Ridge',imgs:['buffalo_aerial_clubhouse_limestone_boardwalk','buffalo_tee_over_lake_waterfalls','buffalo_green_lakeside_lodge'],factor:1,note:'Cliffside clubhouse, stacked limestone and lakes with stepped waterfalls.'},
+  paynes:{name:"Payne's Valley",imgs:['paynes_aerial_sunset_fairway','paynes_aerial_lake_bridge_island_green','paynes_island_green_limestone_panorama'],factor:1.15,note:'Wide fairways reward the stronger team: less bad luck on day 3.'}
+};
+const img = (c,i)=>`assets/courses/${COURSE[c].imgs[i%3]}.jpg`;
+const SESS = {
+ 1:{day:1,name:'Session 1',sub:'Front nine · 2v2 scramble',fmt:'scramble',n:9,course:'ozarks',labels:[1,2,3,4,5,6,7,8,9],pars:[4,5,3,4,4,3,4,5,4],size:2,ms:8},
+ 2:{day:1,name:'Session 2',sub:'Back nine · 2v2 alternate shot',fmt:'alt',n:9,course:'ozarks',labels:[10,11,12,13,14,15,16,17,18],pars:[4,4,3,5,4,4,3,4,5],size:2,ms:8},
+ 3:{day:2,name:'Session 3',sub:'Morning · 2v2 scramble',fmt:'scramble',n:9,course:'buffalo',labels:[1,2,3,4,5,6,7,8,9],pars:[4,4,3,5,4,3,4,5,4],size:2,ms:8},
+ 4:{day:2,name:'Session 4',sub:'Afternoon · 1v1 singles',fmt:'singles',n:9,course:'buffalo',labels:[1,2,3,4,5,6,7,8,9],pars:[5,4,3,4,4,5,3,4,4],size:1,ms:16},
+ 5:{day:2,name:'Session 5',sub:'The cut · 16 players to 12',kind:'cut',course:'buffalo'},
+ 6:{day:3,name:'Session 6',sub:'Semifinal · teams of 3, alt shot, stroke play',kind:'semi',fmt:'alt3',n:9,course:'paynes',labels:[1,2,3,4,5,6,7,8,9],pars:[4,3,5,4,4,3,5,4,4]},
+ 7:{day:3,name:'Session 7',sub:'Final · 3v3 alt shot, 18 holes, match play',kind:'final',fmt:'alt3',n:18,course:'paynes',labels:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],pars:[4,5,3,4,4,3,4,5,4,4,3,5,4,4,3,4,5,4]}
+};
+const K=0.13, TIE=0.35, FSC={scramble:.9,alt:1,singles:1.1,alt3:1};
+const soft=d=>16*Math.tanh(d/16);
+const gauss=()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+const hcp=p=>(p.h<0?'+'+(-p.h).toFixed(1):p.h.toFixed(1))+(p.est?'*':'')+(p.w?'\u2020':'');
+const ADJ=5;
+const hf=(i,fmt)=>P[i].w&&fmt==='scramble'?P[i].h0+ADJ*.25:P[i].h;
+D.players.forEach(p=>p.rteam=p.team);
+const teamIds=c=>D.players.filter(p=>p.team===c).map(p=>p.id);
+const avgH=ids=>{const f=ids.filter(Boolean);if(!f.length)return null;const m=f.reduce((a,i)=>a+P[i].h,0)/f.length;return (m<0?'+'+(-m).toFixed(1):m.toFixed(1))};
+const byHcp=ids=>[...ids].sort((a,b)=>P[a].h-P[b].h);
+const fmtDelta=d=>d===0?'E':d>0?'+'+d:''+d;
+
+/* ---------- model ---------- */
+function strength(ids,fmt){
+  const hs=ids.map(i=>hf(i,fmt)).sort((a,b)=>a-b);
+  if(hs.length===1) return hs[0];
+  if(fmt==='scramble') return .85*hs[0]+.15*hs[1];
+  return hs.reduce((a,b)=>a+b,0)/hs.length;
+}
+function holeP(sa,sb,fmt,course){
+  const k=K*FSC[fmt]*(COURSE[course].factor||1), d=soft(sb-sa);
+  const pa=(1-TIE)/(1+Math.exp(-k*d)); return {pa,pb:1-TIE-pa,t:TIE};
+}
+function trioStr(order,i,par){
+  const w={3:.55,4:.45,5:.35}[par], tee=order[i%3];
+  const o=order.filter((_,j)=>j!==i%3);
+  return w*P[tee].h+(1-w)/2*(P[o[0]].h+P[o[1]].h);
+}
+function probsFor(s,a,b){
+  const S=SESS[s];
+  if(S.fmt==='alt3') return S.pars.map((par,i)=>holeP(trioStr(a,i,par),trioStr(b,i,par),'alt3',S.course));
+  const p=holeP(strength(a,S.fmt),strength(b,S.fmt),S.fmt,S.course);
+  return Array.from({length:S.n},()=>p);
+}
+function dist(probs){
+  let d=new Map([[0,1]]);
+  for(const p of probs){const nd=new Map();const add=(l,v)=>nd.set(l,(nd.get(l)||0)+v);
+    for(const [l,v] of d){add(l+1,v*p.pa);add(l-1,v*p.pb);add(l,v*p.t)} d=nd}
+  let a=0,t=0,b=0;for(const [l,v] of d){if(l>0)a+=v;else if(l<0)b+=v;else t+=v}
+  return {a,t,b};
+}
+function simMatch(probs,extra){
+  const N=probs.length;let lead=0,m=null,played=N,x=false;const trace=[];
+  for(let i=0;i<N;i++){const p=probs[i],r=Math.random();
+    lead+=r<p.pa?1:r<p.pa+p.pb?-1:0;trace.push(lead);const rem=N-1-i;
+    if(Math.abs(lead)>rem){played=i+1;m=rem>0?`${Math.abs(lead)}&${rem}`:`${Math.abs(lead)}UP`;break}}
+  if(m===null&&lead===0&&extra){const p=probs[N-1];let n=0;
+    while(lead===0){n++;const r=Math.random();lead=r<p.pa?1:r<p.pa+p.pb?-1:0}
+    x=true;m=n===1?'19th hole':`Hole ${N+n}`;played=N}
+  if(m===null) m=lead===0?'A/S':`${Math.abs(lead)}UP`;
+  return {w:lead>0?'a':lead<0?'b':'tie',m,played,trace,x};
+}
+const isClose=r=>r.w==='tie'||r.m==='1UP'||!!r.x;
+function strokeDelta(h,par,course){
+  const e=h/18+(par===5?-.06:par===3?.03:0), sd=.8/(COURSE[course].factor||1);
+  return Math.max(-2,Math.min(3,Math.round(e+gauss()*sd)));
+}
+const dlabel=d=>({'-2':'Eagle','-1':'Birdie','0':'Par','1':'Bogey','2':'Double'}[d]||'Triple+');
+
+/* ---------- storylines & scoring ---------- */
+function storyHits(ids,sides){
+  const set=new Set(ids),hits=[];
+  const together=(x,y)=>!sides||sides.some(s=>s.includes(x)&&s.includes(y));
+  for(const p of D.pairs) if(set.has(p.a)&&set.has(p.b)&&(!p.same||together(p.a,p.b))) hits.push({pts:p.w,txt:`${P[p.a].name} & ${P[p.b].name}`,why:p.t});
+  for(const g of D.groups){const m=g.m.filter(x=>set.has(x));
+    for(let i=0;i<m.length;i++)for(let j=i+1;j<m.length;j++) hits.push({pts:g.w,trash:!!g.trash,txt:`${P[m[i]].name} & ${P[m[j]].name}`,why:g.trash?'trash talk':g.name+' friends'});}
+  return hits;
+}
+const storyMult=s=>s<=3?1:2;
+const TRASHM={1:1,2:1,3:2,4:2,5:3,6:3,7:4};
+const hitMult=(h,s)=>h.trash?TRASHM[s]:storyMult(s);
+function matchPts(s,res,aIds,bIds){
+  const items=[];
+  if(isClose(res)) items.push({k:'close',pts:1,txt:res.w==='tie'?'Match tied':res.x?'Went to extra holes':'Decided on the last hole'});
+  for(const h of storyHits([...aIds,...bIds],[aIds,bIds])) items.push({k:'story',pts:h.pts*hitMult(h,s),txt:h.txt+' ('+h.why+')',nm:h.txt,why:h.why,trash:!!h.trash,base:h.pts,s});
+  return items;
+}
+const tierSum=ids=>ids.reduce((a,i)=>a+P[i].tier,0);
+const tight3=sc=>{const s=[...sc].sort((a,b)=>a-b);return s.length>=4&&(s[2]-s[0]<=2||s[3]-s[1]<=2)};
+function teamClosePts(pa,pb,label){return Math.abs(pa-pb)<=2?[{k:'team',pts:5,txt:`${label} decided by ${Math.abs(pa-pb)} pt${Math.abs(pa-pb)===1?'':'s'} or fewer`}]:[]}
+
+/* real baseline from data */
+function realBaseline(){
+  const log=[];const R=D.real;
+  const add=(s,items)=>items.forEach(i=>log.push({s,...i}));
+  const ptsOf=ms=>{let a=0,b=0;ms.forEach(m=>{if(m.w==='a')a++;else if(m.w==='b')b++;else{a+=.5;b+=.5}});return [a,b]};
+  for(const s of [1,2]) for(const key of ['blue-white','red-green']) R['s'+s][key].forEach(m=>add(s,matchPts(s,{w:m.w,m:m.m,x:false},m.a,m.b)));
+  for(const key of ['blue-white','red-green']){const [a1,b1]=ptsOf(R.s1[key]),[a2,b2]=ptsOf(R.s2[key]);add(2,teamClosePts(a1+a2,b1+b2,key.replace('-',' vs ')))}
+  R.s3.forEach(m=>add(3,matchPts(3,{w:m.w,m:m.m,x:false},m.a,m.b)));
+  R.s4.forEach(m=>add(4,matchPts(4,{w:m.w,m:m.m,x:false},m.a,m.b)));
+  {const [a3,b3]=ptsOf(R.s3),[a4,b4]=ptsOf(R.s4);add(4,teamClosePts(a3+a4,b3+b4,'Green vs White'))}
+  R.s5.teams.forEach(t=>storyHits(t).forEach(h=>log.push({s:5,k:'story',pts:h.pts*hitMult(h,5),txt:h.txt})));
+  log.push({s:5,k:'pop',pts:tierSum(R.s5.teams.flat())*.5,txt:'16 players alive'});
+  R.s6.teams.forEach(t=>storyHits(t).forEach(h=>log.push({s:6,k:'story',pts:h.pts*hitMult(h,6),txt:h.txt})));
+  {const sc=[...R.s6.scores].sort((a,b)=>a-b);if(sc[2]-sc[1]<=2) log.push({s:6,k:'team',pts:5,txt:'Second place decided by '+(sc[2]-sc[1])+' stroke'})}
+  if(tight3(R.s6.scores)) log.push({s:6,k:'team',pts:5,txt:'Three teams within 2 strokes'});
+  log.push({s:6,k:'pop',pts:tierSum(R.s6.teams.flat())*1,txt:'12 players alive'});
+  storyHits([...R.s7.a,...R.s7.b],[R.s7.a,R.s7.b]).forEach(h=>log.push({s:7,k:'story',pts:h.pts*hitMult(h,7),txt:h.txt}));
+  log.push({s:7,k:'pop',pts:tierSum([...R.s7.a,...R.s7.b])*1.5,txt:'6 finalists'});
+  return log;
+}
+const sumLog=(log,k)=>log.filter(i=>!k||i.k===k).reduce((a,i)=>a+i.pts,0);
+const REAL=realBaseline();
+
+/* ---------- state ---------- */
+let G=null;
+const emptyMatches=(n,size)=>Array.from({length:n},()=>({a:Array(size).fill(null),b:Array(size).fill(null)}));
+function newGame(){
+  D.players.forEach(p=>p.team=p.rteam);
+  resetHcps();
+  window.__cf=false;
+  G={hcpEdits:{},pairOpt:0,stage:0,draft:null,redraft:false,phase:'title',s:1,lineup:{},res:{},log:[],alive:null,w1:null,w2:null,teamsA:null,summary:{},day:{},cut:null,semi:null,fin:null,pickCtx:null,anim:null,playoffs:[],photo:0};
+}
+const PAIROPTS=[[['blue','white'],['red','green']],[['blue','red'],['white','green']],[['blue','green'],['white','red']]];
+function pairingsFor(s){
+  if(s<=2) return PAIROPTS[G.redraft?(G.pairOpt||0):0].map(([a,b])=>({a,b}));
+  if(s<=4) return [{a:G.w1,b:G.w2}];
+  return [];
+}
+function ensureLineup(s){
+  if(G.lineup[s]) return;
+  const S=SESS[s];
+  if(s<=4) G.lineup[s]=pairingsFor(s).map(()=>emptyMatches(S.ms,S.size));
+  else if(s===5) G.lineup[5]=Array.from({length:4},()=>Array(4).fill(null));
+  else if(s===6) G.lineup[6]=Array.from({length:4},()=>Array(3).fill(null));
+  else if(s===7) G.lineup[7]=G.fin.teams.map(t=>[...byHcp(t.ids)]);
+}
+function aliveIds(s){
+  if(s===5) return G.alive16; if(s===6) return G.alive12; return [];
+}
+/* ---------- helpers ---------- */
+const cardHTML=(id,opts={})=>{const p=P[id];return `<div class="pc ${opts.big?'big':''}"><img src="${p.img}" alt="${p.name}"><span class="hb ${p.h<0?'plus':''}">${hcp(p)}</span>${opts.rank?`<span class="rk">#${opts.rank}</span>`:''}</div>`};
+const slotHTML=(id,data,opts)=>`<button class="slot ${id?'filled':''}" ${data} aria-label="${id?P[id].name:'Choose player'}">${id?cardHTML(id,opts):'+'}</button>`;
+function oddsHTML(o,ca,cb){
+  const pa=Math.round(o.a*100),pb=Math.round(o.b*100),pt=100-pa-pb;
+  return `<div class="odds"><div class="obar"><i style="width:${o.a*100}%;background:${ca}"></i><i style="width:${o.t*100}%;background:#e9e3cc"></i><i style="width:${o.b*100}%;background:${cb}"></i></div><div class="otxt num"><span>${pa}%</span><span>tie ${pt}%</span><span>${pb}%</span></div></div>`;
+}
+function evpTag(info){window.__evp=window.__evp||[];const i=window.__evp.push(info)-1;return `<button class="tag ${info.kind==='close'?'close':'story'}" data-act="evp" data-e="${i}" aria-label="Why this earns EVPs">EVP +${info.pts}</button>`}
+function chipHTML(res,ca,cb){
+  if(res.w==='tie') return `<div class="chip T">${res.m==='Halved'?'A/S':res.m}</div>`;
+  return `<div class="chip ${res.w==='a'?'L':'R'}">${res.m}</div>`;
+}
+function modal(html){document.getElementById('modal').innerHTML=html?`<div class="modal" data-act="closem"><div class="mbox"><div class="mtop"><button class="btn mclose" data-act="closem" aria-label="Close">\u2715</button></div>${html}</div></div>`:''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('modal').innerHTML)modal('')});
+const winnerName=(c)=>TEAM[c].n;
+
+/* ---------- autosave (this browser only) ---------- */
+const SAVE_KEY='commissioner_invitational_save_v1';
+function saveGame(){
+  try{
+    if(!G||G.phase==='title'||G.phase==='sim')return false;
+    const g={...G};delete g.anim;delete g.pickCtx;
+    const teams={};D.players.forEach(p=>teams[p.id]=p.team);
+    localStorage.setItem(SAVE_KEY,JSON.stringify({v:1,t:Date.now(),G:g,teams}));
+    return localStorage.getItem(SAVE_KEY)!==null;
+  }catch(e){return false}
+}
+function readSave(){
+  try{const r=localStorage.getItem(SAVE_KEY);if(!r)return null;const o=JSON.parse(r);return o&&o.v===1&&o.G&&o.G.phase&&o.G.phase!=='title'?o:null}catch(e){return null}
+}
+function loadSave(){
+  const o=readSave();if(!o)return false;
+  try{D.players.forEach(p=>{if(o.teams&&o.teams[p.id]!==undefined)p.team=o.teams[p.id]});G={...o.G,anim:null,pickCtx:null};if(G.s<=4&&['sim','result','recap','recap2'].includes(G.phase)&&!(G.res&&G.res[G.s]))G.phase='setup';applyEdits(G.hcpEdits);return true}catch(e){return false}
+}
+function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
+function saveLabel(o){
+  const g=o.G;return g.phase==='end'?'Tournament complete':g.phase==='draft'?'The draft':g.phase==='recap'?'Day 1 recap':g.phase==='recap2'?'Day 2 recap':'Session '+g.s;
+}
+function startConfetti(){
+  if(window.__cf)return;window.__cf=true;
+  try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}
+  const c=document.createElement('canvas');c.setAttribute('aria-hidden','true');
+  c.style.cssText='position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:60';document.body.appendChild(c);
+  const ctx=c.getContext('2d'),dpr=Math.min(2,window.devicePixelRatio||1);let W=0,H=0;
+  const size=()=>{W=window.innerWidth;H=window.innerHeight;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)};size();window.addEventListener('resize',size);
+  const cols=['#f2a52b','#ecddb4','#6b9ad0','#c0392b','#2e9b64','#ffffff'];
+  const N=Math.max(60,Math.min(220,Math.floor(W/5)));
+  const ps=Array.from({length:N},()=>({x:Math.random()*W,y:-Math.random()*H,w:6+Math.random()*7,h:9+Math.random()*10,vy:2+Math.random()*3.2,vx:-1+Math.random()*2,r:Math.random()*6.28,vr:-.2+Math.random()*.4,c:cols[(Math.random()*cols.length)|0],ph:Math.random()*6.28,dead:false}));
+  const t0=performance.now();
+  const frame=now=>{
+    const el=now-t0;ctx.clearRect(0,0,W,H);let alive=0;
+    for(const p of ps){
+      if(p.dead)continue;
+      p.y+=p.vy;p.x+=p.vx+Math.sin(p.ph+=.05)*.8;p.r+=p.vr;
+      if(p.y>H+20){if(el<7000){p.y=-20;p.x=Math.random()*W}else{p.dead=true;continue}}
+      alive++;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,Math.max(2,p.h*Math.abs(Math.cos(p.ph))));ctx.restore();
+    }
+    if(alive>0&&el<16000)requestAnimationFrame(frame);else{c.remove();window.removeEventListener('resize',size)}
+  };
+  requestAnimationFrame(frame);
+}
+/* ---------- render ---------- */
+function track(n,p){try{if(window.gtag)window.gtag('event',n,p||{})}catch(e){}}
+function render(){
+  window.__evp=[];
+  try{const k=window.__page?'page:'+window.__page:(G?G.phase+':'+G.s:'title');if(k!==window.__lk){window.__lk=k;const ph=window.__page?'page_'+window.__page:(G?G.phase:'title');track(ph==='end'?'tournament_complete':'screen_view_game',{phase:ph,session:G?G.s:0})}}catch(e){}
+  saveGame();
+  const app=document.getElementById('app');
+  if(window.__page){app.innerHTML=pageHTML(window.__page);return}
+  if(!G||G.phase==='title'){app.innerHTML=titleHTML();return}
+  if(G.phase==='teams'){app.innerHTML=topHTML(true)+teamsHTML();return}
+  if(G.phase==='hcp'){app.innerHTML=topHTML(true)+hcpHTML();return}
+  if(G.phase==='recap'){app.innerHTML=topHTML()+recapHTML();return}
+  if(G.phase==='recap2'){app.innerHTML=topHTML()+recap2HTML();return}
+  if(G.phase==='draft'){app.innerHTML=topHTML(true)+draftHTML();return}
+  app.innerHTML=topHTML()+hoistTop(bodyHTML());
+  if(G.phase==='end')startConfetti();
+  const fn=document.querySelector('[data-focus]');
+}
+function hoistTop(h){
+  const tops=[];h=h.replace(/<!--TOP-->([\s\S]*?)<!--\/TOP-->/g,(m,x)=>{tops.push(x);return ''});
+  if(!tops.length)return h.replace('<!--BEND-->','');
+  return h.includes('<!--BEND-->')?h.replace('<!--BEND-->',tops.join('')):tops.join('')+h;
+}
+function topHTML(bare){
+  if(bare)return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>`;
+  const steps=[1,2,3,4,5,6,7].map(i=>`<div class="step ${G.s===i&&G.phase!=='end'?'on':(G.phase==='end'||i<G.s)?'done':''}" title="${SESS[i].name}">${i}</div>`).join('');
+  const mine=sumLog(G.log);
+  return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div>
+  <div class="steps" aria-label="Sessions">${steps}</div>
+  <div class="scorebox"><div class="sc"><b class="num">${mine}</b><span>Your EVS</span></div><div class="sc real"><b class="num">${sumLog(REAL)}</b><span>Real EVS</span></div><button class="infob" data-act="info" aria-label="How scoring works" title="How scoring works">?</button><button class="btn savb" data-act="save" title="Save your progress in this browser">SAVE PROGRESS</button></div></div>`;
+}
+function titleHTML(){
+  return `<div class="hero"><div class="banner"><img src="${img('ozarks',0)}" alt="Ozarks National clubhouse at sunrise"><div class="bin"><div><h1>THE COMMISSIONER<br>INVITATIONAL</h1></div>
+  <div style="max-width:420px"><div class="bnote" style="margin-bottom:12px">Think you can orchestrate a better tournament than Portnoy, Bob Does Sports, and the Fore Play guys? Now it's time to prove it. Build the teams, set the matchups, and simulate your way to an overall entertainment score.</div><div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center"><button class="btn main" data-act="start">START</button><button class="btn" data-act="page" data-v="rules">RULES</button><button class="btn" data-act="page" data-v="evs">ENTERTAINMENT VALUE SCORE</button><button class="btn" data-act="hcpopen" style="border-color:var(--gold);color:var(--gold)">ADJUST PLAYER HANDICAPS</button>${(()=>{const o=readSave();return o?`<button class="btn" data-act="resume" style="font-size:26px;padding:10px 20px">CONTINUE · ${saveLabel(o)}</button>`:''})()}</div></div></div></div>
+  <div class="panel flow" style="margin-top:14px"><h3>How it works:</h3><ol class="steps4"><li><b>1</b><span>Draft or redraft the field and set the 4 teams</span></li><li><b>2</b><span>Assign pairings and matchups</span></li><li><b>3</b><span>Simulate the results and see how it all shakes out</span></li><li><b>4</b><span>Crown a champion and earn an entertainment score</span></li></ol></div>
+  <div class="rules">
+   <div class="panel"><h3>Day 1 · Ozarks National</h3><p>Four teams of 16. Blue vs White and Red vs Green. Front nine scramble, back nine alternate shot, with duos and matchups reset between them.</p></div>
+   <div class="panel"><h3>Day 2 · Buffalo Ridge</h3><p>The two winning teams meet in a scramble and singles. The winner stays. Then 16 players split into four teams of 4 and one team is cut.</p></div>
+   <div class="panel"><h3>Day 3 · Payne's Valley</h3><p>12 players form four teams of 3. The top two teams play a 3v3 match-play final. <span class="gold">$1.3M each</span> for the winners.</p></div>
+   <div class="panel"><h3>How you score</h3><p>Matches that end tied or on the last hole. Teams decided by 2 points or fewer. Rivalries and friends in the same match. Popular players who last into sessions 5 to 7.</p></div>
+  </div><div class="panel" style="margin:16px 0 8px;text-align:center"><p style="margin:0">Inquiries or feedback? Email <a href="mailto:tcigolfgame@gmail.com" style="color:var(--gold)">tcigolfgame@gmail.com</a></p><p class="hint" style="margin:8px 0 0">This site uses Google Analytics to count visits. Your game is saved only in your own browser.</p></div></div>`;
+}
+function bannerHTML(s,photoIdx,extra){
+  const S=SESS[s],C=COURSE[S.course];
+  return `<div class="banner"><img src="${img(S.course,photoIdx)}" alt="${C.name}"><div class="bin"><div><div class="bkick">Day ${S.day} · ${C.name}</div><h1 style="margin-top:6px;color:var(--cream)">${S.name.toUpperCase()}</h1><div class="hint" style="color:#e5efe7;font-size:20px">${S.sub}</div></div><div class="bnote">${s===5?'In the real thing, captains were selected and then they drafted. For the game, you get to assign all players to a team.':C.note}${extra?'<br>'+extra:''}</div></div></div><!--BEND-->`;
+}
+function holesHTML(s,cur){
+  const S=SESS[s];
+  return `<div class="holes" aria-label="Holes">${S.labels.map((l,i)=>`<div class="hole ${cur===i?'on':cur>i?'past':''}">${l}<b>${S.pars[i]}</b></div>`).join('')}</div><div class="hint" style="margin-top:4px">Hole number above, par below. Pars are set for the game.</div>`;
+}
+function bodyHTML(){
+  if(G.phase==='end') return endHTML();
+  const s=G.s,S=SESS[s];
+  if(s<=4) return boardPhase(s);
+  if(s===5) return cutPhase();
+  if(s===6) return semiPhase();
+  return finalPhase();
+}
+
+/* ---------- sessions 1-4 ---------- */
+function pairTitle(pr,pts){
+  return `<div class="pairhead" style="--ca:${TEAM[pr.a].c};--cb:${TEAM[pr.b].c}"><div class="ta"><span>${TEAM[pr.a].n}</span><span class="pts num">${pts?pts[0]:''}</span></div><div class="vs">VS</div><div class="tb"><span>${TEAM[pr.b].n}</span><span class="pts num">${pts?pts[1]:''}</span></div></div>`;
+}
+function rowHTML(s,pi,mi,m,mode,res,t){
+  const S=SESS[s],pr=pairingsFor(s)[pi],ca=TEAM[pr.a].c,cb=TEAM[pr.b].c;
+  const slots=(side,arr)=>arr.map((id,k)=>mode==='setup'?slotHTML(id,`data-act="pick" data-pi="${pi}" data-mi="${mi}" data-side="${side}" data-k="${k}"`):`<div class="slot filled">${cardHTML(id)}</div>`).join('');
+  const full=m.a.every(Boolean)&&m.b.every(Boolean);
+  let mid='';
+  if(mode==='setup'){
+    if(full){const o=dist(probsFor(s,m.a,m.b));mid=`<span class="vsb">VS</span>${oddsHTML(o,ca,cb)}`;
+      const sh=storyHits([...m.a,...m.b],[m.a,m.b]);if(sh.length)mid+=`<div class="tags">${sh.map(h=>`${evpTag({kind:'story',nm:h.txt,why:h.why,trash:!!h.trash,base:h.pts,pts:h.pts*hitMult(h,s),s})}`).join('')}</div>`}
+    else mid=`<span class="vsb">VS</span><span class="hint">Pick all players</span>`;
+  } else if(mode==='sim'){
+    const r=res;
+    if(t>=r.played) mid=chipHTML(r);
+    else{const lead=r.trace[Math.min(t,r.trace.length)-1]||0;
+      mid=t<1?`<span class="vsb">VS</span>`:`<div class="status">${lead===0?'A/S':Math.abs(lead)+' UP'} thru ${t}</div><div class="hint" style="margin:-4px 0 0">${lead===0?'':lead>0?'◀ '+TEAM[pr.a].n:TEAM[pr.b].n+' ▶'}</div>`}
+  } else {
+    mid=chipHTML(res);const items=matchPts(s,res,m.a,m.b);
+    const tg=[];if(isClose(res)){const ci=items.find(i=>i.k==='close');tg.push(evpTag({kind:'close',pts:1,txt:ci?ci.txt:'Close match'}))}
+    items.filter(i=>i.k==='story').forEach(i=>tg.push(evpTag({kind:'story',nm:i.nm,why:i.why,trash:i.trash,base:i.base,pts:i.pts,s})));
+    if(tg.length)mid+=`<div class="tags">${tg.join('')}</div>`;
+  }
+  const close=mode!=='setup'&&res&&isClose(res)?'close':'';
+  return `<div class="mrow ${close}" style="--ca:${ca};--cb:${cb}"><div class="side">${slots('a',m.a)}</div><div class="mid">${mid}</div><div class="side">${slots('b',m.b)}</div></div>`;
+}
+function setupControls(s,prs){
+  let h='';
+    const full=boardFull(s),st=G.stage||0,two=s<=2;
+    const cnt=pi=>G.lineup[s][pi].filter(m=>m.a.every(Boolean)&&m.b.every(Boolean)).length;
+    const pf=two&&cnt(0)===G.lineup[s][0].length;
+    const status=two?prs.map((pr,pi)=>`<span class="tag ${cnt(pi)===G.lineup[s][pi].length?'adv':'out'}" style="${cnt(pi)===G.lineup[s][pi].length?'':'background:#3b4a2e;color:#ecddb4'}">${TEAM[pr.a].n} vs ${TEAM[pr.b].n}: ${cnt(pi)}/${G.lineup[s][pi].length} matches ready</span>`).join(' '):'';
+    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}${two&&st===0?'':`<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button>`}</div>`;
+    h+=storyBook(s);
+  return h;
+}
+function boardPhase(s){
+  const S=SESS[s],prs=pairingsFor(s);ensureLineup(s);
+  const mode=G.phase==='setup'?'setup':G.phase==='sim'?'sim':'result';
+  const t=G.anim?G.anim.t:0;
+  let html=bannerHTML(s,mode==='setup'?0:mode==='sim'?1:2);
+  if(mode==='setup'){
+    if(s<=2){const st=G.stage||0,pr=prs[st];html+=`<div style="margin:16px 0"><span class="chip-cream">Step ${st+1} of 2 · ${TEAM[pr.a].n} vs ${TEAM[pr.b].n}</span><div class="hint" style="margin-top:8px">${setupHint(s)}</div></div>`+setupControls(s,prs)+trayHTML(s)}
+    else html+=`<div class="bar"><div class="hint grow">${setupHint(s)}</div></div>`+setupControls(s,prs)+trayHTML(s);
+  }
+  prs.forEach((pr,pi)=>{
+    if(mode==='setup'&&s<=2&&pi!==(G.stage||0))return;
+    const ms=G.lineup[s][pi];
+    let pts=null;
+    if(mode!=='setup'&&G.res[s]){let a=0,b=0;G.res[s][pi].forEach((r,mi)=>{if(mode==='sim'&&t<r.played)return;if(r.w==='a')a++;else if(r.w==='b')b++;else{a+=.5;b+=.5}});pts=[a,b]}
+    html+=pairTitle(pr,pts)+`<div class="board" style="--ca:${TEAM[pr.a].c};--cb:${TEAM[pr.b].c}">`+ms.map((m,mi)=>rowHTML(s,pi,mi,m,mode,G.res[s]?G.res[s][pi][mi]:null,t)).join('')+`</div>`;
+  });
+  if(mode==='sim'){
+    html+=`<!--TOP--><div class="bar"><span class="hint grow">On the course…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
+  } else if(mode==='result'){
+    html+=resultPanel(s);
+  }
+  return html;
+}
+function setupHint(s){
+  const S=SESS[s];
+  const base=s<=2?`Every player plays once in each session. Set ${TEAM[pairingsFor(s)[0].a].n} vs ${TEAM[pairingsFor(s)[0].b].n} first, then ${TEAM[pairingsFor(s)[1].a].n} vs ${TEAM[pairingsFor(s)[1].b].n}. Fill all ${S.ms} matches on each board.`:s===3?'The two surviving teams meet. Fill all 8 matches.':'Singles: all 16 players on each side play one match.';
+  return base+' Tap a slot to choose a player (on a computer you can also drag from the list). The bar shows the chance each side wins, with the tie in the middle. Handicap is on each card (plus = better than scratch, * = estimated).';
+}
+function boardFull(s){return G.lineup[s].every(ms=>ms.every(m=>m.a.every(Boolean)&&m.b.every(Boolean)))}
+function currentStory(s){
+  let pts=0;G.lineup[s].forEach(ms=>ms.forEach(m=>{if(m.a.every(Boolean)&&m.b.every(Boolean))pts+=storyHits([...m.a,...m.b],[m.a,m.b]).reduce((a,h)=>a+h.pts*hitMult(h,s),0)}));return pts;
+}
+function storyBook(s){
+  const aliveSet=new Set(s<=2?D.players.map(p=>p.id):[...teamIds(pairingsFor(s)[0].a),...teamIds(pairingsFor(s)[0].b)]);
+  const rows=D.pairs.filter(p=>aliveSet.has(p.a)&&aliveSet.has(p.b));
+  const used=new Set();
+  G.lineup[s].forEach(ms=>ms.forEach(m=>{const ids=[...m.a,...m.b];D.pairs.forEach((p,i)=>{if(ids.includes(p.a)&&ids.includes(p.b))used.add(i)})}));
+  return `<details class="panel"><summary>Storyline book · ${currentStory(s)} EVPs in your lineup so far</summary><ul class="ul">${D.pairs.map((p,i)=>(aliveSet.has(p.a)&&aliveSet.has(p.b))?`<li><span class="p">${used.has(i)?'✓':'+'+p.w*storyMult(s)}</span><span><b>${P[p.a].name}</b> & <b>${P[p.b].name}</b> <span class="mute">· ${p.t.charAt(0).toUpperCase()+p.t.slice(1)}</span></span></li>`:'').join('')}${D.groups.map(g=>`<li><span class="p">+${g.w*(g.trash?TRASHM[s]:storyMult(s))}</span><span><b>${g.name}</b> ${g.trash?'(trash talk, same duo or against each other)':'friends'}: <span class="mute">${g.m.map(x=>P[x].name).join(', ')} (per pair in a match)</span></span></li>`).join('')}</ul></details>`;
+}
+function resultPanel(s){
+  const S=SESS[s],prs=pairingsFor(s);
+  const mine=G.summary[s]||{items:[],notes:[]};
+  const by=k=>mine.items.filter(i=>i.k===k).reduce((a,i)=>a+i.pts,0);
+  const bar=`<div class="bar"><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="next">${({1:'CONTINUE TO SESSION 2',2:'DAY 1 RECAP',3:'CONTINUE TO SINGLES',4:'DAY 2 RECAP',5:'CONTINUE TO THE SEMIFINAL',6:'CONTINUE TO THE FINAL',7:'SEE FINAL SCORE'})[s]}</button></div>`;
+  let html=`<!--TOP-->${bar}<div class="cols" style="margin-top:16px"><div class="panel"><h2 style="color:var(--cream);font-size:34px;margin-bottom:6px">Session ${s} results</h2>`;
+  mine.notes.forEach(n=>html+=`<p style="margin:6px 0;font-size:20px">${n}</p>`);
+  html+=`<table><tr><th>EVPs</th><th class="r">Earned</th></tr>
+    <tr><td>Close matches (${mine.items.filter(i=>i.k==='close').length})</td><td class="r num">${by('close')}</td></tr>
+    <tr><td>Storylines</td><td class="r num">${by('story')}</td></tr>
+    <tr><td>Close teams</td><td class="r num">${by('team')}</td></tr>
+    <tr><td>Popularity</td><td class="r num">${by('pop')}</td></tr>
+    <tr><th>Session total</th><th class="r num gold">${mine.items.reduce((a,i)=>a+i.pts,0)}</th></tr></table>`;
+  html+=`<div class="hint" style="margin-top:8px">Real tournament, same session: ${REAL.filter(i=>i.s===s).reduce((a,i)=>a+i.pts,0)}</div></div></div>`;
+
+  return html+'<!--/TOP-->';
+}
+</script>
+<script>
+/* ---------- sessions 5-7 renderers ---------- */
+const teamName=ids=>ids.length?`Team ${P[ids[0]].name}`:'New team';
+const stars=n=>'★'.repeat(n)||'–';
+function lineupTeams(s){return G.lineup[s].map(sl=>({name:teamName(sl.filter(Boolean)),ids:sl}))}
+function tcolHTML(s,ti,slots,opts){
+  const filled=slots.filter(Boolean);
+  const hdr=filled.length?teamName(filled):'Team '+(ti+1);
+  const mode=G.phase==='setup'?'setup':'view';
+  const cards=slots.map((id,k)=>{
+    const lab=`<div class="tslot">`+(mode==='setup'?slotHTML(id,`data-act="pickt" data-ti="${ti}" data-k="${k}"`,{rank:k+1}):`<div class="slot filled">${cardHTML(id,{rank:k+1})}</div>`)+`<div class="hint">${id?stars(P[id].tier):''}</div></div>`;return lab}).join('');
+  const av=avgH(filled);
+  return `<div class="tcol ${opts&&opts.cls||''}"><h3>${hdr}${av!==null?`<small>avg hcp ${av}</small>`:''}</h3><div class="tslots">${cards}</div>${opts&&opts.extra||''}</div>`;
+}
+function cutPhase(){
+  const s=5;ensureLineup(s);const mode=G.phase;
+  let html=bannerHTML(5,mode==='setup'?0:mode==='sim'?1:2);
+  html+=`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:28px;margin-bottom:4px">How the cut works</h3><p style="margin:0;font-size:18px">Four teams of four, ranked 1 to 4. Every team sends its #1 to play hole 1. Best score and ties are safe. The rest send their #2 to hole 2, then #3. If they are still tied, the #1s go again. The last team standing is eliminated, so the #4 never plays. Order is strategy: your #1 is your first line of defence.</p></div>`;
+  if(mode==='setup'){
+    html+=`<div class="bar"><div class="hint grow">Build four teams from the 16 survivors (${TEAM[G.dayWinner].n}). Drag a player from the list onto a slot, or tap a slot to choose one. Stars show popularity tier, used for scoring in sessions 5 to 7.</div></div>`;
+    html+=trayHTML(5);
+    html+=`<div class="tcols">${G.lineup[5].map((sl,ti)=>tcolHTML(5,ti,sl)).join('')}</div>`;
+    const full=G.lineup[5].every(sl=>sl.every(Boolean));
+    html+=`<div class="bar"><button class="btn" data-act="auto">Auto-draft</button><button class="btn" data-act="real">Load real teams</button><button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button></div>`;
+    return html;
+  }
+  const t=G.anim?G.anim.t:G.cut.events.length, ev=G.cut.events, teams=G.cut.teams;
+  const safe=new Set();ev.slice(0,t).forEach(e=>e.safe.forEach(i=>safe.add(i)));
+  const done=t>=ev.length;
+  html+=`<div class="tcols" style="margin-top:12px">${teams.map((tm,ti)=>{
+    const lines=ev.slice(0,t).map(e=>{const en=e.entries.find(x=>x.ti===ti);if(!en)return '';
+      return `<div class="delta ${en.d<0?'bi':en.d>0?'bo':''}">H${e.hole} · par ${e.par} · #${e.rank+1} ${P[en.pid].name}: ${dlabel(en.d)}${e.safe.includes(ti)?' · SAFE':e.replay?' · all tied':''}</div>`}).join('');
+    const cls=done&&G.cut.eliminated===ti?'out':safe.has(ti)?'safe':'';
+    return tcolHTML(5,ti,tm.ids,{cls,extra:`<div style="padding:0 10px 10px">${lines}${done&&G.cut.eliminated===ti?'<div class="delta bo">ELIMINATED</div>':''}</div>`});
+  }).join('')}</div>`;
+  if(mode==='sim') html+=`<!--TOP--><div class="bar"><span class="hint grow">Hole ${Math.min(t+1,ev.length)} of the playoff…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
+  else html+=resultPanel(5);
+  return html;
+}
+function semiPhase(){
+  const s=6;ensureLineup(s);const mode=G.phase,S=SESS[6];
+  let html=bannerHTML(6,mode==='setup'?0:mode==='sim'?1:2);
+  html+=`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:28px;margin-bottom:6px">Semifinal: four teams of three</h3><div class="hint" style="margin-bottom:8px">Nine holes of alternate shot, stroke play. The top two teams reach the final; a tie for second goes to a playoff. Players rotate tee shots in your order: #1 tees off holes 1, 4, 7, #2 holes 2, 5, 8, #3 holes 3, 6, 9. Par 3s lean on the tee shot, par 5s on the rest.</div></div>`;
+  if(mode==='setup'){
+    html+=`<div class="bar"><div class="hint grow">Build four teams of three from the 12 survivors and set each tee order. Drag a player from the list onto a slot, or tap a slot to choose one.</div></div>`;
+    html+=trayHTML(6);
+    html+=`<div class="tcols">${G.lineup[6].map((sl,ti)=>tcolHTML(6,ti,sl)).join('')}</div>`;
+    const full=G.lineup[6].every(sl=>sl.every(Boolean));
+    html+=`<div class="bar"><button class="btn" data-act="auto">Auto-draft</button><button class="btn" data-act="real">Load real teams</button><button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button></div>`;
+    return html;
+  }
+  const t=G.anim?G.anim.t:9, sm=G.semi;
+  const rows=sm.teams.map((tm,i)=>{let run=0;const cells=sm.holes[i].map((d,h)=>{if(h>=t)return `<td class="r mute">·</td>`;run+=d;return `<td class="r ${d<0?'good':d>0?'bad':''}">${fmtDelta(d)}</td>`}).join('');
+    const tot=sm.holes[i].slice(0,Math.min(t,9)).reduce((a,b)=>a+b,0);
+    const adv=t>=9&&sm.advance.includes(i);
+    return `<tr><td><b>${tm.name}</b> ${adv?'<span class="tag" style="background:var(--good);color:#06301a">ADVANCES</span>':''}</td>${cells}<td class="r num gold"><b>${fmtDelta(tot)}</b></td></tr>`}).join('');
+  html+=`<div class="panel" style="margin-top:12px;overflow-x:auto"><table><tr><th>Team</th>${S.labels.map(l=>`<th class="r">${l}</th>`).join('')}<th class="r">Total</th></tr>${rows}</table></div>`;
+  if(mode==='sim') html+=`<!--TOP--><div class="bar"><span class="hint grow">Hole ${Math.min(t+1,9)}…</span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
+  else{
+    html+=`<div class="tcols" style="margin-top:12px">${sm.teams.map((tm,i)=>tcolHTML(6,i,tm.ids,{cls:sm.advance.includes(i)?'safe':'out'})).join('')}</div>`+resultPanel(6);
+  }
+  return html;
+}
+function finalPhase(){
+  const s=7;ensureLineup(s);const mode=G.phase,S=SESS[7];
+  const A=G.lineup[7][0],B=G.lineup[7][1];
+  let html=bannerHTML(7,mode==='setup'?0:mode==='sim'?1:(G.res[7]&&G.res[7].x?2:2),G.res[7]&&G.res[7].x&&mode!=='setup'?'It went to extra holes: the island-green 19th, “Big Rock”.':'');
+  const teams=G.fin.teams;
+  html+=`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:28px;margin-bottom:6px">The final: 3v3 alternate shot, 18-hole match play</h3><div class="hint" style="margin-bottom:8px">Set the tee order for both teams. Tee shots rotate #1, #2, #3. A tie after 18 goes to extra holes. Winners take <span class="gold">$1.3 million each</span>.</div></div>`;
+  const colA=TEAM[teams[0].color]?TEAM[teams[0].color].c:'#6b9ad0';
+  const t=mode==='sim'?G.anim.t:99,r=G.res[7];
+  const fo=mode==='setup'?finalOdds(A,B):null;
+  const orderCol=(ti,ord)=>`<div class="tcol"><h3>${teams[ti].name}<small>avg hcp ${avgH(ord)}${fo?' \u00b7 '+Math.round((ti?fo.b:fo.a)*100)+'% to win':''}</small></h3><div class="tslots">${ord.map((id,k)=>`<div class="tslot"><div class="slot filled">${cardHTML(id,{rank:k+1})}</div>${mode==='setup'?`<div class="ord"><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="-1" aria-label="Move earlier">◀</button><button data-act="mv" data-ti="${ti}" data-k="${k}" data-d="1" aria-label="Move later">▶</button></div>`:''}<div class="hint">${stars(P[id].tier)}</div></div>`).join('')}</div></div>`;
+  html+=`<div class="tcols" style="margin-top:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))">${orderCol(0,A)}${orderCol(1,B)}</div>`;
+  if(mode==='setup'){
+    const o=fo;
+    html+=`<div class="panel" style="margin-top:12px"><div class="hint" style="margin-bottom:6px">Chance to win the title (extra holes included)</div>${oddsHTML({a:o.a,t:0,b:o.b},'#6b9ad0','#c9a24a')}<div class="otxt" style="max-width:190px"><span>${teams[0].name}</span><span>${teams[1].name}</span></div></div>`;
+    html+=`<div class="bar"><button class="btn" data-act="auto">Best order</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span><button class="btn main" data-act="decide">DECIDE MATCH</button></div>`;
+    return html;
+  }
+  let status='';
+  if(mode==='sim'){
+    if(t>=r.played+(r.x?1:0)) status=`${r.w==='a'?teams[0].name:teams[1].name} wins ${r.m}`;
+    else{const lead=r.trace[Math.min(t,r.trace.length)-1]||0;status=t<1?'Teeing off…':`${lead===0?'All square':(lead>0?teams[0].name:teams[1].name)+' '+Math.abs(lead)+' UP'} thru ${Math.min(t,18)}`}
+    html+=`<!--TOP--><div class="panel" style="margin-top:12px;text-align:center"><div class="status" style="font-size:34px">${status}</div></div><div class="bar"><span class="grow"></span><button class="btn ghost" data-act="skip">Skip</button></div><!--/TOP-->`;
+  } else {
+    html+=`<!--TOP--><div class="panel" style="margin-top:12px;text-align:center"><div class="chip-cream">Champions</div><div class="prize" style="margin:10px 0">${r.w==='a'?teams[0].name:teams[1].name}</div><div class="status" style="font-size:30px">won ${r.m}</div><div class="hint" style="margin-top:6px">$1.3M each to ${(r.w==='a'?A:B).map(i=>P[i].name).join(', ')}</div></div><!--/TOP-->`+resultPanel(7);
+  }
+  return html;
+}
+function finalOdds(A,B){
+  const probs=probsFor(7,A,B),o=dist(probs),p=probs[probs.length-1],k=p.pa/(p.pa+p.pb);
+  return {a:o.a+o.t*k,b:o.b+o.t*(1-k)};
+}
+
+/* ---------- end screen ---------- */
+function endHTML(){
+  const mine=G.log,rows=[1,2,3,4,5,6,7].map(s=>{const a=mine.filter(i=>i.s===s).reduce((x,i)=>x+i.pts,0),b=REAL.filter(i=>i.s===s).reduce((x,i)=>x+i.pts,0);return `<tr><td>${SESS[s].name}: ${SESS[s].sub}</td><td class="r num">${a}</td><td class="r num mute">${b}</td></tr>`}).join('');
+  const kinds=[['close','Close matches'],['story','Storylines'],['team','Close teams'],['pop','Popularity']].map(([k,l])=>`<tr><td>${l}</td><td class="r num">${sumLog(mine,k)}</td><td class="r num mute">${sumLog(REAL,k)}</td></tr>`).join('');
+  const a=sumLog(mine),b=sumLog(REAL);
+  const champ=G.res[7]?G.fin.teams[G.res[7].w==='a'?0:1].name:'';
+  const wi=G.res[7]&&G.res[7].w==='a'?0:1,champIds=G.fin?G.fin.teams[wi].ids:[];
+  const champHTML=champIds.length?`<div class="panel champ"><div class="chip-cream">Your champions</div><div class="champrow">${champIds.map(id=>`<div class="champc">${cardHTML(id,{big:true})}<div class="pnm" style="font-size:18px;color:var(--cream)">${P[id].name}</div></div>`).join('')}</div><div class="hint" style="text-align:center">${champ} takes home $1.3M each.</div><div style="margin-top:10px"><button class="btn main" data-act="share" style="font-size:22px;padding:8px 18px">SHARE YOUR TOURNAMENT</button></div></div>`:'';
+  return champHTML+`<div class="banner" style="margin-top:14px"><img src="${img('paynes',2)}" alt="Payne's Valley island green"><div class="bin"><div><div class="chip-cream">Tournament complete</div><h1 style="margin-top:8px">${a>b?'YOU BEAT THE REAL ONE':a===b?'DEAD EVEN WITH REALITY':'THE REAL ONE WINS'}</h1></div><div class="bnote">${champ} took the title. ${a>b?`Your entertainment score of ${a} exceeded the real tournament score of ${b}. Congrats, Commish!`:a===b?`Your entertainment score of ${a} matched the real tournament score of ${b}. Not bad, Commish!`:`Your entertainment score of ${a} fell short of the real tournament score of ${b}. Run it back, Commish!`}</div></div></div>
+  <div class="cols" style="margin-top:14px;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))"><div class="panel"><h2 style="color:var(--cream);margin-bottom:8px">By session</h2><table><tr><th>Session</th><th class="r">You</th><th class="r">Real</th></tr>${rows}<tr><th>Total</th><th class="r num gold">${a}</th><th class="r num">${b}</th></tr></table></div>
+  <div class="panel"><h2 style="color:var(--cream);margin-bottom:8px">By category</h2><table><tr><th>Category</th><th class="r">You</th><th class="r">Real</th></tr>${kinds}</table><div class="hint" style="margin-top:8px">Popularity points come from the commissioner's 1 to 64 popularity ranking.</div></div></div>
+  ${reviewHTML()}
+  <div class="bar"><button class="btn main" data-act="share">SHARE YOUR TOURNAMENT</button><button class="btn" data-act="again">PLAY AGAIN</button><button class="btn ghost" data-act="seereal">See what really happened</button></div>`;
+}
+
+/* ---------- playoffs ---------- */
+function playoffTeams(ca,cb,course){
+  const A=byHcp(teamIds(ca)),B=byHcp(teamIds(cb)),log=[];
+  for(let i=0;i<60;i++){
+    const j=(i%8)*2,da=[A[j],A[j+1]],db=[B[j],B[j+1]],p=holeP(strength(da,'alt'),strength(db,'alt'),'alt',course),r=Math.random();
+    const w=r<p.pa?'a':r<p.pa+p.pb?'b':'t';
+    log.push(`Playoff hole ${i+1}: ${da.map(x=>P[x].name).join(' / ')} vs ${db.map(x=>P[x].name).join(' / ')} · ${w==='t'?'halved':(w==='a'?TEAM[ca].n:TEAM[cb].n)+' wins'}`);
+    if(w!=='t') return {w,log};
+  }
+  return {w:Math.random()<.5?'a':'b',log};
+}
+const ptsOf=rs=>{let a=0,b=0;rs.forEach(r=>{if(r.w==='a')a++;else if(r.w==='b')b++;else{a+=.5;b+=.5}});return [a,b]};
+
+/* ---------- decide ---------- */
+function decide(){
+  const s=G.s,S=SESS[s],items=[],notes=[];
+  if(s<=4){
+    const prs=pairingsFor(s);
+    G.res[s]=prs.map((pr,pi)=>G.lineup[s][pi].map(m=>simMatch(probsFor(s,m.a,m.b),false)));
+    prs.forEach((pr,pi)=>G.lineup[s][pi].forEach((m,mi)=>matchPts(s,G.res[s][pi][mi],m.a,m.b).forEach(i=>items.push(i))));
+    if(s===2){
+      const w=[];G.day1=[];
+      prs.forEach((pr,pi)=>{
+        const [a1,b1]=ptsOf(G.res[1][pi]),[a2,b2]=ptsOf(G.res[2][pi]),a=a1+a2,b=b1+b2;
+        teamClosePts(a,b,`${TEAM[pr.a].n} vs ${TEAM[pr.b].n}`).forEach(i=>items.push(i));
+        let win=a>b?'a':b>a?'b':null,line=`${TEAM[pr.a].n} ${a} – ${b} ${TEAM[pr.b].n}`;
+        if(!win){const po=playoffTeams(pr.a,pr.b,'ozarks');win=po.w;notes.push(...po.log);line+=' (tied, playoff)'}
+        G.day1.push({a:pr.a,b:pr.b,s1:[a1,b1],s2:[a2,b2],pa:a,pb:b,po:a===b,win:win==='a'?pr.a:pr.b});
+        w.push(win==='a'?pr.a:pr.b);notes.push(`<b>${line}:</b> ${TEAM[w[pi]].n} advances.`);
+      });
+      G.w1=w[0];G.w2=w[1];
+    }
+    if(s===4){
+      const pr=prs[0],[a3,b3]=ptsOf(G.res[3][0]),[a4,b4]=ptsOf(G.res[4][0]),a=a3+a4,b=b3+b4;
+      teamClosePts(a,b,`${TEAM[pr.a].n} vs ${TEAM[pr.b].n}`).forEach(i=>items.push(i));
+      let win=a>b?'a':b>a?'b':null,line=`${TEAM[pr.a].n} ${a} – ${b} ${TEAM[pr.b].n} (sessions 3 and 4)`;
+      if(!win){const po=playoffTeams(pr.a,pr.b,'buffalo');win=po.w;notes.push(...po.log);line+=' (tied, playoff)'}
+      G.dayWinner=win==='a'?pr.a:pr.b;G.alive16=teamIds(G.dayWinner);
+      G.day2={a:pr.a,b:pr.b,s3:[a3,b3],s4:[a4,b4],pa:a,pb:b,po:a===b,win:G.dayWinner};
+      notes.push(`<b>${line}:</b> ${TEAM[G.dayWinner].n} advances. The other three teams are eliminated.`);
+    }
+    if(s===1||s===3||s===4){prs.forEach((pr,pi)=>{if(s===4)return;const [a,b]=ptsOf(G.res[s][pi]);notes.push(`<b>${TEAM[pr.a].n} ${a} – ${b} ${TEAM[pr.b].n}</b> this session.`)})}
+    const mx=S.n;G.summary[s]={items,notes};
+    return startAnim(mx,380);
+  }
+  if(s===5){
+    const teams=lineupTeams(5).map(t=>({name:t.name,ids:t.ids}));
+    G.cut=simCut(teams);G.cut.teams=teams;
+    teams.forEach(t=>storyHits(t.ids).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,5),txt:h.txt})));
+    items.push({k:'pop',pts:tierSum(teams.flatMap(t=>t.ids))*.5,txt:'16 players alive, x0.5'});
+    const el=G.cut.eliminated;notes.push(`<b>${teams[el].name}</b> is eliminated. 12 players advance.`);
+    G.alive12=teams.flatMap((t,i)=>i===el?[]:t.ids);
+    G.summary[5]={items,notes};return startAnim(G.cut.events.length,1100);
+  }
+  if(s===6){
+    const teams=lineupTeams(6),pars=S.pars;
+    const holes=teams.map(t=>pars.map((par,i)=>strokeDelta(trioStr(t.ids,i,par),par,'paynes')));
+    const tot=holes.map(h=>h.reduce((a,b)=>a+b,0));
+    const order=tot.map((v,i)=>i).sort((a,b)=>tot[a]-tot[b]);
+    let advance=[];const below=[];const cut=tot[order[1]];
+    const tied=order.filter(i=>tot[i]===cut),sure=order.filter(i=>tot[i]<cut);
+    advance=[...sure];let need=2-sure.length,pool=[...tied];
+    while(need>0&&pool.length>need){
+      const sc=pool.map(i=>({i,d:strokeDelta(trioStr(teams[i].ids,0,4),4,'paynes')}));
+      const best=Math.min(...sc.map(x=>x.d)),worst=Math.max(...sc.map(x=>x.d));
+      notes.push(`Playoff hole: ${sc.map(x=>`${teams[x.i].name} ${dlabel(x.d)}`).join(', ')}`);
+      if(best===worst) continue;
+      if(need>=1){const win=sc.filter(x=>x.d===best).map(x=>x.i);
+        if(win.length<=need){advance.push(...win);need-=win.length;pool=pool.filter(i=>!win.includes(i))}
+        else pool=win}
+    }
+    if(need>0) advance.push(...pool.slice(0,need));
+    const sorted=[...tot].sort((a,b)=>a-b);
+    if(sorted[2]-sorted[1]<=2) items.push({k:'team',pts:5,txt:`Second place decided by ${sorted[2]-sorted[1]} stroke${sorted[2]-sorted[1]===1?'':'s'} or fewer`});
+    if(tight3(tot)) items.push({k:'team',pts:5,txt:'Three teams within 2 strokes of each other'});
+    teams.forEach(t=>storyHits(t.ids).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,6),txt:h.txt})));
+    items.push({k:'pop',pts:tierSum(teams.flatMap(t=>t.ids))*1,txt:'12 players alive, x1'});
+    notes.unshift(`<b>${advance.map(i=>teams[i].name).join(' and ')}</b> advance to the final.`);
+    G.semi={teams,holes,tot,advance};
+    G.fin={teams:advance.map(i=>({name:teams[i].name,ids:[...teams[i].ids],color:null}))};
+    G.summary[6]={items,notes};return startAnim(9,520);
+  }
+  if(s===7){
+    const A=G.lineup[7][0],B=G.lineup[7][1];
+    const r=simMatch(probsFor(7,A,B),true);G.res[7]=r;
+    const all=[...A,...B];
+    if(isClose(r)) items.push({k:'team',pts:5,txt:r.x?'Final went to extra holes':'Final decided on the last hole'});
+    storyHits(all,[A,B]).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,7),txt:h.txt}));
+    items.push({k:'pop',pts:tierSum(all)*1.5,txt:'6 finalists, x1.5'});
+    const wn=G.fin.teams[r.w==='a'?0:1].name;
+    notes.push(`<b>${wn}</b> wins the final ${r.m}.`);
+    G.summary[7]={items,notes};return startAnim(r.played+(r.x?1:0),420);
+  }
+}
+function simCut(teams){
+  let remaining=teams.map((_,i)=>i),rank=0,hole=0;const events=[];
+  while(remaining.length>1&&hole<40){
+    hole++;const par=[3,4,5][Math.floor(Math.random()*3)];
+    const entries=remaining.map(ti=>{const pid=teams[ti].ids[rank];return {ti,pid,d:strokeDelta(P[pid].h,par,'buffalo')}});
+    const best=Math.min(...entries.map(e=>e.d)),safe=entries.filter(e=>e.d===best).map(e=>e.ti),allTied=safe.length===entries.length;
+    const ev={hole,par,rank,entries,safe:allTied?[]:safe,replay:allTied};
+    if(!allTied) remaining=remaining.filter(t=>!safe.includes(t));
+    events.push(ev);rank=(rank+1)%3;
+  }
+  return {events,eliminated:remaining[0]};
+}
+function startAnim(max,ms){
+  clearInterval(G.iv);G.anim={t:0,max};G.phase='sim';
+  G.log=G.log.filter(i=>i.s!==G.s);G.logPending=true;render();window.scrollTo({top:0,behavior:'smooth'});
+  G.iv=setInterval(()=>{G.anim.t++;if(G.anim.t>max)finishAnim();else render()},ms);
+}
+function finishAnim(){
+  clearInterval(G.iv);G.anim=null;G.phase='result';
+  G.summary[G.s].items.forEach(i=>G.log.push({s:G.s,...i}));
+  render();
+}
+
+/* ---------- lineup tools ---------- */
+function makeUnits(ids,size,fmt){
+  const sorted=byHcp(ids);if(size===1)return sorted.map(i=>[i]);
+  const n=sorted.length,u=[];for(let i=0;i<n/2;i++)u.push([sorted[i],sorted[n-1-i]]);
+  return u.sort((a,b)=>strength(a,fmt)-strength(b,fmt));
+}
+function snake(ids,nTeams,size){
+  const sorted=byHcp(ids),teams=Array.from({length:nTeams},()=>[]);
+  sorted.forEach((id,i)=>{const r=Math.floor(i/nTeams),c=i%nTeams;teams[r%2===0?c:nTeams-1-c].push(id)});
+  return teams.map(t=>byHcp(t));
+}
+function autoLineup(){
+  const s=G.s,S=SESS[s];ensureLineup(s);
+  if(s<=4){pairingsFor(s).forEach((pr,pi)=>{const A=makeUnits(teamIds(pr.a),S.size,S.fmt),B=makeUnits(teamIds(pr.b),S.size,S.fmt);G.lineup[s][pi]=A.map((a,i)=>({a,b:B[i]}))})}
+  else if(s===5) G.lineup[5]=snake(G.alive16,4,4);
+  else if(s===6) G.lineup[6]=snake(G.alive12,4,3);
+  else if(s===7){G.lineup[7]=G.lineup[7].map(t=>byHcp(t))}
+}
+function loadReal(){
+  const s=G.s,R=D.real;ensureLineup(s);
+  if(s<=4){
+    const list=s===1?[...R.s1['blue-white'],...R.s1['red-green']]:s===2?[...R.s2['blue-white'],...R.s2['red-green']]:s===3?R.s3:R.s4;
+    const prs=pairingsFor(s),cnt={};
+    list.forEach(m=>{const ta=P[m.a[0]].team,tb=P[m.b[0]].team;
+      const pi=prs.findIndex(p=>(p.a===ta&&p.b===tb)||(p.a===tb&&p.b===ta));if(pi<0)return;
+      const mi=cnt[pi]=(cnt[pi]||0);cnt[pi]++;if(mi>=G.lineup[s][pi].length)return;const flip=prs[pi].a!==ta;
+      G.lineup[s][pi][mi]={a:[...(flip?m.b:m.a)],b:[...(flip?m.a:m.b)]};});
+  } else if(s===5){
+    const alive=new Set(G.alive16);G.lineup[5]=R.s5.teams.map(t=>t.map(id=>alive.has(id)?id:null));
+  } else if(s===6){
+    const alive=new Set(G.alive12);G.lineup[6]=R.s6.teams.map(t=>t.map(id=>alive.has(id)?id:null));
+  }
+}
+function clearLineup(){delete G.lineup[G.s];ensureLineup(G.s)}
+function openPicker(ctx){
+  G.pickCtx=ctx;const s=G.s;let pool,title;
+  if(ctx.kind==='m'){
+    const pr=pairingsFor(s)[ctx.pi],color=pr[ctx.side],ms=G.lineup[s][ctx.pi];
+    const placed=new Set();ms.forEach(m=>m[ctx.side].forEach(x=>x&&placed.add(x)));
+    pool=byHcp(teamIds(color).filter(i=>!placed.has(i)));title=`Choose a player · ${TEAM[color].n}`;
+  } else {
+    const placed=new Set();G.lineup[s].forEach(sl=>sl.forEach(x=>x&&placed.add(x)));
+    pool=byHcp(aliveIds(s).filter(i=>!placed.has(i)));title=`Choose a player · team ${ctx.ti+1}`;
+  }
+  const cur=ctx.kind==='m'?G.lineup[s][ctx.pi][ctx.mi][ctx.side][ctx.k]:G.lineup[s][ctx.ti][ctx.k];
+  modal(`<h2>${title}</h2><div class="pgrid">${pool.map(id=>`<button class="pbtn" data-act="assign" data-id="${id}">${cardHTML(id,{big:true})}<div class="pnm">${P[id].name}${s>=5?' '+stars(P[id].tier):''}</div></button>`).join('')||'<div class="hint">Everyone is placed.</div>'}</div><div class="bar">${cur?'<button class="btn" data-act="clearslot">Clear slot</button>':''}<span class="grow"></span><button class="btn ghost" data-act="closem">Close</button></div>`);
+}
+function assign(id){
+  const c=G.pickCtx,s=G.s;if(!c)return;
+  if(c.kind==='m')G.lineup[s][c.pi][c.mi][c.side][c.k]=id;else G.lineup[s][c.ti][c.k]=id;
+}
+
+/* ---------- real tournament viewer ---------- */
+function realView(s){
+  const R=D.real;let body='';
+  const rows=(list,ca,cb,sn)=>`<div class="board" style="--ca:${ca};--cb:${cb}">${list.map(m=>`<div class="mrow ${(m.w==='tie'||m.m==='1UP')?'close':''}" style="--ca:${ca};--cb:${cb}"><div class="side">${m.a.map(i=>`<div class="slot filled">${cardHTML(i)}</div>`).join('')}</div><div class="mid">${chipHTML({w:m.w,m:m.m==='Halved'?'A/S':m.m})}${m.u?'<span class="tag warn">unfinished</span>':''}</div><div class="side">${m.b.map(i=>`<div class="slot filled">${cardHTML(i)}</div>`).join('')}</div></div>`).join('')}</div>`;
+  if(s<=2){body=['blue-white','red-green'].map(k=>{const [x,y]=k.split('-'),l=R['s'+s][k];const [a,b]=ptsOf(l.map(m=>({w:m.w})));return pairTitle({a:x,b:y},[a,b])+rows(l,TEAM[x].c,TEAM[y].c)}).join('')
+    +(s===2?`<p class="hint">Day 1 totals: Blue 8 – 8 White (White won on a playoff), Red 5.5 – 10.5 Green.</p>`:'')}
+  else if(s===3||s===4){const l=R['s'+s],[a,b]=ptsOf(l.map(m=>({w:m.w})));body=pairTitle({a:'green',b:'white'},[a,b])+rows(l,TEAM.green.c,TEAM.white.c)+`<p class="hint">Sessions 3 and 4 together: Green 9 – 15 White (unfinished matches counted for whoever was up).</p>`}
+  else if(s===5){body=`<div class="tcols">${R.s5.teams.map((t,i)=>`<div class="tcol ${R.s5.names[i]===R.s5.eliminated?'out':''}"><h3>${R.s5.names[i]}</h3><div class="tslots">${t.map((id,k)=>`<div class="slot filled">${cardHTML(id,{rank:k+1})}</div>`).join('')}</div></div>`).join('')}</div><p class="hint">Hole 1 (the #1s): Big John and Ruffels safe. Hole 2 (the #2s): Whit par, Jake bogey, so Team Micah advanced and Team Grant was eliminated.</p>`}
+  else if(s===6){body=`<div class="tcols">${R.s6.teams.map((t,i)=>`<div class="tcol ${R.s6.advanced.includes(R.s6.names[i])?'safe':'out'}"><h3>${R.s6.names[i]} · ${fmtDelta(R.s6.scores[i])}</h3><div class="tslots">${t.map((id,k)=>`<div class="slot filled">${cardHTML(id,{rank:k+1})}</div>`).join('')}</div></div>`).join('')}</div>`}
+  else{body=`<div class="tcols">${[R.s7.a,R.s7.b].map((t,i)=>`<div class="tcol ${i===0?'safe':''}"><h3>${i===0?'Team Perez · WINNERS':'Team Big John'}</h3><div class="tslots">${t.map((id,k)=>`<div class="slot filled">${cardHTML(id,{rank:k+1})}</div>`).join('')}</div></div>`).join('')}</div><p class="hint">Team Perez won 3&2, ending after hole 16. $1.3M each.</p>`}
+  const rs=REAL.filter(i=>i.s===s);
+  modal(`<h2>What really happened · ${SESS[s].name}</h2>${body}<div class="hint" style="margin-top:8px">Scored with your rules, this session was worth ${rs.reduce((a,i)=>a+i.pts,0)} points.</div><div class="bar"><span class="grow"></span><button class="btn ghost" data-act="closem">Close</button></div>`);
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const a=el.dataset.act;
+  if(a==='info'){infoModal()}
+  else if(a==='start'){const he=G&&G.hcpEdits?{...G.hcpEdits}:{};newGame();G.hcpEdits=he;applyEdits(he);G.phase='draft';G.draft={mode:'recap',picks:[]};render();window.scrollTo(0,0)}
+  else if(a==='keep'||a==='dstart'){G.redraft=a==='dstart';if(!G.redraft)G.pairOpt=0;G.phase='teams';render();window.scrollTo(0,0)}
+  else if(a==='hcpopen'){modal('');window.__page='hcp';render();window.scrollTo(0,0)}
+  else if(a==='hcpdone'){window.__page=null;render();window.scrollTo(0,0)}
+  else if(a==='hbetter'||a==='hworse'){const pl=P[el.dataset.id];setBase(pl.id,baseH(pl)+(a==='hbetter'?-.5:.5));const y=window.scrollY;render();window.scrollTo(0,y)}
+  else if(a==='hreset'){resetHcps();G.hcpEdits={};const y=window.scrollY;render();window.scrollTo(0,y)}
+  else if(a==='evp'){evpModal((window.__evp||[])[+el.dataset.e])}
+  else if(a==='tstart'){G.phase='setup';ensureLineup(1);render();window.scrollTo(0,0)}
+  else if(a==='tback'){G.phase='draft';render();window.scrollTo(0,0)}
+  else if(a==='home'){newGame();G.phase='title';render();window.scrollTo(0,0)}
+  else if(a==='page'){modal('');window.__page=el.dataset.v;render();window.scrollTo(0,0)}
+  else if(a==='pageback'){window.__page=null;render();window.scrollTo(0,0)}
+  else if(a==='redraft'){D.players.forEach(x=>x.team=null);G.draft={mode:'pick',picks:[]};render();window.scrollTo(0,0)}
+  else if(a==='dback'){D.players.forEach(x=>x.team=x.rteam);G.draft={mode:'recap',picks:[]};render();window.scrollTo(0,0)}
+  else if(a==='dpick'){draftPick(el.dataset.id);render()}
+  else if(a==='share'){openShare()}
+  else if(a==='nativeshare'){nativeShare()}
+  else if(a==='copyimg'){copyImg(el)}
+  else if(a==='pairopt'){G.pairOpt=+el.dataset.v;render()}
+  else if(a==='dundo'){const id=G.draft.picks.pop();if(id)P[id].team=null;render()}
+  else if(a==='dauto'){while(G.draft.picks.length<64){const r=D.players.filter(x=>!x.team).sort((x,y)=>x.h-y.h)[0];draftPick(r.id)}render()}
+  else if(a==='pick'){openPicker({kind:'m',pi:+el.dataset.pi,mi:+el.dataset.mi,side:el.dataset.side,k:+el.dataset.k})}
+  else if(a==='pickt'){openPicker({kind:'t',ti:+el.dataset.ti,k:+el.dataset.k})}
+  else if(a==='assign'){assign(el.dataset.id);modal('');render()}
+  else if(a==='clearslot'){const c=G.pickCtx,s=G.s;if(c.kind==='m')G.lineup[s][c.pi][c.mi][c.side][c.k]=null;else G.lineup[s][c.ti][c.k]=null;modal('');render()}
+  else if(a==='closem'){if(e.target===el||el.classList.contains('btn')){modal('')}}
+  else if(a==='auto'){autoLineup();render()}
+  else if(a==='save'){const ok=saveGame();el.textContent=ok?'SAVED ✓ '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):"COULDN'T SAVE";setTimeout(()=>{if(el.isConnected)el.textContent='SAVE PROGRESS'},2500)}
+  else if(a==='resume'){if(loadSave()){render();window.scrollTo(0,0)}}
+  else if(a==='goon'){nextSession()}
+  else if(a==='stage'){G.stage=+el.dataset.v;render();window.scrollTo(0,0)}
+  else if(a==='real'){loadReal();render()}
+  else if(a==='clear'){clearLineup();render()}
+  else if(a==='seereal'){realView(G.phase==='end'?7:G.s)}
+  else if(a==='mv'){const ti=+el.dataset.ti,k=+el.dataset.k,d=+el.dataset.d,arr=G.lineup[7][ti],j=k+d;if(j>=0&&j<3){[arr[k],arr[j]]=[arr[j],arr[k]];render()}}
+  else if(a==='decide'){decide()}
+  else if(a==='skip'){if(G.anim){G.anim.t=G.anim.max+1;finishAnim()}}
+  else if(a==='next'){nextSession()}
+  else if(a==='again'){newGame();G.phase='title';render();window.scrollTo(0,0)}
+});
+document.addEventListener('change',e=>{
+  const el=e.target.closest&&e.target.closest('[data-hinput]');if(!el)return;
+  let s=String(el.value).trim().replace(',','.'),v;
+  const m=s.match(/^([+-])?\s*(\d+(?:\.\d+)?)$/);
+  if(!m){render();return}
+  v=parseFloat(m[2]);if(m[1])v=-v;
+  setBase(el.dataset.hinput,v);const y=window.scrollY;render();window.scrollTo(0,y);
+});
+function nextSession(){
+  const s=G.s;
+  if(s<=4&&!(G.res&&G.res[s]))return;
+  if(s===7){G.phase='end';render();window.scrollTo(0,0);return}
+  if(s===2&&G.phase!=='recap'){G.phase='recap';render();window.scrollTo(0,0);return}
+  if(s===4&&G.phase!=='recap2'){G.phase='recap2';render();window.scrollTo(0,0);return}
+  G.s=s+1;G.stage=0;G.phase='setup';ensureLineup(G.s);render();window.scrollTo(0,0);
+}
+newGame();
+render();
+window.__G=()=>G;window.__dbg={decide,autoLineup,nextSession,REAL,D,dist,probsFor,sumLog};
+</script>
+
+<script>
+
+/* ---------- EVP explanation pop-up ---------- */
+function evpModal(i){
+  if(!i)return;
+  let title,body;
+  if(i.kind==='close'){title='Close match';body=`<p>${i.txt}. Nail-biters keep viewers watching, so every match that ends tied or on the last hole earns <b>1 EVP</b>.</p>`}
+  else{
+    const mult=i.trash?TRASHM[i.s]:storyMult(i.s);
+    title=i.nm;
+    const why=i.why.charAt(0).toUpperCase()+i.why.slice(1);
+    body=`<p style="font-size:20px"><b>${why}.</b></p>`+(i.trash?`<p>Both are known for talking trash, and putting them in the same match, together or against each other, makes for good TV. Trash-talk EVPs grow as the tournament goes on.</p>`:`<p>Putting them in the same match, on the same side or against each other, plays up the storyline for viewers.</p>`)+`<p>Worth <b>${i.base} EVP${i.base>1?'s':''}</b>${mult>1?` \u00d7 ${mult} for session ${i.s}`:''}${mult>1?` = <b>${i.pts} EVPs</b>`:''}.</p>`;
+  }
+  modal(`<div class="how"><h2>EVP +${i.pts}</h2><h3 style="margin-top:0">${title}</h3>${body}<div class="bar"><span class="grow"></span><button class="btn main" data-act="closem">GOT IT</button></div></div>`);
+}
+
+/* ---------- adjust handicaps page ---------- */
+const HSRC='https://handicap-tracker.com/articles/internet-invitational-2026-handicaps';
+function hcpHTML(){
+  const edits=G.hcpEdits||{},n=Object.keys(edits).length;
+  const groups=DORDER.map(c=>{const ids=D.players.filter(x=>x.rteam===c).sort((a,b)=>baseH(a)-baseH(b)).map(x=>x.id);
+    return `<div class="tcol" style="border-color:${TEAM[c].c};margin-top:12px"><h3 style="background:${TEAM[c].c};color:#fff">${TEAM[c].n}<small>${ids.length} players</small></h3>${ids.map(id=>{const pl=P[id],b=baseH(pl),ed=edits[id]!==undefined;
+      return `<div class="hrow ${ed?'ed':''}"><img src="${pl.img}" alt=""><div class="hn">${pl.full}${pl.est?'*':''}<small>Original: ${fmtH(pl.w?pl.h0O:pl.hO)}${ed?' \u00b7 <b style="color:var(--gold)">adjusted</b>':''}${pl.w?' \u00b7 +5 added automatically for men\u2019s tees (\u2020)':''}</small></div><div class="hctl"><button class="btn" data-act="hbetter" data-id="${id}" aria-label="Better handicap">Better</button><input type="text" inputmode="text" data-hinput="${id}" value="${fmtH(b)}" aria-label="Handicap for ${pl.full}"><button class="btn" data-act="hworse" data-id="${id}" aria-label="Worse handicap">Worse</button></div></div>`}).join('')}</div>`}).join('');
+  return `<div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="hcpdone">\u2190 Back to the draft</button><span class="grow"></span><button class="btn" data-act="hreset" ${n?'':'disabled'}>Reset all</button></div>
+  <div class="panel"><h1 style="font-size:clamp(34px,7vw,56px);color:var(--cream);margin-bottom:8px">ADJUST PLAYER HANDICAPS</h1>
+  <div class="hint" style="font-size:17px;line-height:1.4">The handicaps in this game were pulled from <a href="${HSRC}" target="_blank" rel="noopener" style="color:var(--gold)">Handicap Tracker's Internet Invitational 2026 handicaps article</a>. A * marks a handicap that is an estimate. If you think a player is better or worse than their number, change it here and every matchup, win chance and team average will use your version. Tap Better or Worse to move a handicap by half a stroke, or type an exact number. A plus handicap (better than scratch) is written with a +, like +3.2.</div></div>
+  ${groups}
+  <div class="bar"><span class="grow"></span><button class="btn main" data-act="hcpdone">DONE</button></div>`;
+}
+
+/* ---------- teams overview page ---------- */
+function teamsHTML(){
+  const r=G.redraft;
+  const choice=r?`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Day 1 matchups</h3><div class="hint" style="margin-bottom:8px">Choose which teams play each other in sessions 1 and 2.</div><div class="bar" style="margin:0">${PAIROPTS.map((o,i)=>`<button class="btn ${(G.pairOpt||0)===i?'main':''}" style="font-size:22px;padding:8px 14px" data-act="pairopt" data-v="${i}">${o.map(([a,b])=>TEAM[a].n+' vs '+TEAM[b].n).join(' · ')}</button>`).join('')}</div></div>`
+   :`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Day 1 matchups</h3><div class="hint">As in the real tournament: ${PAIROPTS[0].map(([a,b])=>TEAM[a].n+' vs '+TEAM[b].n).join(' and ')}.</div></div>`;
+  return `<div class="panel" style="margin-top:12px"><div class="chip-cream">${r?'Your draft':'The real draft'}</div><h1 style="margin-top:8px;font-size:clamp(34px,7vw,56px);color:var(--cream)">YOUR TEAMS</h1><div class="hint" style="margin-top:6px">${r?'Here is how your draft turned out. Handicaps are averaged for each team.':'You kept the teams from the real draft. Handicaps are averaged for each team.'}</div></div>
+  ${choice}
+  <div class="bar"><button class="btn ghost" data-act="tback">← Back</button><span class="grow"></span><button class="btn main" data-act="tstart">START SESSION 1</button></div>
+  <div style="margin-top:4px">${draftCols()}</div>`;
+}
+
+/* ---------- rules + EVS pages ---------- */
+const nameList=ids=>ids.map(i=>P[i].name).join(', ');
+const cap1=s=>s.charAt(0).toUpperCase()+s.slice(1);
+function rulesBody(){
+  return `
+  <h3>The goal</h3>
+  <p>You are the commissioner. The real tournament has already been played. You rebuild it: set the teams, build the duos and matchups, and simulate every session. Your tournament earns an Entertainment Value Score (EVS) in entertainment value points (EVPs). Beat the real tournament's EVS of <b>${sumLog(REAL)}</b> and you built the better show. The <b>Entertainment Value Score</b> page explains every way to earn EVPs.</p>
+  <h3>The field and the teams</h3>
+  <ul><li>64 players on four teams of 16: Blue, White, Red and Green.</li>
+  <li>Keep the teams from the real draft, or redraft all 64 players snake style.</li>
+  <li>Each card shows a handicap. A plus handicap is better than scratch, and * means estimated.</li></ul>
+  <h3>The three days</h3>
+  <ul><li><b>Day 1 · Ozarks National.</b> Blue vs White and Red vs Green (after a redraft, you choose the pairings). Session 1 is a 2v2 scramble over the front nine and session 2 is 2v2 alternate shot over the back nine. Every player plays once per session in match play: a win is 1 point and a tie is half a point. The team with more points over both sessions wins its pairing (a tie goes to a playoff), and the two winners advance.</li>
+  <li><b>Day 2 · Buffalo Ridge.</b> The two winning teams meet. Session 3 is a 2v2 scramble and session 4 is 1v1 singles. Points from both sessions are added together. The winner moves on with its 16 players.</li>
+  <li><b>Session 5 · the cut.</b> The 16 players form four teams of four, ranked 1 to 4. Every team sends its #1 to play hole 1. The best score and any ties are safe, and the rest send their #2 to hole 2, then their #3. If teams are still tied, the #1s go again. The last team standing is eliminated, so 12 players move on.</li>
+  <li><b>Session 6 · the semifinal at Payne's Valley.</b> The 12 players form four teams of three. They play nine holes of alternate shot, stroke play. Your tee order sets who hits first. The top two teams reach the final, and a tie for second goes to a playoff.</li>
+  <li><b>Session 7 · the final.</b> Two teams of three play 18 holes of alternate shot match play, with extra holes if it is tied. The winners take $1.3 million each.</li></ul>
+  <h3>Setting your lineups</h3>
+  <ul><li>Tap an empty slot to choose a player. On a computer you can also drag a card from the list onto a slot.</li>
+  <li>Every player plays once per session. Auto-balance fills the board for you, and Clear all starts over.</li>
+  <li>After a redraft, the real lineups can't be loaded for sessions 1 to 4. After you keep the real draft, "Load real lineup" can fill them for you.</li>
+  <li>In sessions 5 to 7, the order of your players matters, so think about who goes first.</li></ul>
+  <h3>How matches are decided</h3>
+  <ul><li>Every match is simulated hole by hole from the handicaps. The stronger side is a little more likely to win each hole, and ties are possible. The bar in each matchup shows each side's chance to win and the chance of a tie.</li>
+  <li>The favorite does not always win. That is part of the fun.</li>
+  <li>In a scramble, the better player counts most, so a high handicap on the weaker partner hurts less. In alternate shot, the two handicaps are averaged. Singles use each player's own handicap.</li></ul>
+  <h3>Saving and sharing</h3>
+  <ul><li>Save progress stores your tournament in this browser. Choose Continue on the home screen to pick up where you left off.</li>
+  <li>When the tournament ends, you can create a shareable image of your results.</li></ul>`;
+}
+function evsBody(){
+  const tiers=[[3,'Top tier'],[2,'Second tier'],[1,'Third tier']].map(([v,l])=>{const ids=D.players.filter(x=>x.tier===v).sort((a,b)=>a.rank-b.rank).map(x=>x.id);return `<li><b>${v} EVPs</b> · ${l}: ${nameList(ids)}</li>`}).join('');
+  const pairs=[3,2,1].map(w=>{const l=D.pairs.filter(x=>x.w===w);return l.length?`<li><b>${w} EVP${w>1?'s':''} per match</b><ul>${l.map(x=>`<li>${P[x.a].name} and ${P[x.b].name}: ${cap1(x.t)}${x.same?' (only counts when they are on the same side)':''}</li>`).join('')}</ul></li>`:''}).join('');
+  const groups=D.groups.filter(g=>!g.trash).map(g=>`<li><b>${g.name}</b> (${nameList(g.m)}): ${g.w} EVP for each pair of them in the same match</li>`).join('');
+  const tg=D.groups.find(g=>g.trash);
+  return `
+  <h3>The goal of the game</h3>
+  <p>Your goal is to build a tournament that is more entertaining than the real one. You do that by earning a high Entertainment Value Score.</p>
+  <h3>Entertainment Value Score (EVS)</h3>
+  <p>The EVS is the total of every entertainment value point you earn across all seven sessions. The real tournament, scored with the same rules, earned an EVS of <b>${sumLog(REAL)}</b>. If your EVS is higher, you win.</p>
+  <h3>Entertainment value point (EVP)</h3>
+  <p>An EVP is one point of entertainment value: a moment that makes viewers lean in, like a tight finish, a rivalry or a star still in the field. Every matchup shows an <b>EVP +n</b> tag when it earns some.</p>
+  <h3>All the ways to earn EVPs</h3>
+  <h3 style="font-size:22px">1. Close matches</h3>
+  <ul><li>1 EVP for each match in sessions 1 to 4 that ends tied, goes to extra holes, or is decided on the last hole.</li></ul>
+  <h3 style="font-size:22px">2. Close team results (5 EVPs each)</h3>
+  <ul><li>Sessions 1 and 2: a team pairing is decided by 2 points or fewer.</li>
+  <li>Sessions 3 and 4 combined: the two teams finish within 2 points.</li>
+  <li>Semifinal: second place is decided by 2 strokes or fewer.</li>
+  <li>Semifinal: any three of the four teams finish within 2 strokes of each other.</li>
+  <li>The final goes to the last hole or into extra holes.</li></ul>
+  <h3 style="font-size:22px">3. Storylines</h3>
+  <p>Put storyline players together in the same match, on the same side or against each other, to earn EVPs. The amounts below are doubled in sessions 4 to 7. In sessions 5 and 6, only players on the same team count.</p>
+  <ul>${pairs}</ul>
+  <p><b>Friend groups</b></p><ul>${groups}</ul>
+  <h3 style="font-size:22px">4. Trash talkers</h3>
+  <p>${nameList(tg.m)} are known for talking trash. Every pair of them in the same duo or team, or playing against each other, earns 1 EVP times a multiplier that grows during the event: ×1 in sessions 1 and 2, ×2 in sessions 3 and 4, ×3 in sessions 5 and 6, and ×4 in session 7.</p>
+  <h3 style="font-size:22px">5. Popularity</h3>
+  <p>Each player is worth EVPs based on a 1 to 64 popularity ranking. You earn them for every player still alive in sessions 5 to 7, so keep the big names around. The amounts are multiplied by ×0.5 in session 5, ×1 in session 6 and ×1.5 in session 7.</p>
+  <ul>${tiers}<li><b>0 EVPs</b> · Everyone else</li></ul>`;
+}
+function pageHTML(v){
+  if(v==='hcp')return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>`+hcpHTML();
+  const title=v==='rules'?'RULES':'ENTERTAINMENT VALUE SCORE';
+  return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>
+  <div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="pageback">← Back</button></div>
+  <div class="panel how"><h1 style="font-size:clamp(34px,7vw,56px);color:var(--cream);margin-bottom:8px">${title}</h1>${v==='rules'?rulesBody():evsBody()}
+  <div class="bar"><button class="btn" data-act="page" data-v="${v==='rules'?'evs':'rules'}">${v==='rules'?'Entertainment Value Score':'Rules'}</button><span class="grow"></span><button class="btn main" data-act="pageback">← BACK</button></div></div>`;
+}
+
+/* ---------- draft page ---------- */
+const DORDER=['blue','white','red','green'];
+const draftClock=n=>{const r=Math.floor(n/4),i=n%4;return (r%2?[...DORDER].reverse():DORDER)[i]};
+function draftPick(id){const d=G.draft;if(d.picks.length>=64||P[id].team)return;P[id].team=draftClock(d.picks.length);d.picks.push(id)}
+function draftCols(){
+  return `<div class="tcols">${DORDER.map(c=>{const ids=byHcp(teamIds(c));
+    const cells=ids.map(id=>`<div class="dc">${cardHTML(id)}<div class="pnm">${P[id].name}</div></div>`).join('');
+    return `<div class="tcol" style="border-color:${TEAM[c].c}"><h3 style="background:${TEAM[c].c};color:#fff">${TEAM[c].n}<small>${ids.length?'avg hcp '+avgH(ids)+' \u00b7 ':''}${ids.length}/16</small></h3><div class="dgrid">${cells||'<div class="hint" style="grid-column:1/-1">No picks yet</div>'}</div></div>`}).join('')}</div>`;
+}
+function draftHTML(){
+  const d=G.draft;
+  if(d.mode==='recap'){
+    return `<div class="bar" style="margin:8px 0"><button class="btn ghost" data-act="home">\u2190 Back</button></div><div class="banner"><img src="assets/draft_room.jpg" alt="Players and guests watching the draft board" style="object-position:50% 35%"><div class="bin"><div><div class="chip-cream">The Draft</div><h1 style="margin-top:8px">KEEP OR START OVER</h1></div><div class="bnote">Four captains, 64 players, 16 per team. Need a refresher? Here are the teams as they were drafted for the real 2026 Invitational. Decide if you want to keep the original draft or redraft your way.</div></div></div>
+    <div class="choice"><div class="panel"><h3>Keep the real draft</h3><div class="hint">Run your tournament with the teams exactly as they were drafted. You can still load the real matchups in sessions 1 to 4.</div><button class="btn main" data-act="keep">KEEP THESE TEAMS</button></div>
+    <div style="display:flex;flex-direction:column;gap:12px"><div class="panel"><h3>Redraft</h3><div class="hint">Start from scratch and draft all 64 players onto the four teams, snake style. The real lineups can't be loaded for sessions 1 to 4, but the real score is still your benchmark.</div><button class="btn main" data-act="redraft">REDRAFT</button></div>
+    <div class="panel"><h3>Adjust player handicaps</h3><div class="hint">Disagree with a player's handicap? Change any of them. ${Object.keys(G.hcpEdits||{}).length?'<b>'+Object.keys(G.hcpEdits).length+' adjusted so far.</b>':''}</div><button class="btn" data-act="hcpopen">ADJUST PLAYER HANDICAPS</button></div></div></div>
+    <div style="margin-top:14px">${draftCols()}</div>`;
+  }
+  const n=d.picks.length,done=n>=64,c=done?null:draftClock(n);
+  const pool=byHcp(D.players.filter(x=>!x.team).map(x=>x.id));
+  return `<div class="clock">${done?'<b>Draft complete</b><span class="hint">All 64 players are on a team.</span>':`<b style="color:${({white:'#d7d9db',red:'#ff7a72',blue:'#8fb6e6',green:'#5fcf94'})[c]}">${TEAM[c].n} is on the clock</b><span class="hint">Pick ${n+1} of 64 · snake order</span>`}<span class="grow"></span><button class="btn" data-act="dundo" ${n?'':'disabled'}>Undo</button><button class="btn" data-act="dauto" ${done?'disabled':''}>Auto-draft the rest</button><button class="btn ghost" data-act="dback">Back to real teams</button><button class="btn ghost" data-act="hcpopen">Handicaps</button><button class="btn main" data-act="dstart" ${done?'':'disabled'}>CONTINUE</button></div>
+  ${done?'':`<div class="panel" style="margin-top:12px"><div class="pgrid">${pool.map(id=>`<button class="pbtn" data-act="dpick" data-id="${id}">${cardHTML(id,{big:true})}<div class="pnm">${P[id].name} ${stars(P[id].tier)}</div></button>`).join('')}</div></div>`}
+  <div style="margin-top:14px">${draftCols()}</div>`;
+}
+</script>
+
+<script>
+function infoModal(){
+  const you=G&&G.log?G.log:[],kinds=[['close','Close matches'],['team','Close team results'],['story','Storylines'],['pop','Popularity']];
+  const rows=kinds.map(([k,n])=>`<tr><td>${n}</td><td class="r num">${sumLog(you,k)}</td><td class="r num">${sumLog(REAL,k)}</td></tr>`).join('');
+  modal(`<div class="how"><h2>How the scores work</h2>
+  <p><b>You are the commissioner.</b> The real tournament has already been played. You rebuild it: pick the teams, set the duos and matchups, and press Decide Match to simulate each session. Better matchups mean closer golf, bigger storylines and more of the popular players still playing on the final day.</p>
+  <h3>EVS and EVPs</h3><p>Every point you earn is an <b>entertainment value point (EVP)</b>. Your total is your <b>Entertainment Value Score (EVS)</b>.</p><div class="bar" style="margin:6px 0"><button class="btn" data-act="page" data-v="rules">Rules</button><button class="btn" data-act="page" data-v="evs">Entertainment Value Score</button></div>
+  <h3>How to win</h3><p>Beat the <b>real tournament score</b>. That number is what the real 2026 Invitational earned when scored with the same rules below. If your total is higher when the final session ends, your invitational was the better show.</p>
+  <h3>Where EVPs come from</h3>
+  <ul><li><b>Close matches:</b> 1 point for each match in sessions 1 to 4 that ends tied or is decided on the last hole.</li>
+  <li><b>Close team results:</b> 5 points when one team beats another by 2 points or fewer (sessions 1 and 2, sessions 3 and 4 combined), when second place in the semifinal is decided by 2 strokes or fewer, when any three of the four semifinal teams finish within 2 strokes of each other, or when the final goes to the last hole or extra holes.</li>
+  <li><b>Storylines:</b> when rivals, friends or other storyline players land in the same match, on the same side or against each other (Chaz and Gaethje only count as a duo), you earn that storyline's weight: small 1, medium 2, big 3. Sessions 1 to 3 count once, sessions 4 to 7 count double. In sessions 5 and 6 it counts when they share a team, and in session 7 when they share a team or face each other.</li>
+  <li><b>Trash talk:</b> Dod King, Yandle, Cheddy, JWill, Wesley, Short Game King, Riggs and Santino are known trash talkers. Each pair of them in the same duo or team, or playing against each other, earns 1 point times a multiplier that grows through the tournament: x1 in sessions 1 and 2, x2 in sessions 3 and 4, x3 in sessions 5 and 6 and x4 in session 7.</li>
+  <li><b>Popularity:</b> each player is worth 0 to 3 points based on the 1 to 64 popularity ranking: the top 8 ranked players, plus Big John, are worth 3, ranks 9 to 24 are worth 2, ranks 25 to 44 are worth 1 and the rest 0. You earn those points for every player still alive in session 5 (x0.5), session 6 (x1) and session 7 (x1.5), so keeping stars alive late pays the most.</li></ul>
+  <h3>Adjusted handicap from men's tees</h3><p>In the real tournament, the women played from the same tees as the men, which is farther back than the tees they usually play. To keep the matchups fair, each woman's handicap is adjusted upward by about 5 strokes for singles (a little over a quarter stroke per hole). It counts for half as much in alternate shot, where her ball is only in play every other shot, and for about a quarter as much in a scramble, where the team picks the best shot. Adjusted handicaps are marked with a \u2020.</p>
+  <table><tr><th>Your score so far</th><th class="r">You</th><th class="r">Real</th></tr>${rows}<tr><td><b>Total</b></td><td class="r num"><b>${sumLog(you)}</b></td><td class="r num"><b>${sumLog(REAL)}</b></td></tr></table>
+  <div class="hint" style="margin-top:8px">Winners are decided by handicap-based odds, so every simulation can go differently. Popularity points come from the commissioner's 1 to 64 popularity ranking.</div>
+  <div class="bar"><span class="grow"></span><button class="btn main" data-act="closem">GOT IT</button></div></div>`);
+}
+</script>
+
+<script>
+/* ---------- tray + drag and drop ---------- */
+function placedSet(s){const set=new Set();(G.lineup[s]||[]).forEach(a=>a.forEach(x=>{if(Array.isArray(x)){x.forEach(y=>{if(y)set.add(y)})}else if(x&&typeof x==='object'){x.a.forEach(y=>y&&set.add(y));x.b.forEach(y=>y&&set.add(y))}else if(x)set.add(x)}));return set}
+function trayHTML(s){
+  let groups=[];
+  if(s<=4){const prs=pairingsFor(s).filter((_,i)=>s>2||i===(G.stage||0));prs.forEach(pr=>[pr.a,pr.b].forEach(c=>groups.push({lab:TEAM[c].n,col:TEAM[c].c,ids:byHcp(teamIds(c))})))}
+  else if(s===5)groups=[{lab:'16 SURVIVORS',col:'#23704a',ids:byHcp(G.alive16)}];
+  else if(s===6)groups=[{lab:'12 SURVIVORS',col:'#23704a',ids:byHcp(G.alive12)}];
+  else return '';
+  const used=placedSet(s);
+  return `<div class="panel tray"><h3>Your players <span class="hint" style="font-size:15px">· drag a card onto a slot below. Faded cards are already placed. Drag a placed card to move or swap it, or drag it off the board to remove it.</span></h3>`+groups.map(g=>`<div class="trayg"><span class="lab" style="background:${g.col}">${g.lab}</span><div class="trayrow">${g.ids.map(id=>`<div class="tcard ${used.has(id)?'used':''}" data-drag="${id}" title="${P[id].name} · ${hcp(P[id])}">${cardHTML(id)}</div>`).join('')}</div></div>`).join('')+`</div>`;
+}
+function slotDesc(el){
+  const d=el.dataset;
+  if(d.act==='pick')return {kind:'m',pi:+d.pi,mi:+d.mi,side:d.side,k:+d.k};
+  if(d.act==='pickt')return {kind:'t',ti:+d.ti,k:+d.k};
+  return null;
+}
+const getS=d=>d.kind==='m'?G.lineup[G.s][d.pi][d.mi][d.side][d.k]:G.lineup[G.s][d.ti][d.k];
+const setS=(d,v)=>{if(d.kind==='m')G.lineup[G.s][d.pi][d.mi][d.side][d.k]=v;else G.lineup[G.s][d.ti][d.k]=v};
+function findLoc(d,id){
+  const s=G.s,L=G.lineup[s];
+  if(d.kind==='m'){const ms=L[d.pi];for(let mi=0;mi<ms.length;mi++){const arr=ms[mi][d.side];const k=arr.indexOf(id);if(k>=0)return {kind:'m',pi:d.pi,mi,side:d.side,k}}}
+  else{for(let ti=0;ti<L.length;ti++){const k=L[ti].indexOf(id);if(k>=0)return {kind:'t',ti,k}}}
+  return null;
+}
+function canDrop(d,id){
+  if(!d||!G||G.phase!=='setup')return false;
+  const s=G.s;
+  if(d.kind==='m'){const pr=pairingsFor(s)[d.pi];return !!pr&&P[id].team===pr[d.side]}
+  if(s===5)return G.alive16.includes(id);
+  if(s===6)return G.alive12.includes(id);
+  return false;
+}
+function doDrop(d,id,fromDesc){
+  const cur=getS(d);if(cur===id)return;
+  const loc=fromDesc||findLoc(d,id);
+  if(loc)setS(loc,cur||null);
+  setS(d,id);
+}
+(function(){
+  let drag=null,ghost=null,timer=null,sx=0,sy=0,lastEl=null,suppress=false,raf=0;
+  const isTouch=e=>e.pointerType==='touch';
+  function srcFrom(e){
+    const tc=e.target.closest('[data-drag]');
+    if(tc)return {id:tc.dataset.drag,from:null,el:tc};
+    const sl=e.target.closest('.slot.filled[data-act]');
+    if(sl&&G&&G.phase==='setup'){const d=slotDesc(sl);if(d){const id=getS(d);if(id)return {id,from:d,el:sl}}}
+    return null;
+  }
+  function begin(x,y){
+    document.body.classList.add('dragging');
+    ghost=document.createElement('div');ghost.className='dghost';ghost.innerHTML=cardHTML(drag.id);document.body.appendChild(ghost);move(x,y);
+    drag.on=true;
+  }
+  function slotAt(x,y){if(ghost)ghost.style.display='none';const el=document.elementFromPoint(x,y);if(ghost)ghost.style.display='';return el&&el.closest?el.closest('.slot[data-act]'):null}
+  function move(x,y){
+    ghost.style.left=x+'px';ghost.style.top=y+'px';
+    const sl=slotAt(x,y);
+    if(lastEl&&lastEl!==sl)lastEl.classList.remove('dropt','dropx');
+    if(sl){const ok=canDrop(slotDesc(sl),drag.id);sl.classList.toggle('dropt',ok);sl.classList.toggle('dropx',!ok)}
+    lastEl=sl;
+    const h=window.innerHeight;cancelAnimationFrame(raf);
+    const dy=y<70?-14:y>h-70?14:0;
+    if(dy){const step=()=>{if(!drag||!drag.on)return;window.scrollBy(0,dy);raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+  }
+  function end(x,y,cancel){
+    clearTimeout(timer);cancelAnimationFrame(raf);
+    if(!drag)return;
+    const was=drag.on;
+    if(was){
+      const sl=cancel?null:slotAt(x,y);
+      if(lastEl)lastEl.classList.remove('dropt','dropx');
+      if(sl){const d=slotDesc(sl);if(canDrop(d,drag.id)){doDrop(d,drag.id,drag.from);render()}}
+      else if(drag.from&&!cancel){setS(drag.from,null);render()}
+      suppress=true;setTimeout(()=>suppress=false,0);
+    }
+    if(ghost)ghost.remove();ghost=null;lastEl=null;drag=null;document.body.classList.remove('dragging');
+  }
+  document.addEventListener('pointerdown',e=>{
+    if(e.button>0||drag)return;
+    if(window.matchMedia&&matchMedia('(pointer:coarse)').matches)return;
+    const s=srcFrom(e);if(!s)return;
+    drag={...s,on:false};sx=e.clientX;sy=e.clientY;
+    if(isTouch(e)){timer=setTimeout(()=>{if(drag&&!drag.on){begin(sx,sy);if(navigator.vibrate)try{navigator.vibrate(15)}catch(_){}}},260)}
+    if(!isTouch(e)&&s.from===null)e.preventDefault();
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!drag)return;
+    if(!drag.on){
+      const dx=e.clientX-sx,dy=e.clientY-sy;
+      if(isTouch(e)){if(Math.hypot(dx,dy)>10){clearTimeout(timer);drag=null}return}
+      if(Math.hypot(dx,dy)>5)begin(e.clientX,e.clientY);else return;
+    }
+    move(e.clientX,e.clientY);
+  });
+  document.addEventListener('pointerup',e=>end(e.clientX,e.clientY,false));
+  document.addEventListener('pointercancel',e=>{if(drag&&drag.on&&isTouch(e))return;end(0,0,true)});
+  document.addEventListener('touchmove',e=>{if(drag&&drag.on)e.preventDefault()},{passive:false});
+  document.addEventListener('contextmenu',e=>{if(drag)e.preventDefault()});
+  document.addEventListener('click',e=>{if(suppress){e.stopPropagation();e.preventDefault()}},true);
+})();
+</script>
+
+<script>
+/* ---------- day 1 recap ---------- */
+function recapCol(c,cls,label){
+  const ids=byHcp(teamIds(c));
+  return `<div class="tcol ${cls}" style="border-color:${TEAM[c].c}"><h3 style="background:${cls==='out'?'#c9ccd1':TEAM[c].c};color:${cls==='out'?'#2b3036':'#fff'}">${TEAM[c].n}<small>${label}</small></h3><div class="dgrid">${ids.map(id=>`<div class="dc">${cardHTML(id)}<div class="pnm">${P[id].name}</div></div>`).join('')}</div></div>`;
+}
+const LT={white:'#d7d9db',red:'#ff7a72',blue:'#8fb6e6',green:'#5fcf94'};
+function recapHTML(){
+  const d=G.day1||[],adv=[G.w1,G.w2],out=['blue','white','red','green'].filter(c=>!adv.includes(c));
+  const sc=d.map(x=>`<div class="panel"><h3>${TEAM[x.a].n} vs ${TEAM[x.b].n}</h3>
+    <div class="vsline"><span style="color:${LT[x.a]}">${TEAM[x.a].n}</span><span class="sc2 num">${x.pa} – ${x.pb}</span><span style="color:${LT[x.b]}">${TEAM[x.b].n}</span></div>
+    <table><tr><th>Session</th><th class="r">${TEAM[x.a].n}</th><th class="r">${TEAM[x.b].n}</th></tr><tr><td>Session 1 · scramble</td><td class="r num">${x.s1[0]}</td><td class="r num">${x.s1[1]}</td></tr><tr><td>Session 2 · alternate shot</td><td class="r num">${x.s2[0]}</td><td class="r num">${x.s2[1]}</td></tr><tr><th>Total</th><th class="r num">${x.pa}</th><th class="r num">${x.pb}</th></tr></table>
+    <p class="hint" style="margin-top:6px">${Math.abs(x.pa-x.pb)<=2?`Close finish bonus: decided by ${Math.abs(x.pa-x.pb)} point${Math.abs(x.pa-x.pb)===1?'':'s'}, <b class="gold">+5 entertainment points</b>.`:`Decided by ${Math.abs(x.pa-x.pb)} points. A finish within 2 points earns +5.`}</p>
+    <p style="margin-top:8px"><span class="tag adv">ADVANCES</span> <b>${TEAM[x.win].n}</b>${x.po?' won the tiebreaker playoff':''}</p></div>`).join('');
+  const names=out.flatMap(c=>teamIds(c)).map(id=>P[id]).sort((a,b)=>a.rank-b.rank).filter(p=>p.tier>=2).slice(0,6);
+  const po=(G.summary[2]&&G.summary[2].notes||[]).filter(n=>/^Playoff hole/.test(n));
+  return `<div class="banner"><img src="${img('ozarks',2)}" alt="Ozarks National clubhouse at sunset"><div class="bin"><div><div class="bkick">Day 1 · Ozarks National</div><h1 style="margin-top:6px;color:var(--cream)">DAY 1 RECAP</h1></div><div class="bnote">Sessions 1 and 2 are done. Two teams move on to Buffalo Ridge, and the other two are out.</div></div></div>
+  <div class="rcap">${sc}</div>
+  ${po.length?`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Tiebreaker playoff</h3>${po.map(n=>`<div class="hint">${n}</div>`).join('')}</div>`:''}
+  <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:6px">Eliminated: ${out.map(c=>TEAM[c].n).join(' and ')}</h3><div class="hint">32 players are out. ${names.length?'Biggest names heading home: '+names.map(p=>p.name).join(', ')+'.':''} Only 32 of the 64 players are still alive for Day 2.</div></div>
+  <div class="tcols" style="margin-top:12px">${adv.map(c=>recapCol(c,'safe','ADVANCES')).join('')}${out.map(c=>recapCol(c,'out','ELIMINATED')).join('')}</div>
+  <div class="bar"><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO SESSION 3</button></div>`;
+}
+</script>
+
+<script>
+/* ---------- day 2 recap ---------- */
+function recap2HTML(){
+  const x=G.day2,loser=x.win===x.a?x.b:x.a,gap=Math.abs(x.pa-x.pb);
+  return `<div class="banner"><img src="${img('buffalo',2)}" alt="Buffalo Ridge"><div class="bin"><div><div class="bkick">Day 2 · Buffalo Ridge</div><h1 style="margin-top:6px;color:var(--cream)">DAY 2 RECAP</h1></div><div class="bnote">Sessions 3 and 4 are done. ${TEAM[x.win].n} moves on to the cut with 16 players left standing.</div></div></div>
+  <div class="rcap"><div class="panel"><h3>${TEAM[x.a].n} vs ${TEAM[x.b].n}</h3>
+    <div class="vsline"><span style="color:${LT[x.a]}">${TEAM[x.a].n}</span><span class="sc2 num">${x.pa} – ${x.pb}</span><span style="color:${LT[x.b]}">${TEAM[x.b].n}</span></div>
+    <table><tr><th>Session</th><th class="r">${TEAM[x.a].n}</th><th class="r">${TEAM[x.b].n}</th></tr><tr><td>Session 3 · scramble</td><td class="r num">${x.s3[0]}</td><td class="r num">${x.s3[1]}</td></tr><tr><td>Session 4 · singles</td><td class="r num">${x.s4[0]}</td><td class="r num">${x.s4[1]}</td></tr><tr><th>Total</th><th class="r num">${x.pa}</th><th class="r num">${x.pb}</th></tr></table>
+    <p class="hint" style="margin-top:6px">${gap<=2?`Close finish bonus: decided by ${gap} point${gap===1?'':'s'}, <b class="gold">+5 entertainment points</b>.`:`Decided by ${gap} points. A finish within 2 points earns +5.`}</p>
+    <p style="margin-top:8px"><span class="tag adv">ADVANCES</span> <b>${TEAM[x.win].n}</b>${x.po?' won the tiebreaker playoff':''}</p></div>
+  <div class="panel"><h3>Eliminated: ${TEAM[loser].n}</h3><div class="hint">16 more players are out, leaving 16 of the original 64. Next up is the cut: four teams of four, and one team goes home.</div>
+   <div class="hint" style="margin-top:8px">Out after Day 1: ${['blue','white','red','green'].filter(c=>c!==G.w1&&c!==G.w2).map(c=>TEAM[c].n).join(' and ')}.</div></div></div>
+  <div class="tcols" style="margin-top:12px">${recapCol(x.win,'safe','ADVANCES')}${recapCol(loser,'out','ELIMINATED')}</div>
+  <div class="bar"><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO THE CUT</button></div>`;
+}
+/* ---------- final review ---------- */
+function reviewHTML(){
+  const chip=id=>`<span class="rchip" style="--c:${LT[P[id].team]||'#ccc'}">${P[id].name}</span>`;
+  const row=(title,sub,ids,extra)=>`<div class="rrow"><div class="rh"><b>${title}</b><span class="hint">${sub}</span></div>${extra?`<div class="hint" style="margin:2px 0 6px">${extra}</div>`:''}<div class="chips">${ids.length?ids.map(chip).join(''):'<span class="hint">None</span>'}</div></div>`;
+  const rows=[];
+  const d1=G.day1||[],adv=[G.w1,G.w2],out1=['blue','white','red','green'].filter(c=>!adv.includes(c));
+  rows.push(row('Out after Session 2','Day 1 · Ozarks National · '+d1.map(x=>`${TEAM[x.a].n} ${x.pa}–${x.pb} ${TEAM[x.b].n}`).join(', '),out1.flatMap(c=>byHcp(teamIds(c))),`${out1.map(c=>TEAM[c].n).join(' and ')} eliminated, 32 players.`));
+  if(G.day2){const x=G.day2,l=x.win===x.a?x.b:x.a;rows.push(row('Out after Session 4','Day 2 · Buffalo Ridge · '+`${TEAM[x.a].n} ${x.pa}–${x.pb} ${TEAM[x.b].n}`,byHcp(teamIds(l)),`${TEAM[l].n} eliminated, 16 players.`))}
+  if(G.cut){const el=G.cut.eliminated,tm=G.cut.teams[el];rows.push(row('Out after Session 5','The cut · 16 players to 12',tm.ids,`${tm.name} was the last team standing at the bottom.`))}
+  if(G.semi){const sm=G.semi,o=sm.teams.map((t,i)=>i).filter(i=>!sm.advance.includes(i));rows.push(row('Out after Session 6','Semifinal · '+sm.teams.map((t,i)=>`${t.name} ${fmtDelta(sm.tot[i])}`).join(', '),o.flatMap(i=>sm.teams[i].ids),`${o.map(i=>sm.teams[i].name).join(' and ')} eliminated, 6 players.`))}
+  if(G.res[7]&&G.fin){const w=G.res[7].w==='a'?0:1,l=1-w;rows.push(row('Out after Session 7','Final · '+G.res[7].m,G.fin.teams[l].ids,`${G.fin.teams[w].name} (${G.fin.teams[w].ids.map(i=>P[i].name).join(', ')}) won the title.`))}
+  return `<div class="panel" style="margin-top:14px"><h2 style="color:var(--cream);margin-bottom:6px">Tournament review: who went home and when</h2><div class="hint" style="margin-bottom:8px">64 players start. Here is every round of eliminations.</div>${rows.join('')}</div>`;
+}
+</script>
+
+<script>
+/* ---------- share image ---------- */
+const fmtN=x=>Number.isInteger(x)?String(x):x.toFixed(1);
+function loadImg(src){return new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src=src})}
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+async function buildShareBlob(){
+  try{await document.fonts.load('104px "Bebas Neue"');await document.fonts.load('700 60px "Cinzel"');await document.fonts.load('700 28px "Cormorant Garamond"');await document.fonts.load('italic 600 28px "Cormorant Garamond"')}catch(e){}
+  const DISP='"Cinzel",Georgia,"Times New Roman",serif',BODY='"Cormorant Garamond",Georgia,"Times New Roman",serif';
+  const W=1080,H=1560,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  const mine=sumLog(G.log),real=sumLog(REAL),diff=mine-real;
+  const wi=G.res[7]&&G.res[7].w==='a'?0:1,champ=G.fin.teams[wi],runner=G.fin.teams[1-wi];
+  const ids=new Set([...champ.ids,...runner.ids,...G.semi.teams.flatMap(t=>t.ids)]);
+  const imgs={};await Promise.all([...ids].map(async id=>{imgs[id]=await loadImg(P[id].img)}));
+  // background
+  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,'#14402e');g.addColorStop(1,'#08201a');x.fillStyle=g;x.fillRect(0,0,W,H);
+  x.globalAlpha=.06;for(let i=-H;i<W;i+=26){x.fillStyle='#fff';x.fillRect(i,0,6,H)}x.globalAlpha=1;
+  const text=(s,px,py,font,col,al='left',maxW)=>{x.font=font;if(maxW){let n=parseInt(font.match(/(\d+)px/)[1]);while(x.measureText(s).width>maxW&&n>12){n--;x.font=font.replace(/\d+px/,n+'px')}}x.fillStyle=col;x.textAlign=al;x.fillText(s,px,py)};
+  const card=(id,px,py,w,hl)=>{const h=w*1197/733;x.save();x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=14;x.shadowOffsetY=5;rr(x,px,py,w,h,Math.max(6,w*.07));x.fillStyle='#fff';x.fill();x.restore();
+    x.save();rr(x,px,py,w,h,Math.max(6,w*.07));x.clip();if(imgs[id])x.drawImage(imgs[id],px,py,w,h);x.restore();
+    rr(x,px,py,w,h,Math.max(6,w*.07));x.lineWidth=hl?5:3;x.strokeStyle=hl?'#f2a52b':'#f1efe6';x.stroke();return h};
+  const panel=(px,py,w,h,col)=>{rr(x,px,py,w,h,22);x.fillStyle='rgba(8,30,20,.55)';x.fill();x.lineWidth=3;x.strokeStyle=col||'#2f6b50';x.stroke()};
+  // header
+  text('THE COMMISSIONER INVITATIONAL',W/2,86,'700 56px '+DISP,'#ecddb4','center',960);
+  text('MY TOURNAMENT RESULTS',W/2,128,'italic 700 31px '+BODY,'#9fc2ad','center');
+  // scores
+  panel(50,160,980,230,'#f2a52b');
+  x.save();rr(x,80,185,420,180,16);x.fillStyle='#ecddb4';x.fill();x.restore();
+  text(fmtN(mine),290,290,'104px "Bebas Neue",Impact,"Arial Narrow",sans-serif','#2b1f08','center');x.lineWidth=7;x.lineJoin='round';x.strokeStyle='#2b1f08';x.strokeText(fmtN(mine),290,290);text('MY ENTERTAINMENT SCORE',290,349,'700 27px '+BODY,'#2b1f08','center');
+  x.save();rr(x,580,185,420,180,16);x.fillStyle='#14523a';x.fill();x.lineWidth=3;x.strokeStyle='#2f6b50';x.stroke();x.restore();
+  text(fmtN(real),790,290,'104px "Bebas Neue",Impact,"Arial Narrow",sans-serif','#f2f0e6','center');x.lineWidth=7;x.lineJoin='round';x.strokeStyle='#f2f0e6';x.strokeText(fmtN(real),790,290);text('REAL TOURNAMENT SCORE',790,349,'700 27px '+BODY,'#cfe3d6','center');
+  text('VS',540,292,'700 34px '+DISP,'#f2a52b','center');
+  const verdict=diff>0?`Beat the real tournament by ${fmtN(diff)}`:diff===0?'Tied the real tournament':`Fell ${fmtN(-diff)} short of the real tournament`;
+  text(verdict.toUpperCase(),W/2,438,'700 36px '+DISP,diff>0?'#f2a52b':'#ecddb4','center',960);
+  // champions
+  panel(50,458,980,372,'#f2a52b');
+  text('CHAMPIONS - '+champ.name.toUpperCase(),W/2,508,'700 36px '+DISP,'#f2a52b','center',900);
+  const cw=160,gap=44,start=(W-(cw*3+gap*2))/2;
+  champ.ids.forEach((id,i)=>{card(id,start+i*(cw+gap),528,cw,true);text(P[id].name,start+i*(cw+gap)+cw/2,528+cw*1197/733+32,'700 29px '+BODY,'#ecddb4','center',cw+10)});
+  // final six
+  panel(50,850,980,310,'#2f6b50');
+  text('THE FINAL SIX',W/2,898,'700 31px '+DISP,'#ecddb4','center');
+  const sw=104,sg=14,grp=sw*3+sg*2,gx=(W-grp*2-80)/2;
+  [[champ,true],[runner,false]].forEach(([t,w],gi)=>{
+    const ox=gx+gi*(grp+80);text((w?'CHAMPION - ':'RUNNER-UP - ')+t.name.toUpperCase(),ox+grp/2,935,'700 27px '+BODY,w?'#f2a52b':'#cfe3d6','center',grp+40);
+    t.ids.forEach((id,i)=>{card(id,ox+i*(sw+sg),950,sw,w)})});
+  // final twelve
+  panel(50,1180,980,340,'#2f6b50');
+  text('THE FINAL 12 - SEMIFINAL TEAMS',W/2,1228,'700 31px '+DISP,'#ecddb4','center');
+  const tw=3*66+2*8,tg=(980-60-tw*4)/3;
+  G.semi.teams.forEach((t,ti)=>{const ox=80+ti*(tw+tg),adv=G.semi.advance.includes(ti);
+    text(t.name.toUpperCase(),ox+tw/2,1266,'700 25px '+BODY,adv?'#f2a52b':'#b8c4bd','center',tw+30);
+    t.ids.forEach((id,i)=>{x.save();x.globalAlpha=adv?1:.6;card(id,ox+i*74,1282,66,adv);x.restore()});
+    text(adv?'ADVANCED':'ELIMINATED',ox+tw/2,1282+66*1197/733+28,'700 22px '+BODY,adv?'#cfe3d6':'#9aa7a0','center');
+    text('Score '+fmtDelta(G.semi.tot[ti]),ox+tw/2,1282+66*1197/733+52,'700 22px '+BODY,'#9aa7a0','center')});
+  text('Build your own tournament: The Commissioner Invitational',W/2,1548,'italic 700 25px '+BODY,'#9fc2ad','center',960);
+  return await new Promise(res=>c.toBlob(b=>res(b),'image/png'));
+}
+async function openShare(){
+  modal('<h2>Your tournament</h2><div class="hint">Building your image…</div>');
+  let blob=null;try{blob=await buildShareBlob()}catch(e){blob=null}
+  if(!blob){modal('<h2>Your tournament</h2><p>Sorry, the image could not be created in this browser.</p><div class="bar"><span class="grow"></span><button class="btn main" data-act="closem">CLOSE</button></div>');return}
+  if(window.__shareUrl)try{URL.revokeObjectURL(window.__shareUrl)}catch(e){}
+  window.__shareBlob=blob;window.__shareUrl=URL.createObjectURL(blob);
+  const file=new File([blob],'commissioner-invitational.png',{type:'image/png'});
+  const canShare=!!(navigator.canShare&&navigator.share&&navigator.canShare({files:[file]}));
+  const canCopy=!!(navigator.clipboard&&window.ClipboardItem);
+  modal(`<h2>Your tournament</h2><img src="${window.__shareUrl}" alt="Overview of your tournament" style="width:100%;border-radius:12px;display:block"><div class="bar"><a class="btn main" href="${window.__shareUrl}" download="commissioner-invitational.png" style="text-decoration:none">DOWNLOAD IMAGE</a>${canShare?'<button class="btn" data-act="nativeshare">SHARE…</button>':''}${canCopy?'<button class="btn" data-act="copyimg">COPY IMAGE</button>':''}<span class="grow"></span><button class="btn ghost" data-act="closem">CLOSE</button></div>`);
+}
+async function nativeShare(){try{const f=new File([window.__shareBlob],'commissioner-invitational.png',{type:'image/png'});await navigator.share({files:[f],title:'The Commissioner Invitational',text:'My entertainment score in The Commissioner Invitational'})}catch(e){}}
+async function copyImg(el){try{await navigator.clipboard.write([new ClipboardItem({'image/png':window.__shareBlob})]);el.textContent='COPIED ✓'}catch(e){el.textContent="COULDN'T COPY"}setTimeout(()=>{if(el.isConnected)el.textContent='COPY IMAGE'},2000)}
+</script>
+
+</html>
