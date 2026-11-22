@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMFK1TZ7YV"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-RMFK1TZ7YV");</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-RMFK1TZ7YV",{send_page_view:false});</script>
 <title>The Commissioner Invitational</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -447,7 +447,12 @@ function startConfetti(){
 function track(n,p){try{if(window.gtag)window.gtag('event',n,p||{})}catch(e){}}
 function render(){
   window.__evp=[];
-  try{const k=window.__page?'page:'+window.__page:(G?G.phase+':'+G.s:'title');if(k!==window.__lk){window.__lk=k;const ph=window.__page?'page_'+window.__page:(G?G.phase:'title');track(ph==='end'?'tournament_complete':'screen_view_game',{phase:ph,session:G?G.s:0})}}catch(e){}
+  try{const ph=window.__page?'page_'+window.__page:(G?G.phase:'title'),sn=G?G.s:0,k=ph+':'+sn;if(k!==window.__lk){window.__lk=k;
+    const path={title:'/',draft:'/draft',teams:'/teams',hcp:'/handicaps',page_rules:'/rules',page_evs:'/entertainment-score',page_hcp:'/handicaps',recap:'/day-1-recap',recap2:'/day-2-recap',end:'/final-score'}[ph]||(ph==='setup'?'/session-'+sn+'/setup':ph==='sim'?'/session-'+sn+'/play':ph==='result'?'/session-'+sn+'/results':'/'+ph);
+    if(window.gtag)window.gtag('event','page_view',{page_path:path,page_title:'The Commissioner Invitational '+path,page_location:location.origin+path});
+    if(ph==='setup'&&sn===1&&!window.__gs){window.__gs=1;track('game_start')}
+    if(ph==='end')track('tournament_complete');
+    if(ph==='sim')track('session_played',{session:sn})}}catch(e){}
   saveGame();
   const app=document.getElementById('app');
   if(window.__page){app.innerHTML=pageHTML(window.__page);return}
@@ -909,7 +914,7 @@ document.addEventListener('click',e=>{
   else if(a==='redraft'){D.players.forEach(x=>x.team=null);G.draft={mode:'pick',picks:[]};render();window.scrollTo(0,0)}
   else if(a==='dback'){D.players.forEach(x=>x.team=x.rteam);G.draft={mode:'recap',picks:[]};render();window.scrollTo(0,0)}
   else if(a==='dpick'){draftPick(el.dataset.id);render()}
-  else if(a==='share'){openShare()}
+  else if(a==='share'){track('share_open');openShare()}
   else if(a==='nativeshare'){nativeShare()}
   else if(a==='copyimg'){copyImg(el)}
   else if(a==='pairopt'){G.pairOpt=+el.dataset.v;render()}
