@@ -416,11 +416,11 @@ function readSave(){
 }
 function loadSave(){
   const o=readSave();if(!o)return false;
-  try{D.players.forEach(p=>{if(o.teams&&o.teams[p.id]!==undefined)p.team=o.teams[p.id]});G={...o.G,anim:null,pickCtx:null};if(G.s<=4&&['sim','result','recap','recap2'].includes(G.phase)&&!(G.res&&G.res[G.s]))G.phase='setup';applyEdits(G.hcpEdits);return true}catch(e){return false}
+  try{D.players.forEach(p=>{if(o.teams&&o.teams[p.id]!==undefined)p.team=o.teams[p.id]});G={...o.G,anim:null,pickCtx:null};if(G.s<=4&&['sim','result','recap','recap2'].includes(G.phase)&&!(G.res&&G.res[G.s]))G.phase='setup';if(G.phase==='redraft2'&&!G.rd2)G.phase='recap';applyEdits(G.hcpEdits);return true}catch(e){return false}
 }
 function clearSave(){try{localStorage.removeItem(SAVE_KEY)}catch(e){}}
 function saveLabel(o){
-  const g=o.G;return g.phase==='end'?'Tournament complete':g.phase==='draft'?'The draft':g.phase==='recap'?'Day 1 recap':g.phase==='recap2'?'Day 2 recap':'Session '+g.s;
+  const g=o.G;return g.phase==='end'?'Tournament complete':g.phase==='draft'?'The draft':g.phase==='recap'?'Day 1 recap':g.phase==='redraft2'?'Day 1 redraft':g.phase==='recap2'?'Day 2 recap':'Session '+g.s;
 }
 function startConfetti(){
   if(window.__cf)return;window.__cf=true;
@@ -450,7 +450,7 @@ function track(n,p){try{if(window.gtag)window.gtag('event',n,p||{})}catch(e){}}
 function render(){
   window.__evp=[];
   try{const ph=window.__page?'page_'+window.__page:(G?G.phase:'title'),sn=G?G.s:0,k=ph+':'+sn;if(k!==window.__lk){window.__lk=k;
-    const path={title:'/',draft:'/draft',teams:'/teams',hcp:'/handicaps',page_rules:'/rules',page_evs:'/entertainment-score',page_hcp:'/handicaps',recap:'/day-1-recap',recap2:'/day-2-recap',end:'/final-score'}[ph]||(ph==='setup'?'/session-'+sn+'/setup':ph==='sim'?'/session-'+sn+'/play':ph==='result'?'/session-'+sn+'/results':'/'+ph);
+    const path={title:'/',draft:'/draft',teams:'/teams',hcp:'/handicaps',page_rules:'/rules',page_evs:'/entertainment-score',page_hcp:'/handicaps',recap:'/day-1-recap',redraft2:'/day-1-redraft',recap2:'/day-2-recap',end:'/final-score'}[ph]||(ph==='setup'?'/session-'+sn+'/setup':ph==='sim'?'/session-'+sn+'/play':ph==='result'?'/session-'+sn+'/results':'/'+ph);
     if(window.gtag)window.gtag('event','page_view',{page_path:path,page_title:'The Commissioner Invitational '+path,page_location:location.origin+path});
     if(ph==='setup'&&sn===1&&!window.__gs){window.__gs=1;track('game_start')}
     if(ph==='end')track('tournament_complete');
@@ -462,6 +462,7 @@ function render(){
   if(G.phase==='teams'){app.innerHTML=topHTML(true)+teamsHTML();return}
   if(G.phase==='hcp'){app.innerHTML=topHTML(true)+hcpHTML();return}
   if(G.phase==='recap'){app.innerHTML=topHTML()+recapHTML();return}
+  if(G.phase==='redraft2'){app.innerHTML=topHTML()+redraft2HTML();return}
   if(G.phase==='recap2'){app.innerHTML=topHTML()+recap2HTML();return}
   if(G.phase==='draft'){app.innerHTML=topHTML(true)+draftHTML();return}
   app.innerHTML=topHTML()+hoistTop(bodyHTML());
@@ -542,7 +543,7 @@ function setupControls(s,prs){
     const cnt=pi=>G.lineup[s][pi].filter(m=>m.a.every(Boolean)&&m.b.every(Boolean)).length;
     const pf=two&&cnt(0)===G.lineup[s][0].length;
     const status=two?prs.map((pr,pi)=>`<span class="tag ${cnt(pi)===G.lineup[s][pi].length?'adv':'out'}" style="${cnt(pi)===G.lineup[s][pi].length?'':'background:#3b4a2e;color:#ecddb4'}">${TEAM[pr.a].n} vs ${TEAM[pr.b].n}: ${cnt(pi)}/${G.lineup[s][pi].length} matches ready</span>`).join(' '):'';
-    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${G.redraft&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}${two&&st===0?'':`<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button>`}</div>`;
+    h+=`<div class="bar">${status}</div><div class="bar"><button class="btn" data-act="auto">Auto-balance</button>${(G.redraft||G.rd2Used)&&s<=4?'':'<button class="btn" data-act="real">Load real lineup</button>'}<button class="btn ghost" data-act="clear">Clear all</button><button class="btn ghost" data-act="seereal">See what really happened</button><span class="grow"></span>${two&&st===1?`<button class="btn" data-act="stage" data-v="0">← ${TEAM[prs[0].a].n} VS ${TEAM[prs[0].b].n}</button>`:''}${two&&st===0?`<button class="btn" data-act="stage" data-v="1" ${pf?'':'disabled'}>NEXT: ${TEAM[prs[1].a].n} VS ${TEAM[prs[1].b].n} →</button>`:''}${two&&st===0?'':`<button class="btn main" data-act="decide" ${full?'':'disabled'}>DECIDE MATCH</button>`}</div>`;
     h+=storyBook(s);
   return h;
 }
@@ -931,6 +932,12 @@ document.addEventListener('click',e=>{
   else if(a==='save'){const ok=saveGame();el.textContent=ok?'SAVED ✓ '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):"COULDN'T SAVE";setTimeout(()=>{if(el.isConnected)el.textContent='SAVE PROGRESS'},2500)}
   else if(a==='resume'){if(loadSave()){render();window.scrollTo(0,0)}}
   else if(a==='goon'){nextSession()}
+  else if(a==='rd2open'){rd2Open()}
+  else if(a==='rd2pick'){rd2Pick(el.dataset.id);render()}
+  else if(a==='rd2undo'){const id=G.rd2.picks.pop();if(id)P[id].team=null;render()}
+  else if(a==='rd2auto'){while(G.rd2.picks.length<32){const r=G.rd2.ids.filter(i=>!P[i].team).map(i=>P[i]).sort((x,y)=>x.h-y.h)[0];rd2Pick(r.id)}render()}
+  else if(a==='rd2keep'){G.rd2.ids.forEach(id=>P[id].team=G.rd2.orig[id]);G.rd2=null;G.phase='recap';render();window.scrollTo(0,0)}
+  else if(a==='rd2go'){if(G.rd2.picks.length>=32){G.rd2Used=true;G.rd2=null;G.phase='recap';nextSession()}}
   else if(a==='stage'){G.stage=+el.dataset.v;render();window.scrollTo(0,0)}
   else if(a==='real'){loadReal();render()}
   else if(a==='clear'){clearLineup();render()}
@@ -1015,7 +1022,7 @@ function rulesBody(){
   <li>Keep the teams from the real draft, or redraft all 64 players snake style.</li>
   <li>Each card shows a handicap. A plus handicap is better than scratch, and * means estimated.</li></ul>
   <h3>The three days</h3>
-  <ul><li><b>Day 1 · Ozarks National.</b> Blue vs White and Red vs Green (after a redraft, you choose the pairings). Session 1 is a 2v2 scramble over the front nine and session 2 is 2v2 alternate shot over the back nine. Every player plays once per session in match play: a win is 1 point and a tie is half a point. The team with more points over both sessions wins its pairing (a tie goes to a playoff), and the two winners advance.</li>
+  <ul><li><b>Day 1 · Ozarks National.</b> Blue vs White and Red vs Green (after a redraft, you choose the pairings). Session 1 is a 2v2 scramble over the front nine and session 2 is 2v2 alternate shot over the back nine. Every player plays once per session in match play: a win is 1 point and a tie is half a point. The team with more points over both sessions wins its pairing (a tie goes to a playoff), and the two winners advance. After the Day 1 recap you can redraft the 32 remaining players into the two advancing teams, snake style, with the team that won by the most picking first.</li>
   <li><b>Day 2 · Buffalo Ridge.</b> The two winning teams meet. Session 3 is a 2v2 scramble and session 4 is 1v1 singles. Points from both sessions are added together. The winner moves on with its 16 players.</li>
   <li><b>Session 5 · the cut.</b> The 16 players form four teams of four, ranked 1 to 4. Every team sends its #1 to play hole 1. The best score and any ties are safe, and the rest send their #2 to hole 2, then their #3. If teams are still tied, the #1s go again. The last team standing is eliminated, so 12 players move on.</li>
   <li><b>Session 6 · the semifinal at Payne's Valley.</b> The 12 players form four teams of three. They play nine holes of alternate shot, stroke play. Your tee order sets who hits first. The top two teams reach the final, and a tie for second goes to a playoff.</li>
@@ -1241,11 +1248,42 @@ function recapHTML(){
   const names=out.flatMap(c=>teamIds(c)).map(id=>P[id]).sort((a,b)=>a.rank-b.rank).filter(p=>p.tier>=2).slice(0,6);
   const po=(G.summary[2]&&G.summary[2].notes||[]).filter(n=>/^Playoff hole/.test(n));
   return `<div class="banner"><img src="${img('ozarks',2)}" alt="Ozarks National clubhouse at sunset"><div class="bin"><div><div class="bkick">Day 1 · Ozarks National</div><h1 style="margin-top:6px;color:var(--cream)">DAY 1 RECAP</h1></div><div class="bnote">Sessions 1 and 2 are done. Two teams move on to Buffalo Ridge, and the other two are out.</div></div></div>
+  <div class="bar"><button class="btn" data-act="rd2open">REDRAFT REMAINING PLAYERS</button><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO SESSION 3</button></div>
   <div class="rcap">${sc}</div>
   ${po.length?`<div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:4px">Tiebreaker playoff</h3>${po.map(n=>`<div class="hint">${n}</div>`).join('')}</div>`:''}
   <div class="panel" style="margin-top:12px"><h3 style="color:var(--cream);font-size:26px;margin-bottom:6px">Eliminated: ${out.map(c=>TEAM[c].n).join(' and ')}</h3><div class="hint">32 players are out. ${names.length?'Biggest names heading home: '+names.map(p=>p.name).join(', ')+'.':''} Only 32 of the 64 players are still alive for Day 2.</div></div>
   <div class="tcols" style="margin-top:12px">${adv.map(c=>recapCol(c,'safe','ADVANCES')).join('')}${out.map(c=>recapCol(c,'out','ELIMINATED')).join('')}</div>
-  <div class="bar"><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO SESSION 3</button></div>`;
+  <div class="bar"><button class="btn" data-act="rd2open">REDRAFT REMAINING PLAYERS</button><span class="grow"></span><button class="btn main" data-act="goon">CONTINUE TO SESSION 3</button></div>`;
+}
+</script>
+
+<script>
+/* ---------- day 1 redraft of the 32 remaining players ---------- */
+function rd2Margin(c){const x=(G.day1||[]).find(d=>d.win===c);return x?Math.abs(x.pa-x.pb):0}
+function rd2Best(c){return teamIds(c).map(id=>P[id]).sort((a,b)=>a.h-b.h)[0]}
+function rd2Open(){
+  const t1=G.w1,t2=G.w2,m1=rd2Margin(t1),m2=rd2Margin(t2);let first,second,why;
+  if(m1!==m2){first=m1>m2?t1:t2;second=first===t1?t2:t1;why=`${TEAM[first].n} won its pairing by ${Math.max(m1,m2)} point${Math.max(m1,m2)===1?'':'s'}, the bigger margin (${TEAM[second].n} won by ${Math.min(m1,m2)}), so it drafts first.`}
+  else{const b1=rd2Best(t1),b2=rd2Best(t2);second=b1.h<=b2.h?t1:t2;first=second===t1?t2:t1;const bs=rd2Best(second);why=`Both teams won by ${m1} point${m1===1?'':'s'}, so the team with the best player drafts second. ${TEAM[second].n} has ${bs.name}, so it drafts second.`}
+  const ids=[...teamIds(t1),...teamIds(t2)],orig={};ids.forEach(id=>{orig[id]=P[id].team;P[id].team=null});
+  G.rd2={order:[first,second],ids,orig,picks:[],why};G.phase='redraft2';render();window.scrollTo(0,0);
+}
+const rd2Clock=n=>{const o=G.rd2.order,r=Math.floor(n/2),i=n%2;return (r%2?[o[1],o[0]]:o)[i]};
+function rd2Pick(id){const d=G.rd2;if(d.picks.length>=32||P[id].team||!d.ids.includes(id))return;P[id].team=rd2Clock(d.picks.length);d.picks.push(id)}
+function rd2Cols(){
+  return `<div class="tcols">${[G.w1,G.w2].map(c=>{const ids=byHcp(teamIds(c));
+    const cells=ids.map(id=>`<div class="dc">${cardHTML(id)}<div class="pnm">${P[id].name}</div></div>`).join('');
+    return `<div class="tcol" style="border-color:${TEAM[c].c}"><h3 style="background:${TEAM[c].c};color:#fff">${TEAM[c].n}<small>${ids.length?'avg hcp '+avgH(ids)+' · ':''}${ids.length}/16</small></h3><div class="dgrid">${cells||'<div class="hint" style="grid-column:1/-1">No picks yet</div>'}</div></div>`}).join('')}</div>`;
+}
+function redraft2HTML(){
+  const d=G.rd2,n=d.picks.length,done=n>=32,c=done?null:rd2Clock(n);
+  const pool=byHcp(d.ids.filter(id=>!P[id].team));
+  return `<div class="banner"><img src="${img('ozarks',2)}" alt="Ozarks National at sunset"><div class="bin"><div><div class="bkick">Day 1 · Ozarks National</div><h1 style="margin-top:6px;color:var(--cream)">REDRAFT THE REMAINING 32</h1></div><div class="bnote">The 32 players still alive go back in the pool and are drafted again into ${TEAM[G.w1].n} and ${TEAM[G.w2].n}, 16 each, snake style. Tap Keep my teams to leave the rosters as they are.</div></div></div>
+  <div class="panel" style="margin-top:12px"><div class="hint">${d.why}</div></div>
+  <div class="clock">${done?'<b>Redraft complete</b><span class="hint">All 32 players are on a team.</span>':`<b style="color:${LT[c]}">${TEAM[c].n} is on the clock</b><span class="hint">Pick ${n+1} of 32 · snake order</span>`}<span class="grow"></span><button class="btn" data-act="rd2undo" ${n?'':'disabled'}>Undo</button><button class="btn" data-act="rd2auto" ${done?'disabled':''}>Auto-draft the rest</button></div>
+  <div class="bar"><button class="btn ghost" data-act="rd2keep">KEEP MY TEAMS</button><span class="grow"></span><button class="btn main" data-act="rd2go" ${done?'':'disabled'}>CONTINUE TO SESSION 3</button></div>
+  ${done?'':`<div class="panel" style="margin-top:12px"><div class="pgrid">${pool.map(id=>`<button class="pbtn" data-act="rd2pick" data-id="${id}">${cardHTML(id,{big:true})}<div class="pnm">${P[id].name} ${stars(P[id].tier)}</div></button>`).join('')}</div></div>`}
+  <div style="margin-top:14px">${rd2Cols()}</div>`;
 }
 </script>
 
