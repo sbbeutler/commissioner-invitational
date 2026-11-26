@@ -296,21 +296,27 @@ function dist(probs){
   return {a,t,b};
 }
 function simMatch(probs,extra){
-  const N=probs.length;let lead=0,m=null,played=N,x=false;const trace=[];
+  const N=probs.length;let lead=0,m=null,played=N,x=false,xn=0;const trace=[];
   for(let i=0;i<N;i++){const p=probs[i],r=Math.random();
     lead+=r<p.pa?1:r<p.pa+p.pb?-1:0;trace.push(lead);const rem=N-1-i;
     if(Math.abs(lead)>rem){played=i+1;m=rem>0?`${Math.abs(lead)}&${rem}`:`${Math.abs(lead)}UP`;break}}
   if(m===null&&lead===0&&extra){const p=probs[N-1];let n=0;
     while(lead===0){n++;const r=Math.random();lead=r<p.pa?1:r<p.pa+p.pb?-1:0}
-    x=true;m=n===1?'19th hole':`Hole ${N+n}`;played=N}
+    x=true;xn=n;m=n===1?'19th hole':`Hole ${N+n}`;played=N}
   if(m===null) m=lead===0?'A/S':`${Math.abs(lead)}UP`;
-  return {w:lead>0?'a':lead<0?'b':'tie',m,played,trace,x};
+  return {w:lead>0?'a':lead<0?'b':'tie',m,played,trace,x,xn};
 }
 const isClose=r=>r.w==='tie'||r.m==='1UP'||!!r.x;
 function strokeDelta(h,par,course){
   const e=h/18+(par===5?-.06:par===3?.03:0), sd=.8/(COURSE[course].factor||1);
-  return Math.max(-2,Math.min(3,Math.round(e+gauss()*sd)));
+  return Math.max(par===3?-1:-2,Math.min(3,Math.round(e+gauss()*sd)));
 }
+/* hole in one: only possible on par 3s in sessions 5 and 6 (about one game in 20) */
+const ACE_Q=0.0048;
+function rollAce(){window.__aceN=(window.__aceN||0)+1;return Math.random()<ACE_Q}
+const ACE_PTS=10;
+const playoffPts=n=>n>0?Math.min(5,1+n):0;
+const dlab=(d,par)=>par===3&&d===-2?'HOLE IN ONE':dlabel(d);
 const dlabel=d=>({'-2':'Eagle','-1':'Birdie','0':'Par','1':'Bogey','2':'Double'}[d]||'Triple+');
 
 /* ---------- storylines & scoring ---------- */
@@ -342,6 +348,7 @@ function realBaseline(){
   const ptsOf=ms=>{let a=0,b=0;ms.forEach(m=>{if(m.w==='a')a++;else if(m.w==='b')b++;else{a+=.5;b+=.5}});return [a,b]};
   for(const s of [1,2]) for(const key of ['blue-white','red-green']) R['s'+s][key].forEach(m=>add(s,matchPts(s,{w:m.w,m:m.m,x:false},m.a,m.b)));
   for(const key of ['blue-white','red-green']){const [a1,b1]=ptsOf(R.s1[key]),[a2,b2]=ptsOf(R.s2[key]);add(2,teamClosePts(a1+a2,b1+b2,key.replace('-',' vs ')))}
+  add(2,[{k:'playoff',pts:playoffPts(2),txt:'Blue vs White playoff: 2 holes'}]);
   R.s3.forEach(m=>add(3,matchPts(3,{w:m.w,m:m.m,x:false},m.a,m.b)));
   R.s4.forEach(m=>add(4,matchPts(4,{w:m.w,m:m.m,x:false},m.a,m.b)));
   {const [a3,b3]=ptsOf(R.s3),[a4,b4]=ptsOf(R.s4);add(4,teamClosePts(a3+a4,b3+b4,'Green vs White'))}
@@ -598,6 +605,7 @@ function resultPanel(s){
     <tr><td>Storylines</td><td class="r num">${by('story')}</td></tr>
     <tr><td>Close teams</td><td class="r num">${by('team')}</td></tr>
     <tr><td>Popularity</td><td class="r num">${by('pop')}</td></tr>
+    ${mine.items.some(i=>i.k==='playoff')?`<tr><td>Playoff holes</td><td class="r num">${by('playoff')}</td></tr>`:''}${mine.items.some(i=>i.k==='ace')?`<tr><td>Hole in one</td><td class="r num">${by('ace')}</td></tr>`:''}
     <tr><th>Session total</th><th class="r num gold">${mine.items.reduce((a,i)=>a+i.pts,0)}</th></tr></table>`;
   html+=`<div class="hint" style="margin-top:8px">Real tournament, same session: ${REAL.filter(i=>i.s===s).reduce((a,i)=>a+i.pts,0)}</div></div></div>`;
 
@@ -635,7 +643,7 @@ function cutPhase(){
   const done=t>=ev.length;
   html+=`<div class="tcols" style="margin-top:12px">${teams.map((tm,ti)=>{
     const lines=ev.slice(0,t).map(e=>{const en=e.entries.find(x=>x.ti===ti);if(!en)return '';
-      return `<div class="delta ${en.d<0?'bi':en.d>0?'bo':''}">H${e.hole} · par ${e.par} · #${e.rank+1} ${P[en.pid].name}: ${dlabel(en.d)}${e.safe.includes(ti)?' · SAFE':e.replay?' · all tied':''}</div>`}).join('');
+      return `<div class="delta ${en.d<0?'bi':en.d>0?'bo':''}">H${e.hole} · par ${e.par} · #${e.rank+1} ${P[en.pid].name}: ${dlab(en.d,e.par)}${e.safe.includes(ti)?' · SAFE':e.replay?' · all tied':''}</div>`}).join('');
     const cls=done&&G.cut.eliminated===ti?'out':safe.has(ti)?'safe':'';
     return tcolHTML(5,ti,tm.ids,{cls,extra:`<div style="padding:0 10px 10px">${lines}${done&&G.cut.eliminated===ti?'<div class="delta bo">ELIMINATED</div>':''}</div>`});
   }).join('')}</div>`;
@@ -656,7 +664,7 @@ function semiPhase(){
     return html;
   }
   const t=G.anim?G.anim.t:9, sm=G.semi;
-  const rows=sm.teams.map((tm,i)=>{let run=0;const cells=sm.holes[i].map((d,h)=>{if(h>=t)return `<td class="r mute">·</td>`;run+=d;return `<td class="r ${d<0?'good':d>0?'bad':''}">${fmtDelta(d)}</td>`}).join('');
+  const rows=sm.teams.map((tm,i)=>{let run=0;const cells=sm.holes[i].map((d,h)=>{if(h>=t)return `<td class="r mute">·</td>`;run+=d;return `<td class="r ${d<0?'good':d>0?'bad':''}">${S.pars[h]===3&&d===-2?'ACE':fmtDelta(d)}</td>`}).join('');
     const tot=sm.holes[i].slice(0,Math.min(t,9)).reduce((a,b)=>a+b,0);
     const adv=t>=9&&sm.advance.includes(i);
     return `<tr><td><b>${tm.name}</b> ${adv?'<span class="tag" style="background:var(--good);color:#06301a">ADVANCES</span>':''}</td>${cells}<td class="r num gold"><b>${fmtDelta(tot)}</b></td></tr>`}).join('');
@@ -702,7 +710,7 @@ function finalOdds(A,B){
 /* ---------- end screen ---------- */
 function endHTML(){
   const mine=G.log,rows=[1,2,3,4,5,6,7].map(s=>{const a=mine.filter(i=>i.s===s).reduce((x,i)=>x+i.pts,0),b=REAL.filter(i=>i.s===s).reduce((x,i)=>x+i.pts,0);return `<tr><td>${SESS[s].name}: ${SESS[s].sub}</td><td class="r num">${a}</td><td class="r num mute">${b}</td></tr>`}).join('');
-  const kinds=[['close','Close matches'],['story','Storylines'],['team','Close teams'],['pop','Popularity']].map(([k,l])=>`<tr><td>${l}</td><td class="r num">${sumLog(mine,k)}</td><td class="r num mute">${sumLog(REAL,k)}</td></tr>`).join('');
+  const kinds=[['close','Close matches'],['story','Storylines'],['team','Close teams'],['pop','Popularity'],['playoff','Playoff holes'],['ace','Hole in one']].map(([k,l])=>`<tr><td>${l}</td><td class="r num">${sumLog(mine,k)}</td><td class="r num mute">${sumLog(REAL,k)}</td></tr>`).join('');
   const a=sumLog(mine),b=sumLog(REAL);
   const champ=G.res[7]?G.fin.teams[G.res[7].w==='a'?0:1].name:'';
   const wi=G.res[7]&&G.res[7].w==='a'?0:1,champIds=G.fin?G.fin.teams[wi].ids:[];
@@ -740,7 +748,7 @@ function decide(){
         const [a1,b1]=ptsOf(G.res[1][pi]),[a2,b2]=ptsOf(G.res[2][pi]),a=a1+a2,b=b1+b2;
         teamClosePts(a,b,`${TEAM[pr.a].n} vs ${TEAM[pr.b].n}`).forEach(i=>items.push(i));
         let win=a>b?'a':b>a?'b':null,line=`${TEAM[pr.a].n} ${a} – ${b} ${TEAM[pr.b].n}`;
-        if(!win){const po=playoffTeams(pr.a,pr.b,'ozarks');win=po.w;notes.push(...po.log);line+=' (tied, playoff)'}
+        if(!win){const po=playoffTeams(pr.a,pr.b,'ozarks');win=po.w;notes.push(...po.log);line+=' (tied, playoff)';items.push({k:'playoff',pts:playoffPts(po.log.length),txt:`${TEAM[pr.a].n} vs ${TEAM[pr.b].n} playoff: ${po.log.length} hole${po.log.length===1?'':'s'}`})}
         G.day1.push({a:pr.a,b:pr.b,s1:[a1,b1],s2:[a2,b2],pa:a,pb:b,po:a===b,win:win==='a'?pr.a:pr.b});
         w.push(win==='a'?pr.a:pr.b);notes.push(`<b>${line}:</b> ${TEAM[w[pi]].n} advances.`);
       });
@@ -750,7 +758,7 @@ function decide(){
       const pr=prs[0],[a3,b3]=ptsOf(G.res[3][0]),[a4,b4]=ptsOf(G.res[4][0]),a=a3+a4,b=b3+b4;
       teamClosePts(a,b,`${TEAM[pr.a].n} vs ${TEAM[pr.b].n}`).forEach(i=>items.push(i));
       let win=a>b?'a':b>a?'b':null,line=`${TEAM[pr.a].n} ${a} – ${b} ${TEAM[pr.b].n} (sessions 3 and 4)`;
-      if(!win){const po=playoffTeams(pr.a,pr.b,'buffalo');win=po.w;notes.push(...po.log);line+=' (tied, playoff)'}
+      if(!win){const po=playoffTeams(pr.a,pr.b,'buffalo');win=po.w;notes.push(...po.log);line+=' (tied, playoff)';items.push({k:'playoff',pts:playoffPts(po.log.length),txt:`${TEAM[pr.a].n} vs ${TEAM[pr.b].n} playoff: ${po.log.length} hole${po.log.length===1?'':'s'}`})}
       G.dayWinner=win==='a'?pr.a:pr.b;G.alive16=teamIds(G.dayWinner);
       G.day2={a:pr.a,b:pr.b,s3:[a3,b3],s4:[a4,b4],pa:a,pb:b,po:a===b,win:G.dayWinner};
       notes.push(`<b>${line}:</b> ${TEAM[G.dayWinner].n} advances. The other three teams are eliminated.`);
@@ -762,6 +770,8 @@ function decide(){
   if(s===5){
     const teams=lineupTeams(5).map(t=>({name:t.name,ids:t.ids}));
     G.cut=simCut(teams);G.cut.teams=teams;
+    {const nrep=G.cut.events.filter(e=>e.replay).length;if(nrep)items.push({k:'playoff',pts:playoffPts(nrep),txt:`Cut: every team tied on ${nrep} hole${nrep===1?'':'s'}, replayed`});
+     G.cut.events.forEach(e=>e.entries.filter(x=>x.ace).forEach(x=>{items.push({k:'ace',pts:ACE_PTS,txt:`Hole in one: ${P[x.pid].name}`});notes.unshift(`<b>HOLE IN ONE!</b> ${P[x.pid].name} aced the par 3 ${e.hole}${e.hole===1?'st':e.hole===2?'nd':e.hole===3?'rd':'th'} hole of the cut. +${ACE_PTS} EVPs.`)}))}
     teams.forEach(t=>storyHits(t.ids).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,5),txt:h.txt})));
     items.push({k:'pop',pts:tierSum(teams.flatMap(t=>t.ids))*.5,txt:'16 players alive, x0.5'});
     const el=G.cut.eliminated;notes.push(`<b>${teams[el].name}</b> is eliminated. 12 players advance.`);
@@ -770,13 +780,16 @@ function decide(){
   }
   if(s===6){
     const teams=lineupTeams(6),pars=S.pars;
-    const holes=teams.map(t=>pars.map((par,i)=>strokeDelta(trioStr(t.ids,i,par),par,'paynes')));
+    const aces=[];
+    const holes=teams.map((t,ti)=>pars.map((par,i)=>{if(par===3&&rollAce()){aces.push({ti,i,pid:t.ids[i%3]});return -2}return strokeDelta(trioStr(t.ids,i,par),par,'paynes')}));
     const tot=holes.map(h=>h.reduce((a,b)=>a+b,0));
     const order=tot.map((v,i)=>i).sort((a,b)=>tot[a]-tot[b]);
     let advance=[];const below=[];const cut=tot[order[1]];
     const tied=order.filter(i=>tot[i]===cut),sure=order.filter(i=>tot[i]<cut);
     advance=[...sure];let need=2-sure.length,pool=[...tied];
+    let nplay=0;
     while(need>0&&pool.length>need){
+      nplay++;
       const sc=pool.map(i=>({i,d:strokeDelta(trioStr(teams[i].ids,0,4),4,'paynes')}));
       const best=Math.min(...sc.map(x=>x.d)),worst=Math.max(...sc.map(x=>x.d));
       notes.push(`Playoff hole: ${sc.map(x=>`${teams[x.i].name} ${dlabel(x.d)}`).join(', ')}`);
@@ -786,13 +799,15 @@ function decide(){
         else pool=win}
     }
     if(need>0) advance.push(...pool.slice(0,need));
+    if(nplay)items.push({k:'playoff',pts:playoffPts(nplay),txt:`Semifinal playoff: ${nplay} hole${nplay===1?'':'s'}`});
+    aces.forEach(a=>{items.push({k:'ace',pts:ACE_PTS,txt:`Hole in one: ${P[a.pid].name}`});notes.unshift(`<b>HOLE IN ONE!</b> ${P[a.pid].name} (${teams[a.ti].name}) aced hole ${a.i+1}, a par 3. +${ACE_PTS} EVPs.`)});
     const sorted=[...tot].sort((a,b)=>a-b);
     if(sorted[2]-sorted[1]<=2) items.push({k:'team',pts:5,txt:`Second place decided by ${sorted[2]-sorted[1]} stroke${sorted[2]-sorted[1]===1?'':'s'} or fewer`});
     if(tight3(tot)) items.push({k:'team',pts:5,txt:'Three teams within 2 strokes of each other'});
     teams.forEach(t=>storyHits(t.ids).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,6),txt:h.txt})));
     items.push({k:'pop',pts:tierSum(teams.flatMap(t=>t.ids))*1,txt:'12 players alive, x1'});
     notes.unshift(`<b>${advance.map(i=>teams[i].name).join(' and ')}</b> advance to the final.`);
-    G.semi={teams,holes,tot,advance};
+    G.semi={teams,holes,tot,advance,aces};
     G.fin={teams:advance.map(i=>({name:teams[i].name,ids:[...teams[i].ids],color:null}))};
     G.summary[6]={items,notes};return startAnim(9,520);
   }
@@ -801,6 +816,7 @@ function decide(){
     const r=simMatch(probsFor(7,A,B),true);G.res[7]=r;
     const all=[...A,...B];
     if(isClose(r)) items.push({k:'team',pts:5,txt:r.x?'Final went to extra holes':'Final decided on the last hole'});
+    if(r.x&&r.xn)items.push({k:'playoff',pts:playoffPts(r.xn),txt:`Final extra holes: ${r.xn}`});
     storyHits(all,[A,B]).forEach(h=>items.push({k:'story',pts:h.pts*hitMult(h,7),txt:h.txt}));
     items.push({k:'pop',pts:tierSum(all)*1.5,txt:'6 finalists, x1.5'});
     const wn=G.fin.teams[r.w==='a'?0:1].name;
@@ -812,7 +828,7 @@ function simCut(teams){
   let remaining=teams.map((_,i)=>i),rank=0,hole=0;const events=[];
   while(remaining.length>1&&hole<40){
     hole++;const par=[3,4,5][Math.floor(Math.random()*3)];
-    const entries=remaining.map(ti=>{const pid=teams[ti].ids[rank];return {ti,pid,d:strokeDelta(P[pid].h,par,'buffalo')}});
+    const entries=remaining.map(ti=>{const pid=teams[ti].ids[rank];let d=strokeDelta(P[pid].h,par,'buffalo'),ace=false;if(par===3&&rollAce()){d=-2;ace=true}return {ti,pid,d,ace}});
     const best=Math.min(...entries.map(e=>e.d)),safe=entries.filter(e=>e.d===best).map(e=>e.ti),allTied=safe.length===entries.length;
     const ev={hole,par,rank,entries,safe:allTied?[]:safe,replay:allTied};
     if(!allTied) remaining=remaining.filter(t=>!safe.includes(t));
@@ -1069,7 +1085,11 @@ function evsBody(){
   <p>${nameList(tg.m)} are known for talking trash. Every pair of them in the same duo or team, or playing against each other, earns 1 EVP times a multiplier that grows during the event: ×1 in sessions 1 and 2, ×2 in sessions 3 and 4, ×3 in sessions 5 and 6, and ×4 in session 7.</p>
   <h3 style="font-size:22px">5. Popularity</h3>
   <p>Each player is worth EVPs based on a 1 to 64 popularity ranking. You earn them for every player still alive in sessions 5 to 7, so keep the big names around. The amounts are multiplied by ×0.5 in session 5, ×1 in session 6 and ×1.5 in session 7.</p>
-  <ul>${tiers}<li><b>0 EVPs</b> · Everyone else</li></ul>`;
+  <ul>${tiers}<li><b>0 EVPs</b> · Everyone else</li></ul>
+  <h3 style="font-size:22px">6. Playoff holes</h3>
+  <ul><li>When a tie is settled with extra holes, you earn <b>2 EVPs</b> for the first playoff hole and <b>1 more</b> for each additional hole, up to <b>5</b> per playoff. This covers a tied team pairing on Day 1 or Day 2, a cut where every team ties on a hole, a tie for second in the semifinal, and extra holes in the final.</li></ul>
+  <h3 style="font-size:22px">7. Hole in one</h3>
+  <ul><li>In sessions 5 and 6, a player can ace a par 3. It is rare, about one game in 20, and worth <b>10 EVPs</b>.</li></ul>`;
 }
 function pageHTML(v){
   if(v==='hcp')return `<div class="top"><div class="brand">THE COMMISSIONER INVITATIONAL<small>Commissioner mode</small></div></div>`+hcpHTML();
@@ -1108,7 +1128,7 @@ function draftHTML(){
 
 <script>
 function infoModal(){
-  const you=G&&G.log?G.log:[],kinds=[['close','Close matches'],['team','Close team results'],['story','Storylines'],['pop','Popularity']];
+  const you=G&&G.log?G.log:[],kinds=[['close','Close matches'],['team','Close team results'],['story','Storylines'],['pop','Popularity'],['playoff','Playoff holes'],['ace','Hole in one']];
   const rows=kinds.map(([k,n])=>`<tr><td>${n}</td><td class="r num">${sumLog(you,k)}</td><td class="r num">${sumLog(REAL,k)}</td></tr>`).join('');
   modal(`<div class="how"><h2>How the scores work</h2>
   <p><b>You are the commissioner.</b> The real tournament has already been played. You rebuild it: pick the teams, set the duos and matchups, and press Decide Match to simulate each session. Better matchups mean closer golf, bigger storylines and more of the popular players still playing on the final day.</p>
@@ -1119,7 +1139,9 @@ function infoModal(){
   <li><b>Close team results:</b> 5 points when one team beats another by 2 points or fewer (sessions 1 and 2, sessions 3 and 4 combined), when second place in the semifinal is decided by 2 strokes or fewer, when any three of the four semifinal teams finish within 2 strokes of each other, or when the final goes to the last hole or extra holes.</li>
   <li><b>Storylines:</b> when rivals, friends or other storyline players land in the same match, on the same side or against each other (Chaz and Gaethje only count as a duo), you earn that storyline's weight: small 1, medium 2, big 3. Sessions 1 to 3 count once, sessions 4 to 7 count double. In sessions 5 and 6 it counts when they share a team, and in session 7 when they share a team or face each other.</li>
   <li><b>Trash talk:</b> Dod King, Yandle, Cheddy, JWill, Wesley, Short Game King, Riggs and Santino are known trash talkers. Each pair of them in the same duo or team, or playing against each other, earns 1 point times a multiplier that grows through the tournament: x1 in sessions 1 and 2, x2 in sessions 3 and 4, x3 in sessions 5 and 6 and x4 in session 7.</li>
-  <li><b>Popularity:</b> each player is worth 0 to 3 points based on the 1 to 64 popularity ranking: the top 8 ranked players, plus Big John, are worth 3, ranks 9 to 24 are worth 2, ranks 25 to 44 are worth 1 and the rest 0. You earn those points for every player still alive in session 5 (x0.5), session 6 (x1) and session 7 (x1.5), so keeping stars alive late pays the most.</li></ul>
+  <li><b>Popularity:</b> each player is worth 0 to 3 points based on the 1 to 64 popularity ranking: the top 8 ranked players, plus Big John, are worth 3, ranks 9 to 24 are worth 2, ranks 25 to 44 are worth 1 and the rest 0. You earn those points for every player still alive in session 5 (x0.5), session 6 (x1) and session 7 (x1.5), so keeping stars alive late pays the most.</li>
+  <li><b>Playoff holes:</b> 2 points for the first playoff or extra hole and 1 more for each additional hole, up to 5.</li>
+  <li><b>Hole in one:</b> 10 points if a player aces a par 3 in session 5 or 6. It happens about one game in 20.</li></ul>
   <h3>Adjusted handicap from men's tees</h3><p>In the real tournament, the women played from the same tees as the men, which is farther back than the tees they usually play. To keep the matchups fair, each woman's handicap is adjusted upward by about 5 strokes for singles (a little over a quarter stroke per hole). It counts for half as much in alternate shot, where her ball is only in play every other shot, and for about a quarter as much in a scramble, where the team picks the best shot. Adjusted handicaps are marked with a \u2020.</p>
   <table><tr><th>Your score so far</th><th class="r">You</th><th class="r">Real</th></tr>${rows}<tr><td><b>Total</b></td><td class="r num"><b>${sumLog(you)}</b></td><td class="r num"><b>${sumLog(REAL)}</b></td></tr></table>
   <div class="hint" style="margin-top:8px">Winners are decided by handicap-based odds, so every simulation can go differently. Popularity points come from the commissioner's 1 to 64 popularity ranking.</div>
